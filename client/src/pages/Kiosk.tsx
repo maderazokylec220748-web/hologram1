@@ -4,12 +4,18 @@ import KioskHeader from "@/components/KioskHeader";
 import HologramScanner from "@/components/HologramScanner";
 import ChatInterface from "@/components/ChatInterface";
 import HologramBackground from "@/components/HologramBackground";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function Kiosk() {
   const [activeTab, setActiveTab] = useState<'scanner' | 'chat'>('scanner');
   const [key, setKey] = useState(0);
 
-  const handleReset = () => {
+  const handleReset = async () => {
+    try {
+      await apiRequest('POST', '/api/chat/reset', {});
+    } catch (error) {
+      console.error('Reset error:', error);
+    }
     setKey(prev => prev + 1);
     setActiveTab('scanner');
   };

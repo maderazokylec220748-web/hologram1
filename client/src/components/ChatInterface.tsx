@@ -2,7 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { Send, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import ChatMessage from "./ChatMessage";
+import { apiRequest } from "@/lib/queryClient";
 
 interface Message {
   id: string;
@@ -19,13 +21,14 @@ export default function ChatInterface({ onMessageSend }: ChatInterfaceProps) {
     {
       id: '1',
       role: 'assistant',
-      content: 'Hello! I\'m your holographic assistant. I can help you with school-related questions about courses, campus facilities, schedules, and academic information. How can I assist you today?'
+      content: 'Hello! I\'m your holographic assistant for Westmead International School. I can help you with school-related questions about courses, campus facilities, schedules, admission procedures, and academic information. How can I assist you today?'
     }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -35,8 +38,8 @@ export default function ChatInterface({ onMessageSend }: ChatInterfaceProps) {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = async () => {
+    if (!input.trim() || isTyping) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -45,38 +48,39 @@ export default function ChatInterface({ onMessageSend }: ChatInterfaceProps) {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const messageContent = input;
     setInput('');
-    onMessageSend?.(input);
-
-    // Simulate non-school topic detection
-    const nonSchoolKeywords = ['weather', 'movie', 'game', 'food', 'recipe'];
-    const isNonSchool = nonSchoolKeywords.some(keyword => 
-      input.toLowerCase().includes(keyword)
-    );
+    onMessageSend?.(messageContent);
 
     setIsTyping(true);
 
-    setTimeout(() => {
-      if (isNonSchool) {
+    try {
+      const response = await apiRequest('POST', '/api/chat', { message: messageContent });
+
+      const data = await response.json();
+
+      if (!data.isSchoolRelated) {
         setShowWarning(true);
-        const warningMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: 'I can only help with school-related questions. Please ask about courses, campus facilities, schedules, academic programs, or student services.'
-        };
-        setMessages(prev => [...prev, warningMessage]);
-        
         setTimeout(() => setShowWarning(false), 3000);
-      } else {
-        const responseMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: 'I understand your question about ' + input + '. Based on our school records, I can provide you with detailed information. Would you like me to elaborate on any specific aspect?'
-        };
-        setMessages(prev => [...prev, responseMessage]);
       }
+
+      const assistantMessage: Message = {
+        id: data.message.id,
+        role: 'assistant',
+        content: data.message.content
+      };
+
+      setMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsTyping(false);
-    }, 1000);
+    }
   };
 
   return (
