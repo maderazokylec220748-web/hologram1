@@ -41,10 +41,13 @@ The AI assistant has knowledge about:
 - `POST /api/chat/reset` - Reset chat session
 
 ## Environment Variables
-- `OPENAI_API_KEY` - OpenAI API key (required)
+- `GROQ_API_KEY` - Groq API key (required) - Free alternative to OpenAI
 - `SESSION_SECRET` - Session secret for security
 
 ## Recent Changes (October 6, 2025)
+- Switched from OpenAI to Groq API for free AI chat functionality
+- Updated to use Llama 3.3 70B model via Groq
+- Fixed host binding issues for better macOS compatibility
 - Integrated Westmead International School website content as AI context
 - Implemented school-topic filtering to restrict AI responses
 - Created holographic UI with scanner and chat interfaces
