@@ -1,87 +1,51 @@
-# Hologram Scanner Kiosk
+# Westmead International School - Hologram Scanner Kiosk
 
 ## Overview
+An interactive hologram scanner kiosk web application with AI assistant for Westmead International School. The AI assistant is restricted to answering only school-related inquiries, pulling information from the official Westmead International School website.
 
-A futuristic, sci-fi inspired interactive kiosk application for Westmead International School. The application features a holographic-themed interface with a barcode/QR scanner and an AI-powered chat assistant that answers school-related questions. Built with React, Express, and OpenAI integration, the system provides students and visitors with an engaging way to access information about courses, campus facilities, admissions, and general school inquiries.
+## Features
+- **Holographic Scanner Interface**: Futuristic scanning simulation with animations
+- **AI Chat Assistant**: OpenAI-powered chatbot with school-specific context
+- **School-Topic Filtering**: Automatically detects and redirects non-school questions
+- **Responsive Kiosk Design**: Optimized for touchscreen interaction
+- **Tab Navigation**: Switch between Scanner and AI Assistant modes
 
-## User Preferences
+## School Context
+The AI assistant has knowledge about:
+- Westmead International School (Batangas City, Philippines)
+- First international school accredited by DepEd, TESDA, and CHED
+- Founded in 2004, became Westmead in 2006
+- Courses from pre-elementary to college level
+- Admission procedures and requirements
+- Campus facilities and resources
 
-Preferred communication style: Simple, everyday language.
+## Technology Stack
+- **Frontend**: React + TypeScript, Tailwind CSS, Framer Motion
+- **Backend**: Express.js, Node.js
+- **AI**: OpenAI GPT-5
+- **Storage**: In-memory storage (MemStorage)
 
-## System Architecture
+## Project Structure
+- `/client` - React frontend application
+  - `/src/components` - Reusable UI components (Scanner, Chat, Header)
+  - `/src/pages` - Main kiosk page
+- `/server` - Express backend
+  - `openai.ts` - OpenAI integration with school context
+  - `routes.ts` - API endpoints for chat functionality
+  - `storage.ts` - In-memory message storage
+- `/shared` - Shared TypeScript schemas
 
-### Frontend Architecture
+## API Endpoints
+- `POST /api/chat` - Send a message to the AI assistant
+- `GET /api/chat/history` - Retrieve chat history
+- `POST /api/chat/reset` - Reset chat session
 
-**Framework & Build System**
-- **React 18** with TypeScript for type-safe component development
-- **Vite** as the build tool and development server with HMR support
-- **Wouter** for lightweight client-side routing
-- **TanStack Query** for server state management and data fetching
+## Environment Variables
+- `OPENAI_API_KEY` - OpenAI API key (required)
+- `SESSION_SECRET` - Session secret for security
 
-**UI Components & Styling**
-- **Shadcn/ui** component library (New York style variant) with Radix UI primitives
-- **Tailwind CSS** for utility-first styling with custom design tokens
-- **Design System**: Futuristic holographic theme inspired by sci-fi interfaces (JARVIS, Minority Report)
-  - Dark mode primary with cyan-blue holographic glows and purple accents
-  - Typography: Space Grotesk for headings, Inter for UI, JetBrains Mono for data displays
-  - Custom CSS variables for theme consistency and glass-morphism effects
-
-**Key Features**
-- Fullscreen kiosk layout optimized for touchscreen interaction (minimum 64px touch targets)
-- Tabbed interface switching between Scanner and AI Assistant views
-- Real-time chat interface with message history
-- Animated holographic backgrounds with grid patterns and floating elements
-- Toast notifications for user feedback
-
-### Backend Architecture
-
-**Server Framework**
-- **Express.js** with TypeScript running on Node.js
-- ESM module system for modern JavaScript features
-- Custom middleware for request logging and error handling
-
-**API Design**
-- RESTful endpoints for chat functionality:
-  - `POST /api/chat` - Send messages and receive AI responses
-  - `GET /api/chat/history` - Retrieve conversation history
-  - `POST /api/chat/reset` - Clear chat session
-- JSON request/response format
-- Session-based conversation management
-
-**AI Integration**
-- **OpenAI GPT-5** integration for natural language processing
-- Context-aware responses specific to Westmead International School
-- Built-in safety filters to only answer school-related and educational questions
-- Conversation history maintained for context continuity
-
-**Data Storage Strategy**
-- In-memory storage implementation (`MemStorage`) for development/demo
-- Database-ready architecture with Drizzle ORM for future PostgreSQL integration
-- Schema defined for users and chat messages with UUID primary keys
-- Storage abstraction layer (`IStorage` interface) allows easy switching between implementations
-
-### External Dependencies
-
-**Third-Party Services**
-- **OpenAI API** (GPT-5 model) - Natural language AI responses with school-specific context
-- **Neon Database** (configured but not actively used) - Serverless PostgreSQL via `@neondatabase/serverless`
-
-**Key Libraries**
-- **@radix-ui/** - Accessible UI component primitives (dialogs, dropdowns, tabs, etc.)
-- **react-hook-form** with Zod validation for form management
-- **drizzle-orm** and **drizzle-kit** for database ORM and migrations
-- **class-variance-authority** and **clsx** for conditional styling
-- **embla-carousel-react** for carousel components
-- **date-fns** for date manipulation
-
-**Development Tools**
-- **TypeScript** for static type checking across client and server
-- **Vite plugins**: Runtime error overlay, Replit-specific development enhancements
-- **ESBuild** for production server bundling
-- **PostCSS** with Autoprefixer for CSS processing
-
-**Database Configuration**
-- Drizzle ORM configured for PostgreSQL dialect
-- Migration system ready with schema in `/shared/schema.ts`
-- Connection configured via `DATABASE_URL` environment variable
-- Currently using in-memory storage; PostgreSQL can be enabled by provisioning database
+## Recent Changes (October 6, 2025)
+- Integrated Westmead International School website content as AI context
+- Implemented school-topic filtering to restrict AI responses
+- Created holographic UI with scanner and chat interfaces
+- Set up OpenAI GPT-5 integration with conversation history
