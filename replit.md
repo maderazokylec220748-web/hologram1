@@ -1,14 +1,39 @@
 # Westmead International School - Hologram Scanner Kiosk
 
 ## Overview
-An interactive hologram scanner kiosk web application with AI assistant for Westmead International School. The AI assistant is restricted to answering only school-related inquiries, pulling information from the official Westmead International School website.
+An interactive hologram scanner kiosk web application with AI assistant for Westmead International School. The AI assistant is powered by Groq (free alternative to OpenAI) and is restricted to answering only school-related inquiries.
+
+## Quick Start
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your Groq API key
+   ```
+
+3. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+The app will be available at http://localhost:5000
 
 ## Features
 - **Holographic Scanner Interface**: Futuristic scanning simulation with animations
-- **AI Chat Assistant**: OpenAI-powered chatbot with school-specific context
+- **AI Chat Assistant**: Groq-powered chatbot with school-specific context
 - **School-Topic Filtering**: Automatically detects and redirects non-school questions
 - **Responsive Kiosk Design**: Optimized for touchscreen interaction
 - **Tab Navigation**: Switch between Scanner and AI Assistant modes
+
+## Environment Variables
+Create a `.env` file with:
+- `GROQ_API_KEY` - Get free at https://console.groq.com/
+- `SESSION_SECRET` - Any random string for security
 
 ## School Context
 The AI assistant has knowledge about:
