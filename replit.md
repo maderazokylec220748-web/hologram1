@@ -91,13 +91,13 @@ The chatbot now includes comprehensive information from https://westmead-is.edu.
 ## Recent Changes (October 7, 2025)
 
 ### Latest Update - Fullscreen Hologram Display
-- **Implemented Fullscreen Hologram Mode**: When AI responds, a large-scale hologram takes over the entire screen, hiding all other UI (header, chat, input)
+- **Implemented Fullscreen Hologram Mode**: When AI responds, a large-scale hologram avatar takes over the entire screen, hiding all other UI (header, chat, input)
+- **Avatar-Only Display**: Only the hologram avatar image is shown fullscreen - AI's text responses remain in the chat (background)
 - **Intelligent Timer System**: Display duration automatically calculated based on response length (3s base + 0.5s per 50 characters, capped at 15 seconds)
-- **Enlarged Hologram Components**: 
+- **Enlarged Hologram Avatar**: 
   - Avatar panels scaled up to 48x64 pixels (from 20x28)
-  - Text display expanded to 800x400 pixels (from 300x200)
-  - Larger text size (lg vs xs) for better visibility
-- **Enhanced User Experience**: Hologram automatically hides after calculated duration and returns to chat interface
+  - 4-sided rotating hologram prism for immersive display
+- **Enhanced User Experience**: Hologram automatically hides after calculated duration and returns to chat interface with AI's text response visible
 
 ### Previous Updates
 - **Implemented Pepper's Ghost Hologram Effect**: Hologram is now hidden until user asks a question (perfect for glass reflection displays)
