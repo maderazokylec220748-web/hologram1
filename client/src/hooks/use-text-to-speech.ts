@@ -1,8 +1,17 @@
 import { useRef } from 'react';
 
+declare global {
+  interface Window {
+    puter: {
+      ai: {
+        txt2speech: (text: string) => Promise<HTMLAudioElement>;
+      };
+    };
+  }
+}
+
 export function useTextToSpeech() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const currentRequestRef = useRef<AbortController | null>(null);
 
   const speak = async (text: string) => {
     if (audioRef.current) {
@@ -10,42 +19,16 @@ export function useTextToSpeech() {
       audioRef.current = null;
     }
 
-    if (currentRequestRef.current) {
-      currentRequestRef.current.abort();
-    }
-
-    currentRequestRef.current = new AbortController();
-
     try {
-      const response = await fetch('/api/tts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text }),
-        signal: currentRequestRef.current.signal,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to generate speech');
-      }
-
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-      
-      audioRef.current = new Audio(audioUrl);
-      
-      audioRef.current.onended = () => {
-        if (audioRef.current) {
-          URL.revokeObjectURL(audioUrl);
-        }
-      };
-
-      await audioRef.current.play();
-    } catch (error) {
-      if (error instanceof Error && error.name === 'AbortError') {
+      if (!window.puter) {
+        console.warn('Puter.js not loaded, text-to-speech unavailable');
         return;
       }
+
+      const audio = await window.puter.ai.txt2speech(text);
+      audioRef.current = audio;
+      await audio.play();
+    } catch (error) {
       console.error('Text-to-speech error:', error);
     }
   };
@@ -54,11 +37,6 @@ export function useTextToSpeech() {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
-    }
-    
-    if (currentRequestRef.current) {
-      currentRequestRef.current.abort();
-      currentRequestRef.current = null;
     }
   };
 
