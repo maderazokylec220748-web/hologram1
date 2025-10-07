@@ -1,5 +1,6 @@
 import { Bot, User } from "lucide-react";
 import HologramAvatar from "./HologramAvatar";
+import HologramTextDisplay from "./HologramTextDisplay";
 
 interface ChatMessageProps {
   role: 'user' | 'assistant';
@@ -13,6 +14,9 @@ export default function ChatMessage({ role, content }: ChatMessageProps) {
     <div className={`animate-in fade-in slide-in-from-bottom-2 duration-300`}>
       {/* Show hologram avatar for assistant messages */}
       {!isUser && <HologramAvatar />}
+      
+      {/* Show 4-sided hologram text display for assistant messages */}
+      {!isUser && <HologramTextDisplay content={content} />}
       
       <div className={`flex gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'} items-start`}>
         <div className={`

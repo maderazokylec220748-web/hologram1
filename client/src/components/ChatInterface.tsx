@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, AlertCircle } from "lucide-react";
+import { Send, AlertCircle, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { useTextToSpeech } from "@/hooks/use-text-to-speech";
 import ChatMessage from "./ChatMessage";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -27,8 +28,10 @@ export default function ChatInterface({ onMessageSend }: ChatInterfaceProps) {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
+  const [isSpeechEnabled, setIsSpeechEnabled] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { speak, stop } = useTextToSpeech();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -71,6 +74,10 @@ export default function ChatInterface({ onMessageSend }: ChatInterfaceProps) {
       };
 
       setMessages(prev => [...prev, assistantMessage]);
+
+      if (isSpeechEnabled) {
+        speak(data.message.content);
+      }
     } catch (error) {
       console.error('Chat error:', error);
       toast({
@@ -120,6 +127,20 @@ export default function ChatInterface({ onMessageSend }: ChatInterfaceProps) {
 
       <div className="p-6 pt-0">
         <div className="glass-strong rounded-2xl p-2 flex gap-2">
+          <Button
+            onClick={() => {
+              setIsSpeechEnabled(!isSpeechEnabled);
+              if (isSpeechEnabled) {
+                stop();
+              }
+            }}
+            size="icon"
+            variant="ghost"
+            className="flex-shrink-0"
+            data-testid="button-toggle-speech"
+          >
+            {isSpeechEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+          </Button>
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
