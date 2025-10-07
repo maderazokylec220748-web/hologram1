@@ -8,7 +8,6 @@ import { apiRequest } from "@/lib/queryClient";
 export default function Kiosk() {
   const [key, setKey] = useState(0);
   const [isHologramVisible, setIsHologramVisible] = useState(false);
-  const [hologramContent, setHologramContent] = useState("");
   const [hologramDuration, setHologramDuration] = useState(5000);
 
   const handleReset = async () => {
@@ -20,15 +19,13 @@ export default function Kiosk() {
     setKey(prev => prev + 1);
   };
 
-  const showHologram = (content: string, duration?: number) => {
-    setHologramContent(content);
+  const showHologram = (duration?: number) => {
     setHologramDuration(duration || 5000);
     setIsHologramVisible(true);
   };
 
   const hideHologram = () => {
     setIsHologramVisible(false);
-    setHologramContent("");
   };
 
   return (
@@ -37,7 +34,6 @@ export default function Kiosk() {
       
       <FullscreenHologram 
         isVisible={isHologramVisible}
-        content={hologramContent}
         duration={hologramDuration}
         onComplete={hideHologram}
       />

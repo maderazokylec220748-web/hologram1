@@ -1,16 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef } from "react";
 import HologramAvatar from "./HologramAvatar";
-import HologramTextDisplay from "./HologramTextDisplay";
 
 interface FullscreenHologramProps {
   isVisible: boolean;
-  content: string;
   duration?: number;
   onComplete?: () => void;
 }
 
-export default function FullscreenHologram({ isVisible, content, duration = 5000, onComplete }: FullscreenHologramProps) {
+export default function FullscreenHologram({ isVisible, duration = 5000, onComplete }: FullscreenHologramProps) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -49,7 +47,6 @@ export default function FullscreenHologram({ isVisible, content, duration = 5000
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="flex flex-col items-center gap-8"
           >
             <motion.div
               animate={{ 
@@ -63,15 +60,6 @@ export default function FullscreenHologram({ isVisible, content, duration = 5000
               style={{ transformStyle: "preserve-3d" }}
             >
               <HologramAvatar size="large" />
-            </motion.div>
-
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-              className="w-full max-w-4xl"
-            >
-              <HologramTextDisplay content={content} size="large" />
             </motion.div>
           </motion.div>
 

@@ -15,7 +15,7 @@ interface Message {
 
 interface ChatInterfaceProps {
   onMessageSend?: (message: string) => void;
-  onHologramTrigger?: (content: string, duration?: number) => void;
+  onHologramTrigger?: (duration?: number) => void;
 }
 
 export default function ChatInterface({ onMessageSend, onHologramTrigger }: ChatInterfaceProps) {
@@ -78,7 +78,7 @@ export default function ChatInterface({ onMessageSend, onHologramTrigger }: Chat
 
       // Trigger hologram display with calculated duration
       if (onHologramTrigger) {
-        onHologramTrigger(data.message.content, displayDuration);
+        onHologramTrigger(displayDuration);
       }
 
       if (isSpeechEnabled) {
