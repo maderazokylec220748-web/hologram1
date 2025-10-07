@@ -99,6 +99,20 @@ export default function ChatInterface({ onMessageSend, onHologramTrigger }: Chat
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto p-6 space-y-4" data-testid="chat-messages">
+        {messages.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-full text-center space-y-4" data-testid="container-greeting">
+            <div className="glass-strong rounded-2xl p-8 max-w-2xl">
+              <h2 className="text-3xl font-bold mb-4 glow-text-cyan" data-testid="text-greeting-title">Welcome to WIS Hologram Assistant!</h2>
+              <p className="text-lg text-muted-foreground mb-6" data-testid="text-greeting-description">
+                Hello! I'm your AI assistant for Westmead International School. I'm here to help you learn about our programs, admissions, facilities, and more.
+              </p>
+              <p className="text-md text-muted-foreground" data-testid="text-greeting-cta">
+                Ask me anything about our school and I'll be happy to assist you!
+              </p>
+            </div>
+          </div>
+        )}
+        
         {messages.map((message) => (
           <ChatMessage
             key={message.id}
