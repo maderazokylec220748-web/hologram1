@@ -38,15 +38,11 @@ export default function Kiosk() {
         onComplete={hideHologram}
       />
 
-      {!isHologramVisible && (
-        <>
-          <KioskHeader onReset={handleReset} />
+      {!isHologramVisible && <KioskHeader onReset={handleReset} />}
 
-          <main className="flex-1 overflow-hidden" key={key}>
-            <ChatInterface onHologramTrigger={showHologram} />
-          </main>
-        </>
-      )}
+      <main className="flex-1 overflow-hidden" key={key}>
+        <ChatInterface onHologramTrigger={showHologram} />
+      </main>
     </div>
   );
 }
