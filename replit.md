@@ -24,14 +24,15 @@ An interactive hologram scanner kiosk web application with AI assistant for West
 The app will be available at http://localhost:5000
 
 ## Features
-- **Pepper's Ghost Hologram Effect**: Hologram model is hidden initially and only appears when AI responds (perfect for glass reflection hologram displays)
+- **Fullscreen Hologram Display**: Large-scale hologram appears fullscreen when AI responds, hiding all other UI elements for immersive experience
+- **Intelligent Timer System**: Hologram display duration automatically calculated based on response length (base 3s + 0.5s per 50 chars, max 15s)
+- **Scalable Hologram Sizes**: Hologram components support both small (chat) and large (fullscreen) display modes
 - **AI Voice Synthesis**: AI responses are spoken aloud using Puter.js free Text-to-Speech API (unlimited, no API key required)
 - **Holographic Scanner Interface**: Futuristic scanning simulation with animations
 - **AI Chat Assistant**: Groq-powered chatbot with school-specific context
 - **4-Sided Hologram Display**: AI responses shown in a 3D prism with all 4 sides visible
 - **School-Topic Filtering**: Automatically detects and redirects non-school questions
 - **Responsive Kiosk Design**: Optimized for touchscreen interaction
-- **Tab Navigation**: Switch between Scanner and AI Assistant modes
 
 ## Environment Variables
 Create a `.env` file with:
@@ -88,6 +89,17 @@ The chatbot now includes comprehensive information from https://westmead-is.edu.
 - Payment options and bank account details
 
 ## Recent Changes (October 7, 2025)
+
+### Latest Update - Fullscreen Hologram Display
+- **Implemented Fullscreen Hologram Mode**: When AI responds, a large-scale hologram takes over the entire screen, hiding all other UI (header, chat, input)
+- **Intelligent Timer System**: Display duration automatically calculated based on response length (3s base + 0.5s per 50 characters, capped at 15 seconds)
+- **Enlarged Hologram Components**: 
+  - Avatar panels scaled up to 48x64 pixels (from 20x28)
+  - Text display expanded to 800x400 pixels (from 300x200)
+  - Larger text size (lg vs xs) for better visibility
+- **Enhanced User Experience**: Hologram automatically hides after calculated duration and returns to chat interface
+
+### Previous Updates
 - **Implemented Pepper's Ghost Hologram Effect**: Hologram is now hidden until user asks a question (perfect for glass reflection displays)
 - **Added Puter.js Text-to-Speech**: AI responses are now spoken using free, unlimited voice synthesis (no API key required)
 - **Integrated comprehensive school data** from official WIS website (https://westmead-is.edu.ph)
