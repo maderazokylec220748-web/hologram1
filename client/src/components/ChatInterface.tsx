@@ -18,13 +18,7 @@ interface ChatInterfaceProps {
 }
 
 export default function ChatInterface({ onMessageSend }: ChatInterfaceProps) {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      role: 'assistant',
-      content: 'Hello! I\'m your holographic assistant for Westmead International School. I can help you with school-related questions about courses, campus facilities, schedules, admission procedures, and academic information. How can I assist you today?'
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
