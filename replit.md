@@ -26,6 +26,8 @@ The app will be available at http://localhost:5000
 ## Features
 - **Holographic Scanner Interface**: Futuristic scanning simulation with animations
 - **AI Chat Assistant**: Groq-powered chatbot with school-specific context
+- **Text-to-Speech**: AI responses are spoken aloud using Web Speech API with toggle control
+- **4-Sided Hologram Display**: AI responses shown in a 3D prism with all 4 sides visible
 - **School-Topic Filtering**: Automatically detects and redirects non-school questions
 - **Responsive Kiosk Design**: Optimized for touchscreen interaction
 - **Tab Navigation**: Switch between Scanner and AI Assistant modes
