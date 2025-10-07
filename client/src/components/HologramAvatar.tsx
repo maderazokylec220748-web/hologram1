@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
-import { User } from "lucide-react";
+import avatarImage from "@assets/image_1759813985087.png";
 
 export default function HologramAvatar() {
   const angles = [
-    { label: "Front", rotation: 0 },
-    { label: "Right", rotation: 90 },
-    { label: "Back", rotation: 180 },
-    { label: "Left", rotation: 270 }
+    { label: "Front", rotation: 0, scale: 1 },
+    { label: "Right", rotation: -15, scale: 0.9 },
+    { label: "Back", rotation: 180, scale: 0.85 },
+    { label: "Left", rotation: 15, scale: 0.9 }
   ];
 
   return (
@@ -33,21 +33,22 @@ export default function HologramAvatar() {
               {/* Scan lines effect */}
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent animate-scan" />
               
-              {/* Person silhouette */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div 
-                  className="relative"
+              {/* Person image with holographic effect */}
+              <div className="absolute inset-0 flex items-center justify-center p-1">
+                <img 
+                  src={avatarImage}
+                  alt="Hologram Assistant"
+                  className="w-full h-full object-cover object-top opacity-70 mix-blend-screen"
                   style={{ 
-                    transform: `perspective(200px) rotateY(${angle.rotation}deg)`,
-                    transformStyle: 'preserve-3d'
+                    transform: `perspective(200px) rotateY(${angle.rotation}deg) scale(${angle.scale})`,
+                    transformStyle: 'preserve-3d',
+                    filter: 'brightness(1.2) contrast(1.1) hue-rotate(180deg)'
                   }}
-                >
-                  <User 
-                    className="w-12 h-12 text-cyan-400/80" 
-                    strokeWidth={1.5}
-                  />
-                </div>
+                />
               </div>
+
+              {/* Cyan overlay for holographic effect */}
+              <div className="absolute inset-0 bg-cyan-400/20 mix-blend-color" />
 
               {/* Corner accents */}
               <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-400" />
