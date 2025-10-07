@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
 import avatarImage from "@assets/image_1759819806739.png";
 
-export default function HologramAvatar() {
+interface HologramAvatarProps {
+  size?: "small" | "large";
+}
+
+export default function HologramAvatar({ size = "small" }: HologramAvatarProps) {
   const angles = [
     { label: "Front", rotation: 0, scale: 1 },
     { label: "Right", rotation: -15, scale: 0.9 },
@@ -9,11 +13,15 @@ export default function HologramAvatar() {
     { label: "Left", rotation: 15, scale: 0.9 }
   ];
 
+  const sizeClasses = size === "large" 
+    ? { panel: "w-48 h-64", gap: "gap-6", container: "mb-8" }
+    : { panel: "w-20 h-28", gap: "gap-3", container: "mb-4" };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="flex gap-3 mb-4"
+      className={`flex ${sizeClasses.gap} ${sizeClasses.container}`}
       data-testid="hologram-avatar"
     >
       {angles.map((angle, index) => (
@@ -24,7 +32,7 @@ export default function HologramAvatar() {
           transition={{ delay: index * 0.1 }}
           className="flex flex-col items-center gap-2"
         >
-          <div className="relative w-20 h-28">
+          <div className={`relative ${sizeClasses.panel}`}>
             {/* Holographic glow effect */}
             <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-lg blur-sm animate-pulse" />
             

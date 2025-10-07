@@ -2,26 +2,31 @@ import { motion } from "framer-motion";
 
 interface HologramTextDisplayProps {
   content: string;
+  size?: "small" | "large";
 }
 
-export default function HologramTextDisplay({ content }: HologramTextDisplayProps) {
+export default function HologramTextDisplay({ content, size = "small" }: HologramTextDisplayProps) {
+  const sizeConfig = size === "large"
+    ? { width: "w-[800px]", height: "h-[400px]", minHeight: "min-h-[480px]", translateZ: 300, textSize: "text-lg", perspective: "2000px" }
+    : { width: "w-[300px]", height: "h-[200px]", minHeight: "min-h-[280px]", translateZ: 150, textSize: "text-xs", perspective: "1000px" };
+
   const sides = [
-    { label: "Front", rotateY: 0, translateZ: 150 },
-    { label: "Right", rotateY: 90, translateZ: 150 },
-    { label: "Back", rotateY: 180, translateZ: 150 },
-    { label: "Left", rotateY: -90, translateZ: 150 }
+    { label: "Front", rotateY: 0, translateZ: sizeConfig.translateZ },
+    { label: "Right", rotateY: 90, translateZ: sizeConfig.translateZ },
+    { label: "Back", rotateY: 180, translateZ: sizeConfig.translateZ },
+    { label: "Left", rotateY: -90, translateZ: sizeConfig.translateZ }
   ];
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative w-full min-h-[280px] flex items-center justify-center my-6"
+      className={`relative w-full ${sizeConfig.minHeight} flex items-center justify-center my-6`}
       data-testid="hologram-text-display"
-      style={{ perspective: "1000px" }}
+      style={{ perspective: sizeConfig.perspective }}
     >
       <div 
-        className="relative w-[300px] h-[200px]"
+        className={`relative ${sizeConfig.width} ${sizeConfig.height}`}
         style={{
           transformStyle: "preserve-3d",
           transform: "rotateX(-10deg) rotateY(15deg)",
@@ -46,7 +51,7 @@ export default function HologramTextDisplay({ content }: HologramTextDisplayProp
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent animate-scan pointer-events-none rounded-lg" />
                 
                 <div className="relative z-10">
-                  <p className="text-xs leading-relaxed text-cyan-100/90 font-medium">
+                  <p className={`${sizeConfig.textSize} leading-relaxed text-cyan-100/90 font-medium`}>
                     {content}
                   </p>
                 </div>
