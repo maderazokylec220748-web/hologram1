@@ -67,6 +67,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/tts", async (req, res) => {
+    try {
+      const { text } = req.body;
+      
+      if (!text || typeof text !== 'string') {
+        return res.status(400).json({ error: "Text is required" });
+      }
+
+      const response = await fetch("https://api.openai.com/v1/audio/speech", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "tts-1",
+          voice: "nova",
+          input: text,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`OpenAI TTS API error: ${response.statusText}`);
+      }
+
+      const audioBuffer = await response.arrayBuffer();
+      
+      res.set({
+        'Content-Type': 'audio/mpeg',
+        'Content-Length': audioBuffer.byteLength.toString(),
+      });
+      
+      res.send(Buffer.from(audioBuffer));
+    } catch (error) {
+      console.error("TTS error:", error);
+      res.status(500).json({ error: "Failed to generate speech" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
