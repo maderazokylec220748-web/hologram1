@@ -394,4 +394,18 @@
   .glass-strong {
     @apply backdrop-blur-xl bg-card/90 border border-card-border;
   }
+
+  /* Hologram scan animation */
+  @keyframes scan {
+    0%, 100% {
+      transform: translateY(-100%);
+    }
+    50% {
+      transform: translateY(100%);
+    }
+  }
+
+  .animate-scan {
+    animation: scan 3s ease-in-out infinite;
+  }
 }
