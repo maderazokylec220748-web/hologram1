@@ -1,39 +1,69 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 export function useTextToSpeech() {
-  const synthRef = useRef<SpeechSynthesis | null>(null);
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const currentRequestRef = useRef<AbortController | null>(null);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      synthRef.current = window.speechSynthesis;
-    }
-  }, []);
-
-  const speak = (text: string) => {
-    if (!synthRef.current) {
-      console.warn('Text-to-speech not supported in this browser');
-      return;
+  const speak = async (text: string) => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
     }
 
-    synthRef.current.cancel();
+    if (currentRequestRef.current) {
+      currentRequestRef.current.abort();
+    }
 
-    utteranceRef.current = new SpeechSynthesisUtterance(text);
-    utteranceRef.current.rate = 0.9;
-    utteranceRef.current.pitch = 1.1;
-    utteranceRef.current.volume = 1;
+    currentRequestRef.current = new AbortController();
 
-    synthRef.current.speak(utteranceRef.current);
+    try {
+      const response = await fetch('/api/tts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+        signal: currentRequestRef.current.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate speech');
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      
+      audioRef.current = new Audio(audioUrl);
+      
+      audioRef.current.onended = () => {
+        if (audioRef.current) {
+          URL.revokeObjectURL(audioUrl);
+        }
+      };
+
+      await audioRef.current.play();
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        return;
+      }
+      console.error('Text-to-speech error:', error);
+    }
   };
 
   const stop = () => {
-    if (synthRef.current) {
-      synthRef.current.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    
+    if (currentRequestRef.current) {
+      currentRequestRef.current.abort();
+      currentRequestRef.current = null;
     }
   };
 
   const isSpeaking = () => {
-    return synthRef.current?.speaking || false;
+    return audioRef.current?.paused === false;
   };
 
   return { speak, stop, isSpeaking };
