@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import avatarImage from "@assets/image_1759813985087.png";
+import avatarImage from "@assets/image_1759819806739.png";
 
 export default function HologramAvatar() {
   const angles = [
