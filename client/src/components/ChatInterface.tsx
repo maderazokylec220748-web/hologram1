@@ -15,9 +15,10 @@ interface Message {
 
 interface ChatInterfaceProps {
   onMessageSend?: (message: string) => void;
+  onHologramTrigger?: (content: string, duration?: number) => void;
 }
 
-export default function ChatInterface({ onMessageSend }: ChatInterfaceProps) {
+export default function ChatInterface({ onMessageSend, onHologramTrigger }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -68,6 +69,17 @@ export default function ChatInterface({ onMessageSend }: ChatInterfaceProps) {
       };
 
       setMessages(prev => [...prev, assistantMessage]);
+
+      // Calculate display duration based on response length
+      // Base 3 seconds + 0.5 seconds per 50 characters, capped at 15 seconds
+      const baseTime = 3000;
+      const additionalTime = Math.floor(data.message.content.length / 50) * 500;
+      const displayDuration = Math.min(baseTime + additionalTime, 15000);
+
+      // Trigger hologram display with calculated duration
+      if (onHologramTrigger) {
+        onHologramTrigger(data.message.content, displayDuration);
+      }
 
       if (isSpeechEnabled) {
         speak(data.message.content);

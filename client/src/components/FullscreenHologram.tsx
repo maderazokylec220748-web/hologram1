@@ -1,16 +1,40 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef } from "react";
 import HologramAvatar from "./HologramAvatar";
 import HologramTextDisplay from "./HologramTextDisplay";
 
 interface FullscreenHologramProps {
   isVisible: boolean;
   content: string;
+  duration?: number;
   onComplete?: () => void;
 }
 
-export default function FullscreenHologram({ isVisible, content, onComplete }: FullscreenHologramProps) {
+export default function FullscreenHologram({ isVisible, content, duration = 5000, onComplete }: FullscreenHologramProps) {
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (isVisible && onComplete) {
+      // Clear any existing timer
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+
+      // Set timer to auto-hide
+      timerRef.current = setTimeout(() => {
+        onComplete();
+      }, duration);
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [isVisible, duration, onComplete]);
+
   return (
-    <AnimatePresence onExitComplete={onComplete}>
+    <AnimatePresence>
       {isVisible && (
         <motion.div
           initial={{ opacity: 0 }}
