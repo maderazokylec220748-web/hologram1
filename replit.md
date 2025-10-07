@@ -24,9 +24,10 @@ An interactive hologram scanner kiosk web application with AI assistant for West
 The app will be available at http://localhost:5000
 
 ## Features
+- **Pepper's Ghost Hologram Effect**: Hologram model is hidden initially and only appears when AI responds (perfect for glass reflection hologram displays)
+- **AI Voice Synthesis**: AI responses are spoken aloud using OpenAI's Text-to-Speech API with natural-sounding voice
 - **Holographic Scanner Interface**: Futuristic scanning simulation with animations
 - **AI Chat Assistant**: Groq-powered chatbot with school-specific context
-- **Text-to-Speech**: AI responses are spoken aloud using Web Speech API with toggle control
 - **4-Sided Hologram Display**: AI responses shown in a 3D prism with all 4 sides visible
 - **School-Topic Filtering**: Automatically detects and redirects non-school questions
 - **Responsive Kiosk Design**: Optimized for touchscreen interaction
@@ -66,9 +67,11 @@ The AI assistant has knowledge about:
 - `POST /api/chat` - Send a message to the AI assistant
 - `GET /api/chat/history` - Retrieve chat history
 - `POST /api/chat/reset` - Reset chat session
+- `POST /api/tts` - Generate speech from text using OpenAI TTS API
 
 ## Environment Variables
-- `GROQ_API_KEY` - Groq API key (required) - Free alternative to OpenAI
+- `GROQ_API_KEY` - Groq API key (required) - Free alternative to OpenAI for chat
+- `OPENAI_API_KEY` - OpenAI API key (required) - For text-to-speech voice synthesis
 - `SESSION_SECRET` - Session secret for security
 
 ## AI Knowledge Base
@@ -82,6 +85,8 @@ The chatbot now includes comprehensive information from https://westmead-is.edu.
 - Payment options and bank account details
 
 ## Recent Changes (October 7, 2025)
+- **Implemented Pepper's Ghost Hologram Effect**: Hologram is now hidden until user asks a question (perfect for glass reflection displays)
+- **Added OpenAI Text-to-Speech**: AI responses are now spoken using high-quality voice synthesis
 - **Integrated comprehensive school data** from official WIS website (https://westmead-is.edu.ph)
 - Added all college programs, tuition fees, and enrollment requirements to AI context
 - Enhanced chatbot with detailed information about scholarships, payment options, and admission procedures
