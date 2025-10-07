@@ -24,7 +24,8 @@ An interactive hologram scanner kiosk web application with AI assistant for West
 The app will be available at http://localhost:5000
 
 ## Features
-- **Fullscreen Hologram Display**: Large-scale hologram appears fullscreen when AI responds, hiding all other UI elements for immersive experience
+- **Fullscreen Hologram Display**: Large-scale hologram appears fullscreen when AI responds, with chat messages remaining visible in the background
+- **Persistent Chat History**: Questions and answers stay visible behind the hologram overlay for continuous context
 - **Intelligent Timer System**: Hologram display duration automatically calculated based on response length (base 3s + 0.5s per 50 chars, max 15s)
 - **Scalable Hologram Sizes**: Hologram components support both small (chat) and large (fullscreen) display modes
 - **AI Voice Synthesis**: AI responses are spoken aloud using Puter.js free Text-to-Speech API (unlimited, no API key required)
@@ -33,6 +34,7 @@ The app will be available at http://localhost:5000
 - **4-Sided Hologram Display**: AI responses shown in a 3D prism with all 4 sides visible
 - **School-Topic Filtering**: Automatically detects and redirects non-school questions
 - **Responsive Kiosk Design**: Optimized for touchscreen interaction
+- **Welcome Greeting**: Friendly welcome message displayed when chat is empty
 
 ## Environment Variables
 Create a `.env` file with:
