@@ -10,13 +10,12 @@ export default function KioskHeader({ onReset }: KioskHeaderProps) {
     <header className="glass-strong border-b border-card-border">
       <div className="h-20 px-8 flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="relative w-14 h-14">
+          <div className="relative w-16 h-16">
             <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 glow-cyan animate-pulse" />
             <div className="absolute inset-0.5 rounded-xl bg-background flex items-center justify-center">
-              <div className="relative">
-                <GraduationCap className="w-7 h-7 text-cyan-400" strokeWidth={2.5} />
-                <Sparkles className="w-3 h-3 text-yellow-400 absolute -top-1 -right-1 animate-pulse" />
-              </div>
+              <span className="text-2xl font-bold bg-gradient-to-br from-cyan-400 to-blue-500 bg-clip-text text-transparent tracking-tighter">
+                W.I.S.
+              </span>
             </div>
           </div>
           <div>
