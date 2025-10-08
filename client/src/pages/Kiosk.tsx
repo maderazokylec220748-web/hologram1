@@ -27,6 +27,13 @@ export default function Kiosk() {
     }
   }, []);
 
+  // Reset session when idle
+  useEffect(() => {
+    if (isIdle && language) {
+      handleReset();
+    }
+  }, [isIdle, language]);
+
   const handleSelectLanguage = (selectedLanguage: Language) => {
     localStorage.setItem('wis-language', selectedLanguage);
     setLanguage(selectedLanguage);
