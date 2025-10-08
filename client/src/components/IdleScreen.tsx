@@ -60,12 +60,12 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 aspect-square"
+                className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 aspect-square flex items-center justify-center bg-white"
               >
                 <img 
                   src={logoPath} 
                   alt="Westmead International School" 
-                  className="w-full h-full object-cover object-center"
+                  className="w-[90%] h-[90%] object-contain"
                   data-testid="img-school-logo"
                 />
               </motion.div>
