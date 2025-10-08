@@ -30,6 +30,20 @@ export default function Kiosk() {
     setShowLanguageSelector(false);
   };
 
+  const handleLanguageToggle = async () => {
+    const newLanguage = language === 'english' ? 'tagalog' : 'english';
+    localStorage.setItem('wis-language', newLanguage);
+    setLanguage(newLanguage);
+    
+    // Reset chat to show greeting in new language
+    try {
+      await apiRequest('POST', '/api/chat/reset', {});
+    } catch (error) {
+      console.error('Reset error:', error);
+    }
+    setKey(prev => prev + 1);
+  };
+
   const handleReset = async () => {
     try {
       await apiRequest('POST', '/api/chat/reset', {});
@@ -63,7 +77,13 @@ export default function Kiosk() {
         onComplete={hideHologram}
       />
 
-      {!isHologramVisible && <KioskHeader onReset={handleReset} />}
+      {!isHologramVisible && language && (
+        <KioskHeader 
+          language={language} 
+          onReset={handleReset}
+          onLanguageChange={handleLanguageToggle}
+        />
+      )}
 
       <main className="flex-1 overflow-hidden" key={key}>
         {language && <ChatInterface language={language} onHologramTrigger={showHologram} />}
