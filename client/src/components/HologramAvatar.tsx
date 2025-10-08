@@ -8,8 +8,8 @@ interface HologramAvatarProps {
 export default function HologramAvatar({ size = "small" }: HologramAvatarProps) {
   const angles = [
     { label: "Front", rotation: 0, scale: 1, position: "top" },
-    { label: "Left", rotation: 90, scale: 0.9, position: "left" },
-    { label: "Right", rotation: -90, scale: 0.9, position: "right" },
+    { label: "Left", rotation: 45, scale: 0.9, position: "left" },
+    { label: "Right", rotation: -45, scale: 0.9, position: "right" },
     { label: "Back", rotation: 180, scale: 0.85, position: "bottom" }
   ];
 
