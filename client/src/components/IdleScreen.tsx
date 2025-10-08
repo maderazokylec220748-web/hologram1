@@ -65,7 +65,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                 <img 
                   src={logoPath} 
                   alt="Westmead International School" 
-                  className="w-[120%] h-[120%] object-contain -translate-y-4"
+                  className="w-[85%] h-[85%] object-contain"
                   data-testid="img-school-logo"
                 />
               </motion.div>
