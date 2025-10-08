@@ -48,8 +48,10 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
   const handleMicClick = () => {
     if (!isSupported) {
       toast({
-        title: "Not Supported",
-        description: "Speech recognition is not supported in your browser.",
+        title: language === 'tagalog' ? "Hindi Suportado" : "Not Supported",
+        description: language === 'tagalog' 
+          ? "Ang speech recognition ay hindi suportado sa inyong browser."
+          : "Speech recognition is not supported in your browser.",
         variant: "destructive",
       });
       return;
@@ -113,8 +115,10 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
     } catch (error) {
       console.error('Chat error:', error);
       toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
+        title: language === 'tagalog' ? "May Mali" : "Error",
+        description: language === 'tagalog'
+          ? "Hindi naipadala ang mensahe. Subukan muli."
+          : "Failed to send message. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -195,6 +199,10 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
             variant="ghost"
             className="flex-shrink-0"
             data-testid="button-toggle-speech"
+            aria-label={language === 'tagalog' 
+              ? (isSpeechEnabled ? "I-off ang tunog" : "I-on ang tunog")
+              : (isSpeechEnabled ? "Turn off sound" : "Turn on sound")
+            }
           >
             {isSpeechEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
           </Button>
@@ -204,6 +212,10 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
             variant="ghost"
             className={`flex-shrink-0 ${isListening ? 'text-red-500 animate-pulse' : ''}`}
             data-testid="button-microphone"
+            aria-label={language === 'tagalog'
+              ? (isListening ? "Huminto sa pakikinig" : "Magsimulang makinig")
+              : (isListening ? "Stop listening" : "Start listening")
+            }
           >
             {isListening ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
           </Button>
@@ -224,6 +236,7 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
             disabled={!input.trim()}
             className="flex-shrink-0"
             data-testid="button-send"
+            aria-label={language === 'tagalog' ? "Ipadala ang mensahe" : "Send message"}
           >
             <Send className="w-5 h-5" />
           </Button>
