@@ -14,7 +14,7 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
   ];
 
   const sizeClasses = size === "large" 
-    ? { panel: "w-48 h-64", gap: "gap-6", container: "mb-8" }
+    ? { panel: "w-64 h-80", gap: "gap-8", container: "mb-8" }
     : { panel: "w-20 h-28", gap: "gap-3", container: "mb-4" };
 
   return (

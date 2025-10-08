@@ -48,19 +48,7 @@ export default function FullscreenHologram({ isVisible, duration = 5000, onCompl
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <motion.div
-              animate={{ 
-                rotateY: [0, 360],
-              }}
-              transition={{ 
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear" 
-              }}
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              <HologramAvatar size="large" />
-            </motion.div>
+            <HologramAvatar size="large" />
           </motion.div>
 
           <motion.div
