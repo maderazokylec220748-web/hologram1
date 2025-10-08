@@ -110,7 +110,7 @@ export default function Kiosk() {
       )}
 
       <main className="flex-1 overflow-hidden" key={key}>
-        {language && <ChatInterface language={language} onHologramTrigger={showHologram} />}
+        {language && <ChatInterface language={language} onHologramTrigger={showHologram} onStopHologram={hideHologram} />}
       </main>
     </div>
   );

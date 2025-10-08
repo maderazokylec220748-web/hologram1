@@ -53,20 +53,34 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     "0 0 20px rgba(6, 182, 212, 0.3)",
                     "0 0 60px rgba(6, 182, 212, 0.5)",
                     "0 0 20px rgba(6, 182, 212, 0.3)"
-                  ]
+                  ],
+                  rotate: 360
                 }}
                 transition={{ 
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
+                  boxShadow: {
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  },
+                  rotate: {
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }
                 }}
                 className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 aspect-square flex items-center justify-center bg-white"
               >
-                <img 
+                <motion.img 
                   src={logoPath} 
                   alt="Westmead International School" 
                   className="w-[85%] h-[85%] object-contain"
                   data-testid="img-school-logo"
+                  animate={{ rotate: -360 }}
+                  transition={{ 
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
                 />
               </motion.div>
 

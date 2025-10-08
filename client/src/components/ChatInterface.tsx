@@ -18,9 +18,10 @@ interface ChatInterfaceProps {
   language: 'english' | 'tagalog';
   onMessageSend?: (message: string) => void;
   onHologramTrigger?: (duration?: number) => void;
+  onStopHologram?: () => void;
 }
 
-export default function ChatInterface({ language, onMessageSend, onHologramTrigger }: ChatInterfaceProps) {
+export default function ChatInterface({ language, onMessageSend, onHologramTrigger, onStopHologram }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -243,12 +244,14 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
           />
           {isSpeaking ? (
             <Button
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 stop();
                 setIsSpeaking(false);
+                onStopHologram?.();
               }}
               size="icon"
-              className="flex-shrink-0 bg-red-500 hover:bg-red-600 relative z-10"
+              className="flex-shrink-0 bg-red-500 hover:bg-red-600 fixed bottom-8 right-8 z-[9999] shadow-2xl"
               data-testid="button-stop-speech"
               aria-label={language === 'tagalog' ? "Ihinto ang pagsasalita" : "Stop speaking"}
               type="button"
