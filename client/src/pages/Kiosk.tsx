@@ -4,6 +4,8 @@ import ChatInterface from "@/components/ChatInterface";
 import HologramBackground from "@/components/HologramBackground";
 import FullscreenHologram from "@/components/FullscreenHologram";
 import LanguageSelector from "@/components/LanguageSelector";
+import IdleScreen from "@/components/IdleScreen";
+import { useIdleDetection } from "@/hooks/useIdleDetection";
 import { apiRequest } from "@/lib/queryClient";
 
 type Language = 'english' | 'tagalog';
@@ -14,6 +16,7 @@ export default function Kiosk() {
   const [hologramDuration, setHologramDuration] = useState(5000);
   const [language, setLanguage] = useState<Language | null>(null);
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+  const { isIdle } = useIdleDetection({ idleTime: 30000 }); // 30 seconds idle time
 
   useEffect(() => {
     const storedLanguage = localStorage.getItem('wis-language') as Language | null;
@@ -62,6 +65,8 @@ export default function Kiosk() {
     setIsHologramVisible(false);
   };
 
+  const showIdleScreen = isIdle && !!language && !showLanguageSelector && !isHologramVisible;
+
   return (
     <div className="h-screen flex flex-col bg-background text-foreground" data-testid="page-kiosk">
       <HologramBackground />
@@ -76,6 +81,8 @@ export default function Kiosk() {
         duration={hologramDuration}
         onComplete={hideHologram}
       />
+
+      <IdleScreen isVisible={showIdleScreen} />
 
       {!isHologramVisible && language && (
         <KioskHeader 
