@@ -16,6 +16,7 @@ export default function Kiosk() {
   const [hologramDuration, setHologramDuration] = useState(5000);
   const [language, setLanguage] = useState<Language | null>(null);
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+  const [wasIdle, setWasIdle] = useState(false);
   const { isIdle } = useIdleDetection({ idleTime: 30000 }); // 30 seconds idle time
 
   useEffect(() => {
@@ -27,12 +28,21 @@ export default function Kiosk() {
     }
   }, []);
 
-  // Reset session when idle
+  // Reset session when user returns from being idle
   useEffect(() => {
-    if (isIdle && language) {
-      handleReset();
+    if (wasIdle && !isIdle && language) {
+      const resetSession = async () => {
+        try {
+          await apiRequest('POST', '/api/chat/reset', {});
+          setKey(prev => prev + 1);
+        } catch (error) {
+          console.error('Reset error:', error);
+        }
+      };
+      resetSession();
     }
-  }, [isIdle, language]);
+    setWasIdle(isIdle);
+  }, [isIdle, language, wasIdle]);
 
   const handleSelectLanguage = (selectedLanguage: Language) => {
     localStorage.setItem('wis-language', selectedLanguage);

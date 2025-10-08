@@ -1,48 +1,47 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface UseIdleDetectionOptions {
   idleTime?: number; // in milliseconds
-  events?: string[];
 }
 
 export function useIdleDetection(options: UseIdleDetectionOptions = {}) {
   const {
     idleTime = 30000, // default 30 seconds
-    events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click']
   } = options;
 
   const [isIdle, setIsIdle] = useState(false);
-
-  const handleActivity = useCallback(() => {
-    setIsIdle(false);
-  }, []);
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
 
     const resetTimer = () => {
       setIsIdle(false);
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
         setIsIdle(true);
       }, idleTime);
     };
 
     // Set up event listeners
     events.forEach(event => {
-      window.addEventListener(event, resetTimer);
+      window.addEventListener(event, resetTimer, { passive: true });
     });
 
     // Initialize timer
     resetTimer();
 
     return () => {
-      clearTimeout(timeoutId);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
       events.forEach(event => {
         window.removeEventListener(event, resetTimer);
       });
     };
-  }, [idleTime, events]);
+  }, [idleTime]);
 
-  return { isIdle, setIsIdle };
+  return { isIdle };
 }
