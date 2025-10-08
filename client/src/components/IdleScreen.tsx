@@ -60,7 +60,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="rounded-lg overflow-hidden"
+                className="rounded-full overflow-hidden"
               >
                 <img 
                   src={logoPath} 
