@@ -100,23 +100,28 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
       setMessages(prev => [...prev, assistantMessage]);
 
       // Calculate display duration based on response length
-      // Base 3 seconds + 0.5 seconds per 50 characters, capped at 15 seconds
       const baseTime = 3000;
       const additionalTime = Math.floor(data.message.content.length / 50) * 500;
       const displayDuration = Math.min(baseTime + additionalTime, 15000);
 
-      // Trigger hologram display with calculated duration
-      if (onHologramTrigger) {
-        onHologramTrigger(displayDuration);
-      }
-
       if (isSpeechEnabled) {
         setIsSpeaking(true);
+        
+        // Trigger hologram at the same time as speech starts
+        if (onHologramTrigger) {
+          onHologramTrigger(displayDuration);
+        }
+        
         speak(data.message.content).then(() => {
           setIsSpeaking(false);
         }).catch(() => {
           setIsSpeaking(false);
         });
+      } else {
+        // Show hologram even when speech is disabled
+        if (onHologramTrigger) {
+          onHologramTrigger(displayDuration);
+        }
       }
     } catch (error) {
       console.error('Chat error:', error);
@@ -193,7 +198,7 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
       )}
 
       <div className="p-6 pt-0">
-        <div className="glass-strong rounded-2xl p-2 flex gap-2">
+        <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="glass-strong rounded-2xl p-2 flex gap-2">
           <Button
             onClick={() => {
               setIsSpeechEnabled(!isSpeechEnabled);
@@ -243,9 +248,10 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
                 setIsSpeaking(false);
               }}
               size="icon"
-              className="flex-shrink-0 bg-red-500 hover:bg-red-600"
+              className="flex-shrink-0 bg-red-500 hover:bg-red-600 relative z-10"
               data-testid="button-stop-speech"
               aria-label={language === 'tagalog' ? "Ihinto ang pagsasalita" : "Stop speaking"}
+              type="button"
             >
               <Square className="w-5 h-5 fill-current" />
             </Button>
@@ -257,11 +263,12 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
               className="flex-shrink-0"
               data-testid="button-send"
               aria-label={language === 'tagalog' ? "Ipadala ang mensahe" : "Send message"}
+              type="button"
             >
               <Send className="w-5 h-5" />
             </Button>
           )}
-        </div>
+        </form>
       </div>
     </div>
   );

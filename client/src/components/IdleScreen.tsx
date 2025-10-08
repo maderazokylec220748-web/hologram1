@@ -43,7 +43,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 20 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative z-10 ml-20"
+            className="relative z-10 flex flex-col items-center"
           >
             {/* Logo with glow effect */}
             <div className="relative">
