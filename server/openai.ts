@@ -127,7 +127,8 @@ INSTRUCTIONS:
 
 export async function chatWithAI(
   userMessage: string,
-  conversationHistory: Array<{ role: string; content: string }>
+  conversationHistory: Array<{ role: string; content: string }>,
+  language: 'english' | 'tagalog' = 'english'
 ): Promise<{ content: string; isSchoolRelated: boolean }> {
   try {
     // First, check if the question is school-related
@@ -156,17 +157,26 @@ export async function chatWithAI(
     const validation = JSON.parse(validationResponse.choices[0].message.content || '{"isSchoolRelated": false}');
 
     if (!validation.isSchoolRelated) {
+      const notRelatedResponses = {
+        english: "I can only help with school-related questions about Westmead International School. Please ask about our courses, campus facilities, admission procedures, schedules, academic programs, or student services. You can also visit our website at westmead-is.edu.ph for more information.",
+        tagalog: "Makakatulong lamang ako sa mga tanong tungkol sa Westmead International School. Magtanong po tungkol sa aming mga kurso, pasilidad ng kampus, proseso ng admission, iskedyul, mga programa sa akademiko, o mga serbisyo para sa mga estudyante. Maaari rin po kayong bumisita sa aming website sa westmead-is.edu.ph para sa karagdagang impormasyon."
+      };
+      
       return {
-        content: "I can only help with school-related questions about Westmead International School. Please ask about our courses, campus facilities, admission procedures, schedules, academic programs, or student services. You can also visit our website at westmead-is.edu.ph for more information.",
+        content: notRelatedResponses[language],
         isSchoolRelated: false
       };
     }
 
     // If school-related, generate a helpful response
+    const languageInstruction = language === 'tagalog' 
+      ? '\n\nIMPORTANT: Respond in Tagalog/Filipino language. All responses must be in Tagalog.' 
+      : '\n\nIMPORTANT: Respond in English language.';
+    
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
       {
         role: "system",
-        content: SCHOOL_CONTEXT
+        content: SCHOOL_CONTEXT + languageInstruction
       },
       ...conversationHistory.slice(-6).map(msg => ({
         role: msg.role as "user" | "assistant",

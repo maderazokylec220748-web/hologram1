@@ -8,7 +8,7 @@ import { z } from "zod";
 export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/chat", async (req, res) => {
     try {
-      const { message } = req.body;
+      const { message, language = 'english' } = req.body;
       
       if (!message || typeof message !== 'string') {
         return res.status(400).json({ error: "Message is required" });
@@ -28,7 +28,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       // Get AI response
-      const { content, isSchoolRelated } = await chatWithAI(message, conversationHistory);
+      const { content, isSchoolRelated } = await chatWithAI(message, conversationHistory, language);
 
       // Store assistant message
       const assistantMessage = await storage.createChatMessage({
