@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, AlertCircle, Volume2, VolumeX } from "lucide-react";
+import { Send, AlertCircle, Volume2, VolumeX, Mic, MicOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useTextToSpeech } from "@/hooks/use-text-to-speech";
+import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
 import ChatMessage from "./ChatMessage";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -27,6 +28,7 @@ export default function ChatInterface({ onMessageSend, onHologramTrigger }: Chat
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const { speak, stop } = useTextToSpeech();
+  const { isListening, transcript, startListening, stopListening, isSupported } = useSpeechRecognition();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -35,6 +37,29 @@ export default function ChatInterface({ onMessageSend, onHologramTrigger }: Chat
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (transcript) {
+      setInput(transcript);
+    }
+  }, [transcript]);
+
+  const handleMicClick = () => {
+    if (!isSupported) {
+      toast({
+        title: "Not Supported",
+        description: "Speech recognition is not supported in your browser.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isListening) {
+      stopListening();
+    } else {
+      startListening();
+    }
+  };
 
   const handleSend = async () => {
     if (!input.trim() || isTyping) return;
@@ -161,11 +186,20 @@ export default function ChatInterface({ onMessageSend, onHologramTrigger }: Chat
           >
             {isSpeechEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
           </Button>
+          <Button
+            onClick={handleMicClick}
+            size="icon"
+            variant="ghost"
+            className={`flex-shrink-0 ${isListening ? 'text-red-500 animate-pulse' : ''}`}
+            data-testid="button-microphone"
+          >
+            {isListening ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
+          </Button>
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Ask about school topics only..."
+            placeholder={isListening ? "Listening..." : "Ask about school topics only..."}
             className="flex-1 border-0 bg-transparent text-lg focus-visible:ring-0 placeholder:text-muted-foreground"
             data-testid="input-message"
           />
