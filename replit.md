@@ -24,6 +24,8 @@ An interactive hologram scanner kiosk web application with AI assistant for West
 The app will be available at http://localhost:5000
 
 ## Features
+- **Multi-Language Support**: Users choose between English and Tagalog on first visit, with preference saved to localStorage
+- **Fully Localized UI**: All interface elements, messages, and AI responses adapt to selected language
 - **Fullscreen Hologram Display**: Large-scale hologram appears fullscreen when AI responds, with chat messages remaining visible in the background
 - **Persistent Chat History**: Questions and answers stay visible behind the hologram overlay for continuous context
 - **Intelligent Timer System**: Hologram display duration automatically calculated based on response length (base 3s + 0.5s per 50 chars, max 15s)
@@ -90,9 +92,21 @@ The chatbot now includes comprehensive information from https://westmead-is.edu.
 - Entrance exam requirements (board vs. non-board programs)
 - Payment options and bank account details
 
-## Recent Changes (October 7, 2025)
+## Recent Changes (October 8, 2025)
 
-### Latest Update - Fullscreen Hologram Display
+### Latest Update - Multi-Language Support (English & Tagalog)
+- **Language Selection Dialog**: On first visit, users are prompted to choose between English or Tagalog
+- **Persistent Language Preference**: Selected language is stored in localStorage for future sessions
+- **Fully Localized UI**: All interface elements adapt to selected language including:
+  - Welcome greeting and instructions
+  - Input placeholder text
+  - Warning messages
+  - Toast notifications (errors, system messages)
+  - Button aria-labels for accessibility
+- **AI Responses in Selected Language**: Backend AI generates responses in the user's chosen language
+- **Bilingual Error Messages**: Non-school-related questions receive polite redirection in appropriate language
+
+### Previous Update - Fullscreen Hologram Display
 - **Implemented Fullscreen Hologram Mode**: When AI responds, a large-scale hologram avatar takes over the entire screen, hiding all other UI (header, chat, input)
 - **Avatar-Only Display**: Only the hologram avatar image is shown fullscreen - AI's text responses remain in the chat (background)
 - **Intelligent Timer System**: Display duration automatically calculated based on response length (3s base + 0.5s per 50 characters, capped at 15 seconds)
