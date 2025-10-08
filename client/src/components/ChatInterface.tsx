@@ -194,40 +194,24 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
 
       <div className="p-6 pt-0">
         <div className="glass-strong rounded-2xl p-2 flex gap-2">
-          {isSpeaking ? (
-            <Button
-              onClick={() => {
+          <Button
+            onClick={() => {
+              setIsSpeechEnabled(!isSpeechEnabled);
+              if (isSpeechEnabled) {
                 stop();
-                setIsSpeaking(false);
-              }}
-              size="icon"
-              variant="ghost"
-              className="flex-shrink-0 text-red-500 hover:text-red-600"
-              data-testid="button-stop-speech"
-              aria-label={language === 'tagalog' ? "Ihinto ang pagsasalita" : "Stop speaking"}
-            >
-              <Square className="w-5 h-5 fill-current" />
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                setIsSpeechEnabled(!isSpeechEnabled);
-                if (isSpeechEnabled) {
-                  stop();
-                }
-              }}
-              size="icon"
-              variant="ghost"
-              className="flex-shrink-0"
-              data-testid="button-toggle-speech"
-              aria-label={language === 'tagalog' 
-                ? (isSpeechEnabled ? "I-off ang tunog" : "I-on ang tunog")
-                : (isSpeechEnabled ? "Turn off sound" : "Turn on sound")
               }
-            >
-              {isSpeechEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-            </Button>
-          )}
+            }}
+            size="icon"
+            variant="ghost"
+            className="flex-shrink-0"
+            data-testid="button-toggle-speech"
+            aria-label={language === 'tagalog' 
+              ? (isSpeechEnabled ? "I-off ang tunog" : "I-on ang tunog")
+              : (isSpeechEnabled ? "Turn off sound" : "Turn on sound")
+            }
+          >
+            {isSpeechEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+          </Button>
           <Button
             onClick={handleMicClick}
             size="icon"
@@ -252,16 +236,31 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
             className="flex-1 border-0 bg-transparent text-lg focus-visible:ring-0 placeholder:text-muted-foreground"
             data-testid="input-message"
           />
-          <Button
-            onClick={handleSend}
-            size="icon"
-            disabled={!input.trim()}
-            className="flex-shrink-0"
-            data-testid="button-send"
-            aria-label={language === 'tagalog' ? "Ipadala ang mensahe" : "Send message"}
-          >
-            <Send className="w-5 h-5" />
-          </Button>
+          {isSpeaking ? (
+            <Button
+              onClick={() => {
+                stop();
+                setIsSpeaking(false);
+              }}
+              size="icon"
+              className="flex-shrink-0 bg-red-500 hover:bg-red-600"
+              data-testid="button-stop-speech"
+              aria-label={language === 'tagalog' ? "Ihinto ang pagsasalita" : "Stop speaking"}
+            >
+              <Square className="w-5 h-5 fill-current" />
+            </Button>
+          ) : (
+            <Button
+              onClick={handleSend}
+              size="icon"
+              disabled={!input.trim()}
+              className="flex-shrink-0"
+              data-testid="button-send"
+              aria-label={language === 'tagalog' ? "Ipadala ang mensahe" : "Send message"}
+            >
+              <Send className="w-5 h-5" />
+            </Button>
+          )}
         </div>
       </div>
     </div>
