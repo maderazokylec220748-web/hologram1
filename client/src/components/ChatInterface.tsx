@@ -128,12 +128,20 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center space-y-4" data-testid="container-greeting">
             <div className="glass-strong rounded-2xl p-8 max-w-2xl">
-              <h2 className="text-3xl font-bold mb-4 glow-text-cyan" data-testid="text-greeting-title">Welcome to WIS Hologram Assistant!</h2>
+              <h2 className="text-3xl font-bold mb-4 glow-text-cyan" data-testid="text-greeting-title">
+                {language === 'tagalog' ? 'Maligayang Pagdating sa WIS Hologram Assistant!' : 'Welcome to WIS Hologram Assistant!'}
+              </h2>
               <p className="text-lg text-muted-foreground mb-6" data-testid="text-greeting-description">
-                Hello! I'm your AI assistant for Westmead International School. I'm here to help you learn about our programs, admissions, facilities, and more.
+                {language === 'tagalog' 
+                  ? 'Kumusta! Ako ang inyong AI assistant para sa Westmead International School. Nandito ako upang tulungan kayo na malaman ang tungkol sa aming mga programa, admission, pasilidad, at marami pang iba.'
+                  : "Hello! I'm your AI assistant for Westmead International School. I'm here to help you learn about our programs, admissions, facilities, and more."
+                }
               </p>
               <p className="text-md text-muted-foreground" data-testid="text-greeting-cta">
-                Ask me anything about our school and I'll be happy to assist you!
+                {language === 'tagalog'
+                  ? 'Magtanong tungkol sa aming paaralan at ako ay masayang tutulong sa inyo!'
+                  : "Ask me anything about our school and I'll be happy to assist you!"
+                }
               </p>
             </div>
           </div>
@@ -166,7 +174,10 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
         <div className="mx-6 mb-2 glass-strong rounded-xl p-3 flex items-center gap-2 border-[hsl(var(--glow-green))]">
           <AlertCircle className="w-5 h-5 text-[hsl(var(--glow-green))]" />
           <p className="text-sm text-muted-foreground">
-            Please ask school-related questions only
+            {language === 'tagalog' 
+              ? 'Mangyaring magtanong tungkol sa paaralan lamang'
+              : 'Please ask school-related questions only'
+            }
           </p>
         </div>
       )}
@@ -200,7 +211,10 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder={isListening ? "Listening..." : "Ask about school topics only..."}
+            placeholder={isListening 
+              ? (language === 'tagalog' ? "Nakikinig..." : "Listening...")
+              : (language === 'tagalog' ? "Magtanong tungkol sa paaralan..." : "Ask about school topics only...")
+            }
             className="flex-1 border-0 bg-transparent text-lg focus-visible:ring-0 placeholder:text-muted-foreground"
             data-testid="input-message"
           />
