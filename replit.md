@@ -79,8 +79,11 @@ The AI assistant has knowledge about:
 
 ## Text-to-Speech
 - Uses Puter.js free API (unlimited, no API key required)
+- Male voice (Matthew) with neural engine for natural sound
+- 1.3x playback speed for faster responses
 - Automatically speaks AI responses
 - Toggle on/off with speaker icon in chat
+- Stop button appears while speaking to cancel speech midway
 
 ## AI Knowledge Base
 The chatbot now includes comprehensive information from https://westmead-is.edu.ph including:
@@ -94,7 +97,12 @@ The chatbot now includes comprehensive information from https://westmead-is.edu.
 
 ## Recent Changes (October 8, 2025)
 
-### Latest Update - Multi-Language Support (English & Tagalog)
+### Latest Update - Enhanced Text-to-Speech
+- **Male Voice**: Changed AI voice to male (Matthew) for better user experience
+- **Faster Speech**: Increased playback speed to 1.3x (30% faster) for quicker responses
+- **Stop Button**: Added red stop button that appears while AI is speaking, allowing users to stop speech midway
+
+### Multi-Language Support (English & Tagalog)
 - **Language Selection Dialog**: On first visit, users are prompted to choose between English or Tagalog
 - **Persistent Language Preference**: Selected language is stored in localStorage for future sessions
 - **Fully Localized UI**: All interface elements adapt to selected language including:

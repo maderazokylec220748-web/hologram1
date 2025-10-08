@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, AlertCircle, Volume2, VolumeX, Mic, MicOff } from "lucide-react";
+import { Send, AlertCircle, Volume2, VolumeX, Mic, MicOff, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -26,9 +26,10 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
   const [isTyping, setIsTyping] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const [isSpeechEnabled, setIsSpeechEnabled] = useState(true);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const { speak, stop } = useTextToSpeech();
+  const { speak, stop, isSpeaking: checkIsSpeaking } = useTextToSpeech();
   const { isListening, transcript, startListening, stopListening, isSupported } = useSpeechRecognition();
 
   const scrollToBottom = () => {
@@ -110,7 +111,12 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
       }
 
       if (isSpeechEnabled) {
-        speak(data.message.content);
+        setIsSpeaking(true);
+        speak(data.message.content).then(() => {
+          setIsSpeaking(false);
+        }).catch(() => {
+          setIsSpeaking(false);
+        });
       }
     } catch (error) {
       console.error('Chat error:', error);
@@ -188,24 +194,40 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
 
       <div className="p-6 pt-0">
         <div className="glass-strong rounded-2xl p-2 flex gap-2">
-          <Button
-            onClick={() => {
-              setIsSpeechEnabled(!isSpeechEnabled);
-              if (isSpeechEnabled) {
+          {isSpeaking ? (
+            <Button
+              onClick={() => {
                 stop();
+                setIsSpeaking(false);
+              }}
+              size="icon"
+              variant="ghost"
+              className="flex-shrink-0 text-red-500 hover:text-red-600"
+              data-testid="button-stop-speech"
+              aria-label={language === 'tagalog' ? "Ihinto ang pagsasalita" : "Stop speaking"}
+            >
+              <Square className="w-5 h-5 fill-current" />
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                setIsSpeechEnabled(!isSpeechEnabled);
+                if (isSpeechEnabled) {
+                  stop();
+                }
+              }}
+              size="icon"
+              variant="ghost"
+              className="flex-shrink-0"
+              data-testid="button-toggle-speech"
+              aria-label={language === 'tagalog' 
+                ? (isSpeechEnabled ? "I-off ang tunog" : "I-on ang tunog")
+                : (isSpeechEnabled ? "Turn off sound" : "Turn on sound")
               }
-            }}
-            size="icon"
-            variant="ghost"
-            className="flex-shrink-0"
-            data-testid="button-toggle-speech"
-            aria-label={language === 'tagalog' 
-              ? (isSpeechEnabled ? "I-off ang tunog" : "I-on ang tunog")
-              : (isSpeechEnabled ? "Turn off sound" : "Turn on sound")
-            }
-          >
-            {isSpeechEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-          </Button>
+            >
+              {isSpeechEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+            </Button>
+          )}
           <Button
             onClick={handleMicClick}
             size="icon"

@@ -4,7 +4,11 @@ declare global {
   interface Window {
     puter: {
       ai: {
-        txt2speech: (text: string) => Promise<HTMLAudioElement>;
+        txt2speech: (text: string, options?: {
+          voice?: string;
+          engine?: string;
+          language?: string;
+        }) => Promise<HTMLAudioElement>;
       };
     };
   }
@@ -25,7 +29,14 @@ export function useTextToSpeech() {
         return;
       }
 
-      const audio = await window.puter.ai.txt2speech(text);
+      const audio = await window.puter.ai.txt2speech(text, {
+        voice: "Matthew",
+        engine: "neural",
+        language: "en-US"
+      });
+      
+      audio.playbackRate = 1.3;
+      
       audioRef.current = audio;
       await audio.play();
     } catch (error) {
