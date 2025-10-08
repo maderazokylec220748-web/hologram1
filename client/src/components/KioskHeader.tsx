@@ -1,11 +1,13 @@
-import { RotateCcw, GraduationCap, Sparkles } from "lucide-react";
+import { RotateCcw, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface KioskHeaderProps {
+  language: 'english' | 'tagalog';
   onReset?: () => void;
+  onLanguageChange?: () => void;
 }
 
-export default function KioskHeader({ onReset }: KioskHeaderProps) {
+export default function KioskHeader({ language, onReset, onLanguageChange }: KioskHeaderProps) {
   return (
     <header className="glass-strong border-b border-card-border">
       <div className="h-20 px-8 flex items-center justify-between gap-4">
@@ -30,15 +32,26 @@ export default function KioskHeader({ onReset }: KioskHeaderProps) {
           </div>
         </div>
 
-        <Button
-          variant="outline"
-          onClick={onReset}
-          className="gap-2 glass"
-          data-testid="button-reset"
-        >
-          <RotateCcw className="w-4 h-4" />
-          Reset Session
-        </Button>
+        <div className="flex gap-3">
+          <Button
+            variant="outline"
+            onClick={onLanguageChange}
+            className="gap-2 glass"
+            data-testid="button-language-toggle"
+          >
+            <Languages className="w-4 h-4" />
+            {language === 'english' ? 'Tagalog' : 'English'}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={onReset}
+            className="gap-2 glass"
+            data-testid="button-reset"
+          >
+            <RotateCcw className="w-4 h-4" />
+            {language === 'english' ? 'Reset Session' : 'I-reset ang Session'}
+          </Button>
+        </div>
       </div>
     </header>
   );
