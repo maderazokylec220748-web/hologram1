@@ -15,11 +15,12 @@ interface Message {
 }
 
 interface ChatInterfaceProps {
+  language: 'english' | 'tagalog';
   onMessageSend?: (message: string) => void;
   onHologramTrigger?: (duration?: number) => void;
 }
 
-export default function ChatInterface({ onMessageSend, onHologramTrigger }: ChatInterfaceProps) {
+export default function ChatInterface({ language, onMessageSend, onHologramTrigger }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -78,7 +79,7 @@ export default function ChatInterface({ onMessageSend, onHologramTrigger }: Chat
     setIsTyping(true);
 
     try {
-      const response = await apiRequest('POST', '/api/chat', { message: messageContent });
+      const response = await apiRequest('POST', '/api/chat', { message: messageContent, language });
 
       const data = await response.json();
 
