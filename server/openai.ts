@@ -1,8 +1,9 @@
-import { Ollama } from "ollama";
+import OpenAI from "openai";
 
-// Using Ollama - local LLM instance
-const ollama = new Ollama({
-  host: process.env.OLLAMA_HOST || 'http://localhost:11434'
+// Using Groq API - fast and free alternative to OpenAI
+const openai = new OpenAI({
+  baseURL: "https://api.groq.com/openai/v1",
+  apiKey: process.env.GROQ_API_KEY,
 });
 
 const SCHOOL_CONTEXT = `
@@ -130,8 +131,8 @@ export async function chatWithAI(
 ): Promise<{ content: string; isSchoolRelated: boolean }> {
   try {
     // First, check if the question is school-related
-    const validationResponse = await ollama.chat({
-      model: process.env.OLLAMA_MODEL || "llama3.2",
+    const validationResponse = await openai.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
       messages: [
         {
           role: "system",
@@ -149,10 +150,10 @@ export async function chatWithAI(
           content: userMessage
         }
       ],
-      format: "json",
+      response_format: { type: "json_object" },
     });
 
-    const validation = JSON.parse(validationResponse.message.content || '{"isSchoolRelated": false}');
+    const validation = JSON.parse(validationResponse.choices[0].message.content || '{"isSchoolRelated": false}');
 
     if (!validation.isSchoolRelated) {
       return {
@@ -162,7 +163,7 @@ export async function chatWithAI(
     }
 
     // If school-related, generate a helpful response
-    const messages = [
+    const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
       {
         role: "system",
         content: SCHOOL_CONTEXT
@@ -177,17 +178,18 @@ export async function chatWithAI(
       }
     ];
 
-    const response = await ollama.chat({
-      model: process.env.OLLAMA_MODEL || "llama3.2",
+    const response = await openai.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
       messages,
+      max_completion_tokens: 500,
     });
 
     return {
-      content: response.message.content || "I apologize, but I couldn't generate a response. Please try again.",
+      content: response.choices[0].message.content || "I apologize, but I couldn't generate a response. Please try again.",
       isSchoolRelated: true
     };
   } catch (error) {
-    console.error("Ollama API error:", error);
+    console.error("Groq API error:", error);
     throw new Error("Failed to process your request. Please try again.");
   }
 }
