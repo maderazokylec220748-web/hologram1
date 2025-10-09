@@ -1,21 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 
-declare global {
-  interface Window {
-    puter: {
-      ai: {
-        txt2speech: (text: string, options?: {
-          voice?: string;
-          engine?: string;
-          language?: string;
-        }) => Promise<HTMLAudioElement>;
-      };
-    };
-  }
-}
-
 export function useTextToSpeech() {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -25,14 +11,14 @@ export function useTextToSpeech() {
       clearInterval(checkIntervalRef.current);
     }
 
-    // Check audio state periodically
+    // Check speech state periodically
     checkIntervalRef.current = setInterval(() => {
-      if (audioRef.current) {
-        const isPlaying = !audioRef.current.paused && !audioRef.current.ended;
-        setIsSpeaking(isPlaying);
+      if (window.speechSynthesis) {
+        const speaking = window.speechSynthesis.speaking;
+        setIsSpeaking(speaking);
         
-        // Stop checking if audio has ended
-        if (audioRef.current.ended) {
+        // Stop checking if speech has ended
+        if (!speaking) {
           if (checkIntervalRef.current) {
             clearInterval(checkIntervalRef.current);
             checkIntervalRef.current = null;
@@ -49,10 +35,9 @@ export function useTextToSpeech() {
   }, []);
 
   const speak = useCallback(async (text: string) => {
-    // Clean up any existing audio first
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
+    // Clean up any existing speech first
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
     }
     if (checkIntervalRef.current) {
       clearInterval(checkIntervalRef.current);
@@ -61,23 +46,58 @@ export function useTextToSpeech() {
     setIsSpeaking(false);
 
     try {
-      if (!window.puter) {
-        console.warn('Puter.js not loaded, text-to-speech unavailable');
+      if (!window.speechSynthesis) {
+        console.warn('SpeechSynthesis not supported in this browser');
         return;
       }
 
-      console.log('Creating audio for text-to-speech...');
-      const audio = await window.puter.ai.txt2speech(text, {
-        voice: "Matthew",
-        engine: "neural",
-        language: "en-US"
-      });
+      console.log('Creating speech synthesis for text...');
+      const utterance = new SpeechSynthesisUtterance(text);
       
-      audio.playbackRate = 1.3;
-      audioRef.current = audio;
+      // Configure voice settings
+      utterance.rate = 1.1; // Slightly faster than normal
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
       
-      console.log('Starting audio playback and state checking');
-      await audio.play();
+      // Try to use a male voice (Matthew-like)
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(voice => 
+        voice.name.includes('Male') || 
+        voice.name.includes('Matthew') ||
+        voice.name.includes('Google US English')
+      ) || voices[0];
+      
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+
+      utterance.onstart = () => {
+        console.log('Speech started');
+        setIsSpeaking(true);
+      };
+
+      utterance.onend = () => {
+        console.log('Speech ended');
+        setIsSpeaking(false);
+        if (checkIntervalRef.current) {
+          clearInterval(checkIntervalRef.current);
+          checkIntervalRef.current = null;
+        }
+      };
+
+      utterance.onerror = (event) => {
+        console.error('Speech synthesis error:', event);
+        setIsSpeaking(false);
+        if (checkIntervalRef.current) {
+          clearInterval(checkIntervalRef.current);
+          checkIntervalRef.current = null;
+        }
+      };
+      
+      utteranceRef.current = utterance;
+      
+      console.log('Starting speech synthesis');
+      window.speechSynthesis.speak(utterance);
       startChecking();
     } catch (error) {
       console.error('Text-to-speech error:', error);
@@ -91,10 +111,10 @@ export function useTextToSpeech() {
       clearInterval(checkIntervalRef.current);
       checkIntervalRef.current = null;
     }
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
     }
+    utteranceRef.current = null;
     setIsSpeaking(false);
   }, []);
 
@@ -104,11 +124,20 @@ export function useTextToSpeech() {
       if (checkIntervalRef.current) {
         clearInterval(checkIntervalRef.current);
       }
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
       }
     };
+  }, []);
+
+  // Load voices when available
+  useEffect(() => {
+    if (window.speechSynthesis) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
   }, []);
 
   return { speak, stop, isSpeaking };
