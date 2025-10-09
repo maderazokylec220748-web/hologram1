@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import logoImage from "@assets/image_1759903949194.png";
+import avatarImage from "@assets/image_1759819806739.png";
 
 interface HologramAvatarProps {
   size?: "small" | "large";
@@ -7,40 +7,47 @@ interface HologramAvatarProps {
 
 export default function HologramAvatar({ size = "small" }: HologramAvatarProps) {
   const sizeClasses = size === "large" 
-    ? "w-40 h-40 md:w-48 md:h-48"
-    : "w-28 h-28 md:w-32 md:h-32";
+    ? "w-28 h-36 md:w-32 md:h-40"
+    : "w-20 h-28 md:w-24 md:h-32";
 
   const renderPanel = (rotation: number, position: string) => (
     <div className={`relative ${sizeClasses}`}>
       {/* Holographic glow effect */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-full blur-md"
+        className="absolute inset-0 bg-gradient-to-b from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-lg blur-sm"
         animate={{ opacity: [0.5, 0.8, 0.5] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       />
       
-      {/* Main hologram panel - circular */}
+      {/* Main hologram panel */}
       <div 
-        className="relative w-full h-full rounded-full border-2 border-cyan-400/50 bg-white/90 backdrop-blur-sm overflow-hidden flex items-center justify-center"
+        className="relative w-full h-full rounded-lg border-2 border-cyan-400/50 bg-gradient-to-b from-cyan-500/10 to-blue-500/10 backdrop-blur-sm overflow-hidden"
         style={{ transform: `rotate(${rotation}deg)` }}
       >
         {/* Scan lines effect */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent animate-scan" />
         
-        {/* Logo with proper rotation */}
-        <div className="absolute inset-0 flex items-center justify-center p-4">
+        {/* Person image with holographic effect */}
+        <div className="absolute inset-0 flex items-center justify-center p-1">
           <img 
-            src={logoImage}
-            alt="Westmead International School"
-            className="w-full h-full object-contain"
+            src={avatarImage}
+            alt="Hologram Assistant"
+            className="w-full h-full object-cover object-top opacity-70 mix-blend-screen"
             style={{ 
-              transform: `rotate(${-rotation}deg)`
+              transform: `rotate(${-rotation}deg)`,
+              filter: 'brightness(1.2) contrast(1.1) hue-rotate(180deg)'
             }}
           />
         </div>
 
-        {/* Subtle cyan overlay for holographic effect */}
-        <div className="absolute inset-0 bg-cyan-400/10 mix-blend-overlay" />
+        {/* Cyan overlay for holographic effect */}
+        <div className="absolute inset-0 bg-cyan-400/20 mix-blend-color" />
+
+        {/* Corner accents */}
+        <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-400" />
+        <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-cyan-400" />
+        <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-cyan-400" />
+        <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-cyan-400" />
       </div>
     </div>
   );
