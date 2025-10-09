@@ -7,8 +7,8 @@ interface HologramAvatarProps {
 
 export default function HologramAvatar({ size = "small" }: HologramAvatarProps) {
   const sizeClasses = size === "large" 
-    ? "w-32 h-40 md:w-40 md:h-48"
-    : "w-24 h-32 md:w-28 md:h-36";
+    ? "w-28 h-36 md:w-32 md:h-40"
+    : "w-20 h-28 md:w-24 md:h-32";
 
   const renderPanel = (rotation: number, position: string) => (
     <div className={`relative ${sizeClasses}`}>
@@ -54,15 +54,14 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative w-full h-64 md:h-80 mx-auto"
+      className="relative w-full max-w-md mx-auto aspect-square"
       data-testid="hologram-avatar"
     >
       {/* Pepper's Ghost Hologram Cross Layout (✚) - 4 views for pyramid glass */}
-      <div className="relative w-full h-full flex items-center justify-center">
+      <div className="relative w-full h-full">
         {/* Top view (Front) */}
         <motion.div
-          className="absolute left-1/2 -translate-x-1/2"
-          style={{ top: '0' }}
+          className="absolute left-1/2 -translate-x-1/2 top-0"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0 }}
@@ -72,8 +71,7 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
 
         {/* Right view (Right side) - rotated 90° */}
         <motion.div
-          className="absolute top-1/2 -translate-y-1/2"
-          style={{ right: '0' }}
+          className="absolute top-1/2 -translate-y-1/2 right-0"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.15 }}
@@ -83,8 +81,7 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
 
         {/* Bottom view (Back) - rotated 180° */}
         <motion.div
-          className="absolute left-1/2 -translate-x-1/2"
-          style={{ bottom: '0' }}
+          className="absolute left-1/2 -translate-x-1/2 bottom-0"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -94,8 +91,7 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
 
         {/* Left view (Left side) - rotated 270° */}
         <motion.div
-          className="absolute top-1/2 -translate-y-1/2"
-          style={{ left: '0' }}
+          className="absolute top-1/2 -translate-y-1/2 left-0"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.45 }}
@@ -114,7 +110,7 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-cyan-500/30 blur-2xl"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 rounded-full bg-cyan-500/30 blur-2xl"
         />
       </div>
     </motion.div>
