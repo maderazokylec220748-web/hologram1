@@ -68,13 +68,13 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center bg-white/90"
+                className="overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center"
                 style={{ transform: 'rotate(0deg)' }}
               >
                 <img 
                   src={logoPath} 
                   alt="Westmead International School" 
-                  className="w-[85%] h-[85%] object-contain"
+                  className="w-full h-full object-contain"
                   style={{ transform: 'rotate(0deg)' }}
                 />
               </motion.div>
@@ -109,12 +109,12 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center bg-white/90"
+                className="overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center"
               >
                 <img 
                   src={logoPath} 
                   alt="Westmead International School" 
-                  className="w-[85%] h-[85%] object-contain"
+                  className="w-full h-full object-contain"
                   style={{ transform: 'rotate(270deg)' }}
                 />
               </motion.div>
@@ -149,12 +149,12 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center bg-white/90"
+                className="overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center"
               >
                 <img 
                   src={logoPath} 
                   alt="Westmead International School" 
-                  className="w-[85%] h-[85%] object-contain"
+                  className="w-full h-full object-contain"
                   style={{ transform: 'rotate(180deg)' }}
                 />
               </motion.div>
@@ -189,12 +189,12 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center bg-white/90"
+                className="overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center"
               >
                 <img 
                   src={logoPath} 
                   alt="Westmead International School" 
-                  className="w-[85%] h-[85%] object-contain"
+                  className="w-full h-full object-contain"
                   data-testid="img-school-logo"
                   style={{ transform: 'rotate(90deg)' }}
                 />

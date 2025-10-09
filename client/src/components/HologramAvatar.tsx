@@ -30,7 +30,7 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="relative w-full h-full"
       >
-        <div className="absolute inset-0 bg-gradient-radial from-cyan-400/30 via-cyan-400/10 to-transparent rounded-full blur-2xl animate-pulse" />
+        <div className="absolute inset-0 bg-gradient-radial from-cyan-400/30 via-cyan-400/10 to-transparent blur-2xl animate-pulse" />
         
         <motion.div
           animate={{ 
@@ -45,7 +45,7 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute inset-0 rounded-full border-2 border-cyan-400/40 bg-gradient-to-b from-cyan-500/20 via-blue-500/20 to-purple-500/20 backdrop-blur-sm overflow-hidden"
+          className="absolute inset-0 border-2 border-cyan-400/40 bg-gradient-to-b from-cyan-500/20 via-blue-500/20 to-purple-500/20 backdrop-blur-sm overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-t from-transparent via-cyan-400/10 to-transparent animate-scan pointer-events-none" />
           
@@ -53,7 +53,7 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
             <motion.img
               src={studentPhoto}
               alt="WIS Student Assistant"
-              className="w-full h-full object-cover rounded-full"
+              className="w-full h-full object-cover"
               animate={{
                 y: [0, -8, 0],
               }}
@@ -68,7 +68,7 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
             />
           </div>
           
-          <div className="absolute inset-0 rounded-full">
+          <div className="absolute inset-0">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent" />
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent" />
             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/3 bg-gradient-to-b from-transparent via-cyan-400/60 to-transparent" />
