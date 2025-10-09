@@ -78,9 +78,11 @@ The AI assistant has knowledge about:
 - `SESSION_SECRET` - Session secret for security
 
 ## Text-to-Speech
-- Uses Puter.js free API (unlimited, no API key required)
-- Male voice (Matthew) with neural engine for natural sound
-- 1.3x playback speed for faster responses
+- Uses browser's built-in Web Speech API (no API key required)
+- Intelligent male voice selection across platforms (Windows, macOS, Linux)
+- Comprehensive voice pattern matching to prefer male voices
+- Lowered pitch (0.8) for more masculine sound
+- 1.1x playback speed for faster responses
 - Automatically speaks AI responses
 - Toggle on/off with speaker icon in chat
 - Stop button appears while speaking to cancel speech midway
@@ -95,9 +97,16 @@ The chatbot now includes comprehensive information from https://westmead-is.edu.
 - Entrance exam requirements (board vs. non-board programs)
 - Payment options and bank account details
 
-## Recent Changes (October 8, 2025)
+## Recent Changes
 
-### Latest Update - Enhanced Text-to-Speech
+### Latest Update - October 9, 2025: Improved Male Voice Selection
+- **Enhanced Voice Selection**: Upgraded to intelligent male voice detection across all platforms
+- **Comprehensive Voice Database**: Added support for 40+ male voice patterns (Microsoft, Google, macOS)
+- **Female Voice Filtering**: Automatically excludes 30+ known female voices from selection
+- **Lower Pitch**: Set pitch to 0.8 for more masculine sound regardless of selected voice
+- **Platform Support**: Works across Windows (Microsoft voices), macOS (Apple voices), and Chrome/Edge (Google voices)
+
+### October 8, 2025: Enhanced Text-to-Speech
 - **Male Voice**: Changed AI voice to male (Matthew) for better user experience
 - **Faster Speech**: Increased playback speed to 1.3x (30% faster) for quicker responses
 - **Stop Button**: Added red stop button that appears while AI is speaking, allowing users to stop speech midway
