@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, AlertCircle, Volume2, VolumeX, Mic, MicOff, Square } from "lucide-react";
+import { Send, AlertCircle, Volume2, VolumeX, Mic, MicOff, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -250,13 +250,13 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
                 setIsSpeaking(false);
                 onStopHologram?.();
               }}
-              size="icon"
-              className="flex-shrink-0 bg-red-500 hover:bg-red-600 fixed bottom-8 right-8 z-[9999] shadow-2xl"
+              size="lg"
+              className="flex-shrink-0 bg-red-500 hover:bg-red-600 text-white fixed bottom-8 right-8 z-[9999] shadow-2xl rounded-full h-16 w-16"
               data-testid="button-stop-speech"
               aria-label={language === 'tagalog' ? "Ihinto ang pagsasalita" : "Stop speaking"}
               type="button"
             >
-              <Square className="w-5 h-5 fill-current" />
+              <Pause className="w-8 h-8" />
             </Button>
           ) : (
             <Button
