@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GraduationCap } from "lucide-react";
+import studentPhoto from "@assets/346137222_1889194298129054_6236466007637640536_n_1759993951636.jpg";
 
 interface HologramAvatarProps {
   size?: "small" | "large";
@@ -10,13 +10,11 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
     ? { 
         width: 280, 
         height: 280, 
-        iconSize: 140,
         glowSize: "80px",
       }
     : { 
         width: 120, 
         height: 120, 
-        iconSize: 60,
         glowSize: "40px",
       };
 
@@ -34,52 +32,40 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
       >
         <div className="absolute inset-0 bg-gradient-radial from-cyan-400/30 via-cyan-400/10 to-transparent rounded-full blur-2xl animate-pulse" />
         
-        <div className="absolute inset-0 rounded-full border-2 border-cyan-400/40 bg-gradient-to-b from-cyan-500/20 via-blue-500/20 to-purple-500/20 backdrop-blur-sm">
-          <div className="absolute inset-0 bg-gradient-to-t from-transparent via-cyan-400/10 to-transparent animate-scan pointer-events-none rounded-full" />
+        <motion.div
+          animate={{ 
+            boxShadow: [
+              "0 0 20px rgba(6, 182, 212, 0.3)",
+              "0 0 60px rgba(6, 182, 212, 0.5)",
+              "0 0 20px rgba(6, 182, 212, 0.3)"
+            ]
+          }}
+          transition={{ 
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute inset-0 rounded-full border-2 border-cyan-400/40 bg-gradient-to-b from-cyan-500/20 via-blue-500/20 to-purple-500/20 backdrop-blur-sm overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent via-cyan-400/10 to-transparent animate-scan pointer-events-none" />
           
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div 
-              className="relative"
-              style={{
-                filter: `drop-shadow(0 0 ${sizeConfig.glowSize} rgba(6, 182, 212, 0.8))`,
+          <div className="absolute inset-0 flex items-center justify-center p-2">
+            <motion.img
+              src={studentPhoto}
+              alt="WIS Student Assistant"
+              className="w-full h-full object-cover rounded-full"
+              animate={{
+                y: [0, -8, 0],
               }}
-            >
-              <motion.div
-                animate={{
-                  y: [0, -15, 0],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                <GraduationCap 
-                  className="text-cyan-300"
-                  style={{ 
-                    width: sizeConfig.iconSize, 
-                    height: sizeConfig.iconSize,
-                    filter: "drop-shadow(0 0 30px rgba(6, 182, 212, 1))"
-                  }}
-                />
-              </motion.div>
-            </div>
-            
-            {size === "large" && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="mt-8 text-center"
-              >
-                <div className="text-cyan-300 font-bold text-lg tracking-wider uppercase">
-                  WIS AI
-                </div>
-                <div className="text-cyan-400/70 text-sm mt-1">
-                  Student Assistant
-                </div>
-              </motion.div>
-            )}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              style={{
+                filter: "drop-shadow(0 0 30px rgba(6, 182, 212, 0.6))"
+              }}
+            />
           </div>
           
           <div className="absolute inset-0 rounded-full">
@@ -88,7 +74,7 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/3 bg-gradient-to-b from-transparent via-cyan-400/60 to-transparent" />
             <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-1/3 bg-gradient-to-b from-transparent via-cyan-400/60 to-transparent" />
           </div>
-        </div>
+        </motion.div>
 
         <motion.div
           className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-cyan-400/30 blur-xl rounded-full"
@@ -103,11 +89,11 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
           }}
         />
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-2">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           {[0, 1, 2, 3].map((i) => (
             <motion.div
               key={i}
-              className="w-1 h-1 rounded-full bg-cyan-400"
+              className="absolute w-1.5 h-1.5 rounded-full bg-cyan-400"
               animate={{
                 opacity: [0.2, 1, 0.2],
                 scale: [0.8, 1.3, 0.8],
@@ -118,9 +104,8 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
                 delay: i * 0.3,
               }}
               style={{
-                position: 'absolute',
-                top: `${Math.sin((i * Math.PI) / 2) * sizeConfig.width * 0.45}px`,
-                left: `${Math.cos((i * Math.PI) / 2) * sizeConfig.width * 0.45}px`,
+                top: `${Math.sin((i * Math.PI) / 2) * sizeConfig.width * 0.5}px`,
+                left: `${Math.cos((i * Math.PI) / 2) * sizeConfig.width * 0.5}px`,
               }}
             />
           ))}
