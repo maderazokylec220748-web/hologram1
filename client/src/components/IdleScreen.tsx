@@ -74,7 +74,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center bg-white/90"
+                className="rounded-full overflow-hidden w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
               >
                 <img 
                   src={logoPath} 
@@ -120,7 +120,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center bg-white/90"
+                className="rounded-full overflow-hidden w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
               >
                 <img 
                   src={logoPath} 
@@ -166,7 +166,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center bg-white/90"
+                className="rounded-full overflow-hidden w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
               >
                 <img 
                   src={logoPath} 
@@ -212,7 +212,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center bg-white/90"
+                className="rounded-full overflow-hidden w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
               >
                 <img 
                   src={logoPath} 
