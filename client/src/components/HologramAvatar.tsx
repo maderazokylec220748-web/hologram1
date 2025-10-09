@@ -56,47 +56,47 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative w-full max-w-md mx-auto aspect-square"
+      className="relative w-full h-full flex items-center justify-center"
       data-testid="hologram-avatar"
     >
-      {/* Pepper's Ghost Hologram - 4-way pyramid layout */}
-      <div className="relative w-full h-full">
+      {/* Pepper's Ghost Hologram - 4-way diamond layout matching reference */}
+      <div className="relative w-[600px] h-[600px]">
         {/* Top view - 0° rotation */}
         <motion.div
-          className="absolute left-1/2 -translate-x-1/2 top-0"
-          initial={{ opacity: 0, y: -20 }}
+          className="absolute left-1/2 -translate-x-1/2 top-[5%]"
+          initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0 }}
+          transition={{ delay: 0, duration: 0.6 }}
         >
           {renderPanel(0, "top")}
         </motion.div>
 
         {/* Right view - 270° rotation (90° clockwise) */}
         <motion.div
-          className="absolute top-1/2 -translate-y-1/2 right-0"
-          initial={{ opacity: 0, x: 20 }}
+          className="absolute top-1/2 -translate-y-1/2 right-[5%]"
+          initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.15 }}
+          transition={{ delay: 0.15, duration: 0.6 }}
         >
           {renderPanel(270, "right")}
         </motion.div>
 
         {/* Bottom view - 180° rotation */}
         <motion.div
-          className="absolute left-1/2 -translate-x-1/2 bottom-0"
-          initial={{ opacity: 0, y: 20 }}
+          className="absolute left-1/2 -translate-x-1/2 bottom-[5%]"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
         >
           {renderPanel(180, "bottom")}
         </motion.div>
 
         {/* Left view - 90° rotation (90° counter-clockwise) */}
         <motion.div
-          className="absolute top-1/2 -translate-y-1/2 left-0"
-          initial={{ opacity: 0, x: -20 }}
+          className="absolute top-1/2 -translate-y-1/2 left-[5%]"
+          initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.45 }}
+          transition={{ delay: 0.45, duration: 0.6 }}
         >
           {renderPanel(90, "left")}
         </motion.div>
@@ -104,15 +104,15 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
         {/* Center glow for hologram effect */}
         <motion.div
           animate={{ 
-            opacity: [0.3, 0.6, 0.3],
-            scale: [1, 1.2, 1]
+            opacity: [0.2, 0.5, 0.2],
+            scale: [1, 1.3, 1]
           }}
           transition={{ 
             duration: 3,
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 rounded-full bg-cyan-500/30 blur-2xl"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-cyan-500/20 blur-3xl"
         />
       </div>
     </motion.div>
