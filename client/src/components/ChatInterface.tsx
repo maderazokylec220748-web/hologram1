@@ -46,6 +46,17 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
     }
   }, [transcript]);
 
+  // Sync hologram with speech state
+  useEffect(() => {
+    if (isSpeaking && isSpeechEnabled) {
+      // Show hologram when speech starts
+      onHologramTrigger?.();
+    } else {
+      // Hide hologram when speech ends
+      onStopHologram?.();
+    }
+  }, [isSpeaking, isSpeechEnabled, onHologramTrigger, onStopHologram]);
+
   const handleMicClick = () => {
     if (!isSupported) {
       toast({
@@ -105,23 +116,9 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
 
       setMessages(prev => [...prev, assistantMessage]);
 
-      // Calculate display duration based on response length
-      const baseTime = 3000;
-      const additionalTime = Math.floor(data.message.content.length / 50) * 500;
-      const displayDuration = Math.min(baseTime + additionalTime, 15000);
-
       if (isSpeechEnabled) {
-        // Trigger hologram at the same time as speech starts
-        if (onHologramTrigger) {
-          onHologramTrigger(displayDuration);
-        }
-        
+        // Speech will trigger hologram automatically via useEffect
         speak(data.message.content);
-      } else {
-        // Show hologram even when speech is disabled
-        if (onHologramTrigger) {
-          onHologramTrigger(displayDuration);
-        }
       }
     } catch (error) {
       console.error('Chat error:', error);

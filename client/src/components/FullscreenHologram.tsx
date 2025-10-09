@@ -1,5 +1,4 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useRef } from "react";
 import HologramAvatar from "./HologramAvatar";
 
 interface FullscreenHologramProps {
@@ -8,27 +7,7 @@ interface FullscreenHologramProps {
   onComplete?: () => void;
 }
 
-export default function FullscreenHologram({ isVisible, duration = 5000, onComplete }: FullscreenHologramProps) {
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    if (isVisible && onComplete) {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-
-      timerRef.current = setTimeout(() => {
-        onComplete();
-      }, duration);
-    }
-
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, [isVisible, duration, onComplete]);
-
+export default function FullscreenHologram({ isVisible }: FullscreenHologramProps) {
   const positions = [
     { className: "absolute left-1/2 -translate-x-1/2 top-0", rotation: 0, delay: 0 },
     { className: "absolute top-1/2 -translate-y-1/2 right-0", rotation: 270, delay: 0.1 },
