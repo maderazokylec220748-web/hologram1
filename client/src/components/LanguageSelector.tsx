@@ -16,10 +16,10 @@ interface LanguageSelectorProps {
 export default function LanguageSelector({ isOpen, onSelectLanguage }: LanguageSelectorProps) {
   return (
     <Dialog open={isOpen}>
-      <DialogContent className="sm:max-w-md glass border-primary/30">
+      <DialogContent className="sm:max-w-md glass border-primary/30 !top-[10%] !translate-y-0">
         <DialogHeader>
           <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center glow-cyan">
+            <div className="w-16 h-16 bg-primary/20 flex items-center justify-center glow-cyan">
               <Globe className="w-8 h-8 text-primary" />
             </div>
           </div>
