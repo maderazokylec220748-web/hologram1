@@ -68,6 +68,12 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
   const handleSend = async () => {
     if (!input.trim() || isTyping) return;
 
+    // Stop any ongoing speech and hologram immediately when new question is asked
+    if (isSpeaking) {
+      stop();
+      onStopHologram?.();
+    }
+
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
