@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import avatarImage from "@assets/image_1759819806739.png";
 
 interface HologramAvatarProps {
   size?: "small" | "large";
@@ -23,18 +22,6 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
       <div className="relative w-full h-full rounded-lg border-2 border-cyan-400/50 bg-gradient-to-b from-cyan-500/10 to-blue-500/10 backdrop-blur-sm overflow-hidden">
         {/* Scan lines effect */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent animate-scan" />
-        
-        {/* Person image with holographic effect */}
-        <div className="absolute inset-0 flex items-center justify-center p-1">
-          <img 
-            src={avatarImage}
-            alt="Hologram Assistant"
-            className="w-full h-full object-cover object-top opacity-70 mix-blend-screen"
-            style={{ 
-              filter: 'brightness(1.2) contrast(1.1) hue-rotate(180deg)'
-            }}
-          />
-        </div>
 
         {/* Cyan overlay for holographic effect */}
         <div className="absolute inset-0 bg-cyan-400/20 mix-blend-color" />
