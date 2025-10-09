@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef } from "react";
 import HologramAvatar from "./HologramAvatar";
 
 interface FullscreenHologramProps {
@@ -7,7 +8,28 @@ interface FullscreenHologramProps {
   onComplete?: () => void;
 }
 
-export default function FullscreenHologram({ isVisible }: FullscreenHologramProps) {
+export default function FullscreenHologram({ isVisible, duration, onComplete }: FullscreenHologramProps) {
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    // Only use timer if duration is provided (when speech is disabled)
+    if (isVisible && duration && onComplete) {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+
+      timerRef.current = setTimeout(() => {
+        onComplete();
+      }, duration);
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [isVisible, duration, onComplete]);
+
   const positions = [
     { className: "absolute left-1/2 -translate-x-1/2 top-0", rotation: 0, delay: 0 },
     { className: "absolute top-1/2 -translate-y-1/2 right-0", rotation: 270, delay: 0.1 },

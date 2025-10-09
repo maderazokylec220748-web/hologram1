@@ -48,11 +48,11 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
 
   // Sync hologram with speech state
   useEffect(() => {
-    if (isSpeaking && isSpeechEnabled) {
+    if (isSpeaking) {
       // Show hologram when speech starts
       onHologramTrigger?.();
-    } else {
-      // Hide hologram when speech ends
+    } else if (!isSpeaking && isSpeechEnabled) {
+      // Hide hologram when speech ends (only if speech was enabled)
       onStopHologram?.();
     }
   }, [isSpeaking, isSpeechEnabled, onHologramTrigger, onStopHologram]);
@@ -116,9 +116,17 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
 
       setMessages(prev => [...prev, assistantMessage]);
 
+      // Calculate display duration based on response length
+      const baseTime = 3000;
+      const additionalTime = Math.floor(data.message.content.length / 50) * 500;
+      const displayDuration = Math.min(baseTime + additionalTime, 15000);
+
       if (isSpeechEnabled) {
-        // Speech will trigger hologram automatically via useEffect
+        // Speech will control hologram timing via useEffect sync
         speak(data.message.content);
+      } else {
+        // Show hologram with calculated duration when speech is disabled
+        onHologramTrigger?.(displayDuration);
       }
     } catch (error) {
       console.error('Chat error:', error);
