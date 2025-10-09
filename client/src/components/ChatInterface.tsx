@@ -27,10 +27,9 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
   const [isTyping, setIsTyping] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const [isSpeechEnabled, setIsSpeechEnabled] = useState(true);
-  const [isSpeaking, setIsSpeaking] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const { speak, stop, isSpeaking: checkIsSpeaking } = useTextToSpeech();
+  const { speak, stop, isSpeaking } = useTextToSpeech();
   const { isListening, transcript, startListening, stopListening, isSupported } = useSpeechRecognition();
 
   const scrollToBottom = () => {
@@ -106,18 +105,12 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
       const displayDuration = Math.min(baseTime + additionalTime, 15000);
 
       if (isSpeechEnabled) {
-        setIsSpeaking(true);
-        
         // Trigger hologram at the same time as speech starts
         if (onHologramTrigger) {
           onHologramTrigger(displayDuration);
         }
         
-        speak(data.message.content).then(() => {
-          setIsSpeaking(false);
-        }).catch(() => {
-          setIsSpeaking(false);
-        });
+        speak(data.message.content);
       } else {
         // Show hologram even when speech is disabled
         if (onHologramTrigger) {
@@ -247,7 +240,6 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
               onClick={(e) => {
                 e.stopPropagation();
                 stop();
-                setIsSpeaking(false);
                 onStopHologram?.();
               }}
               size="lg"

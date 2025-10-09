@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useCallback } from 'react';
 
 declare global {
   interface Window {
@@ -16,8 +16,9 @@ declare global {
 
 export function useTextToSpeech() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
-  const speak = async (text: string) => {
+  const speak = useCallback(async (text: string) => {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
@@ -37,23 +38,38 @@ export function useTextToSpeech() {
       
       audio.playbackRate = 1.3;
       
+      // Set up event listeners to track speaking state
+      audio.addEventListener('play', () => {
+        setIsSpeaking(true);
+      });
+
+      audio.addEventListener('pause', () => {
+        setIsSpeaking(false);
+      });
+
+      audio.addEventListener('ended', () => {
+        setIsSpeaking(false);
+      });
+
+      audio.addEventListener('error', () => {
+        setIsSpeaking(false);
+      });
+      
       audioRef.current = audio;
       await audio.play();
     } catch (error) {
       console.error('Text-to-speech error:', error);
+      setIsSpeaking(false);
     }
-  };
+  }, []);
 
-  const stop = () => {
+  const stop = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
+      setIsSpeaking(false);
     }
-  };
-
-  const isSpeaking = () => {
-    return audioRef.current?.paused === false;
-  };
+  }, []);
 
   return { speak, stop, isSpeaking };
 }
