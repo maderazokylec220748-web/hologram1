@@ -37,216 +37,184 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
             className="absolute inset-0 bg-gradient-radial from-cyan-500/20 via-transparent to-transparent pointer-events-none"
           />
 
-          {/* Top logo - at screen edge */}
-          <motion.div
-            className="absolute top-8 left-1/2 -translate-x-1/2 z-10"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ 
-              opacity: [0.6, 1, 0.6],
-              y: 0
-            }}
-            transition={{
-              opacity: {
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0
-              },
-              y: { duration: 0.8 }
-            }}
-          >
+          {/* Hologram Cross Layout (✚) - 4 views for pyramid glass reflection */}
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            {/* Top view (Front) */}
             <motion.div
-              animate={{ 
-                boxShadow: [
-                  "0 0 20px rgba(6, 182, 212, 0.3)",
-                  "0 0 60px rgba(6, 182, 212, 0.5)",
-                  "0 0 20px rgba(6, 182, 212, 0.3)"
-                ]
-              }}
-              transition={{ 
-                boxShadow: {
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }
-              }}
-              className="rounded-full overflow-hidden w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 aspect-square flex items-center justify-center bg-white/80"
-            >
-              <img 
-                src={logoPath} 
-                alt="Westmead International School" 
-                className="w-[85%] h-[85%] object-contain"
-              />
-            </motion.div>
-          </motion.div>
-
-          {/* Right logo - at screen edge */}
-          <motion.div
-            className="absolute right-8 top-1/2 -translate-y-1/2 z-10"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ 
-              opacity: [0.6, 1, 0.6],
-              x: 0
-            }}
-            transition={{
-              opacity: {
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.75
-              },
-              x: { duration: 0.8 }
-            }}
-          >
-            <motion.div
-              animate={{ 
-                boxShadow: [
-                  "0 0 20px rgba(6, 182, 212, 0.3)",
-                  "0 0 60px rgba(6, 182, 212, 0.5)",
-                  "0 0 20px rgba(6, 182, 212, 0.3)"
-                ]
-              }}
-              transition={{ 
-                boxShadow: {
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }
-              }}
-              className="rounded-full overflow-hidden w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 aspect-square flex items-center justify-center bg-white/80"
-            >
-              <img 
-                src={logoPath} 
-                alt="Westmead International School" 
-                className="w-[85%] h-[85%] object-contain"
-              />
-            </motion.div>
-          </motion.div>
-
-          {/* Bottom logo - at screen edge */}
-          <motion.div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ 
-              opacity: [0.6, 1, 0.6],
-              y: 0
-            }}
-            transition={{
-              opacity: {
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1.5
-              },
-              y: { duration: 0.8 }
-            }}
-          >
-            <motion.div
-              animate={{ 
-                boxShadow: [
-                  "0 0 20px rgba(6, 182, 212, 0.3)",
-                  "0 0 60px rgba(6, 182, 212, 0.5)",
-                  "0 0 20px rgba(6, 182, 212, 0.3)"
-                ]
-              }}
-              transition={{ 
-                boxShadow: {
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }
-              }}
-              className="rounded-full overflow-hidden w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 aspect-square flex items-center justify-center bg-white/80"
-            >
-              <img 
-                src={logoPath} 
-                alt="Westmead International School" 
-                className="w-[85%] h-[85%] object-contain"
-              />
-            </motion.div>
-          </motion.div>
-
-          {/* Left logo - at screen edge */}
-          <motion.div
-            className="absolute left-8 top-1/2 -translate-y-1/2 z-10"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ 
-              opacity: [0.6, 1, 0.6],
-              x: 0
-            }}
-            transition={{
-              opacity: {
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 2.25
-              },
-              x: { duration: 0.8 }
-            }}
-          >
-            <motion.div
-              animate={{ 
-                boxShadow: [
-                  "0 0 20px rgba(6, 182, 212, 0.3)",
-                  "0 0 60px rgba(6, 182, 212, 0.5)",
-                  "0 0 20px rgba(6, 182, 212, 0.3)"
-                ]
-              }}
-              transition={{ 
-                boxShadow: {
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }
-              }}
-              className="rounded-full overflow-hidden w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 aspect-square flex items-center justify-center bg-white/80"
-            >
-              <img 
-                src={logoPath} 
-                alt="Westmead International School" 
-                className="w-[85%] h-[85%] object-contain"
-                data-testid="img-school-logo"
-              />
-            </motion.div>
-          </motion.div>
-
-          {/* Center glow */}
-          <motion.div
-            animate={{ 
-              scale: [1, 1.3, 1],
-              opacity: [0.3, 0.6, 0.3]
-            }}
-            transition={{ 
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 md:w-80 md:h-80 rounded-full bg-cyan-500/30 blur-3xl z-0"
-          />
-
-          {/* School name text - centered */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-10"
-          >
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white drop-shadow-lg">
-              WESTMEAD INTERNATIONAL SCHOOL
-            </h1>
-            <motion.p
+              className="absolute top-0 left-1/2 -translate-x-1/2"
               initial={{ opacity: 0 }}
-              animate={{ opacity: [0.5, 1, 0.5] }}
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{
+                opacity: {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0
+                }
+              }}
+            >
+              <motion.div
+                animate={{ 
+                  boxShadow: [
+                    "0 0 20px rgba(6, 182, 212, 0.3)",
+                    "0 0 60px rgba(6, 182, 212, 0.5)",
+                    "0 0 20px rgba(6, 182, 212, 0.3)"
+                  ]
+                }}
+                transition={{ 
+                  boxShadow: {
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                }}
+                className="rounded-full overflow-hidden w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
+              >
+                <img 
+                  src={logoPath} 
+                  alt="Westmead International School" 
+                  className="w-[85%] h-[85%] object-contain"
+                />
+              </motion.div>
+            </motion.div>
+
+            {/* Right view (Right side) - rotated 90° */}
+            <motion.div
+              className="absolute right-0 top-1/2 -translate-y-1/2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{
+                opacity: {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0.75
+                }
+              }}
+            >
+              <motion.div
+                animate={{ 
+                  boxShadow: [
+                    "0 0 20px rgba(6, 182, 212, 0.3)",
+                    "0 0 60px rgba(6, 182, 212, 0.5)",
+                    "0 0 20px rgba(6, 182, 212, 0.3)"
+                  ]
+                }}
+                transition={{ 
+                  boxShadow: {
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                }}
+                className="rounded-full overflow-hidden w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
+                style={{ transform: 'rotateY(90deg)' }}
+              >
+                <img 
+                  src={logoPath} 
+                  alt="Westmead International School" 
+                  className="w-[85%] h-[85%] object-contain"
+                  style={{ transform: 'rotateY(-90deg)' }}
+                />
+              </motion.div>
+            </motion.div>
+
+            {/* Bottom view (Back) - rotated 180° */}
+            <motion.div
+              className="absolute bottom-0 left-1/2 -translate-x-1/2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{
+                opacity: {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1.5
+                }
+              }}
+            >
+              <motion.div
+                animate={{ 
+                  boxShadow: [
+                    "0 0 20px rgba(6, 182, 212, 0.3)",
+                    "0 0 60px rgba(6, 182, 212, 0.5)",
+                    "0 0 20px rgba(6, 182, 212, 0.3)"
+                  ]
+                }}
+                transition={{ 
+                  boxShadow: {
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                }}
+                className="rounded-full overflow-hidden w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
+                style={{ transform: 'rotate(180deg)' }}
+              >
+                <img 
+                  src={logoPath} 
+                  alt="Westmead International School" 
+                  className="w-[85%] h-[85%] object-contain"
+                  style={{ transform: 'rotate(-180deg)' }}
+                />
+              </motion.div>
+            </motion.div>
+
+            {/* Left view (Left side) - rotated 270° */}
+            <motion.div
+              className="absolute left-0 top-1/2 -translate-y-1/2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{
+                opacity: {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 2.25
+                }
+              }}
+            >
+              <motion.div
+                animate={{ 
+                  boxShadow: [
+                    "0 0 20px rgba(6, 182, 212, 0.3)",
+                    "0 0 60px rgba(6, 182, 212, 0.5)",
+                    "0 0 20px rgba(6, 182, 212, 0.3)"
+                  ]
+                }}
+                transition={{ 
+                  boxShadow: {
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                }}
+                className="rounded-full overflow-hidden w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
+                style={{ transform: 'rotateY(-90deg)' }}
+              >
+                <img 
+                  src={logoPath} 
+                  alt="Westmead International School" 
+                  className="w-[85%] h-[85%] object-contain"
+                  data-testid="img-school-logo"
+                  style={{ transform: 'rotateY(90deg)' }}
+                />
+              </motion.div>
+            </motion.div>
+
+            {/* Center area - empty for pyramid glass placement */}
+            <motion.div
+              animate={{ 
+                opacity: [0.3, 0.5, 0.3]
+              }}
               transition={{ 
-                duration: 2,
+                duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="mt-2 text-cyan-400 text-sm md:text-base"
-            >
-              Touch to continue
-            </motion.p>
-          </motion.div>
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 rounded-full bg-cyan-500/20 blur-xl z-0"
+            />
+          </div>
 
           {/* Corner decorations */}
           <motion.div

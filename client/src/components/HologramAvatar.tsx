@@ -6,91 +6,112 @@ interface HologramAvatarProps {
 }
 
 export default function HologramAvatar({ size = "small" }: HologramAvatarProps) {
-  const angles = [
-    { label: "Front", rotation: 0, scale: 1, position: "top" },
-    { label: "Left", rotation: 45, scale: 0.9, position: "left" },
-    { label: "Right", rotation: -45, scale: 0.9, position: "right" },
-    { label: "Back", rotation: 180, scale: 0.85, position: "bottom" }
-  ];
-
   const sizeClasses = size === "large" 
-    ? { panel: "w-64 h-80", gap: "gap-4" }
-    : { panel: "w-20 h-28", gap: "gap-2" };
+    ? "w-32 h-40 md:w-40 md:h-48"
+    : "w-24 h-32 md:w-28 md:h-36";
 
-  const renderPanel = (angle: typeof angles[0], index: number) => (
-    <motion.div
-      key={angle.label}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: index * 0.1 }}
-      className="flex flex-col items-center gap-2"
-    >
-      <div className={`relative ${sizeClasses.panel}`}>
-        {/* Holographic glow effect */}
-        <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-lg blur-sm animate-pulse" />
-        
-        {/* Main hologram panel */}
-        <div className="relative w-full h-full rounded-lg border-2 border-cyan-400/50 bg-gradient-to-b from-cyan-500/10 to-blue-500/10 backdrop-blur-sm overflow-hidden">
-          {/* Scan lines effect */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent animate-scan" />
-          
-          {/* Person image with holographic effect */}
-          <div className="absolute inset-0 flex items-center justify-center p-1">
-            <img 
-              src={avatarImage}
-              alt="Hologram Assistant"
-              className="w-full h-full object-cover object-top opacity-70 mix-blend-screen"
-              style={{ 
-                transform: `perspective(200px) rotateY(${angle.rotation}deg) scale(${angle.scale})`,
-                transformStyle: 'preserve-3d',
-                filter: 'brightness(1.2) contrast(1.1) hue-rotate(180deg)'
-              }}
-            />
-          </div>
-
-          {/* Cyan overlay for holographic effect */}
-          <div className="absolute inset-0 bg-cyan-400/20 mix-blend-color" />
-
-          {/* Corner accents */}
-          <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-400" />
-          <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-cyan-400" />
-          <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-cyan-400" />
-          <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-cyan-400" />
-        </div>
-      </div>
+  const renderPanel = (rotation: number, position: string) => (
+    <div className={`relative ${sizeClasses}`}>
+      {/* Holographic glow effect */}
+      <motion.div 
+        className="absolute inset-0 bg-gradient-to-b from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-lg blur-sm"
+        animate={{ opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      />
       
-      {/* Angle label */}
-      <span className="text-xs text-cyan-400/70 font-mono">{angle.label}</span>
-    </motion.div>
+      {/* Main hologram panel */}
+      <div className="relative w-full h-full rounded-lg border-2 border-cyan-400/50 bg-gradient-to-b from-cyan-500/10 to-blue-500/10 backdrop-blur-sm overflow-hidden">
+        {/* Scan lines effect */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent animate-scan" />
+        
+        {/* Person image with holographic effect */}
+        <div className="absolute inset-0 flex items-center justify-center p-1">
+          <img 
+            src={avatarImage}
+            alt="Hologram Assistant"
+            className="w-full h-full object-cover object-top opacity-70 mix-blend-screen"
+            style={{ 
+              transform: `perspective(300px) rotateY(${rotation}deg)`,
+              transformStyle: 'preserve-3d',
+              filter: 'brightness(1.2) contrast(1.1) hue-rotate(180deg)'
+            }}
+          />
+        </div>
+
+        {/* Cyan overlay for holographic effect */}
+        <div className="absolute inset-0 bg-cyan-400/20 mix-blend-color" />
+
+        {/* Corner accents */}
+        <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-400" />
+        <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-cyan-400" />
+        <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-cyan-400" />
+        <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-cyan-400" />
+      </div>
+    </div>
   );
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative"
+      className="relative w-full max-w-4xl mx-auto"
       data-testid="hologram-avatar"
     >
-      {/* Pyramid/Cross layout for hologram display */}
-      <div className={`grid grid-cols-3 ${sizeClasses.gap}`}>
-        {/* Top row - Front view */}
-        <div className="col-start-2 flex justify-center">
-          {renderPanel(angles[0], 0)}
-        </div>
-        
-        {/* Middle row - Left and Right views */}
-        <div className="col-start-1 flex justify-center">
-          {renderPanel(angles[1], 1)}
-        </div>
-        <div className="col-start-2"></div>
-        <div className="col-start-3 flex justify-center">
-          {renderPanel(angles[2], 2)}
-        </div>
-        
-        {/* Bottom row - Back view */}
-        <div className="col-start-2 flex justify-center">
-          {renderPanel(angles[3], 3)}
-        </div>
+      {/* Pepper's Ghost Hologram Cross Layout (✚) - 4 views for pyramid glass */}
+      <div className="relative w-full aspect-square flex items-center justify-center">
+        {/* Top view (Front) */}
+        <motion.div
+          className="absolute top-0 left-1/2 -translate-x-1/2"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0 }}
+        >
+          {renderPanel(0, "top")}
+        </motion.div>
+
+        {/* Right view (Right side) - rotated 90° */}
+        <motion.div
+          className="absolute right-0 top-1/2 -translate-y-1/2"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.15 }}
+        >
+          {renderPanel(90, "right")}
+        </motion.div>
+
+        {/* Bottom view (Back) - rotated 180° */}
+        <motion.div
+          className="absolute bottom-0 left-1/2 -translate-x-1/2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          {renderPanel(180, "bottom")}
+        </motion.div>
+
+        {/* Left view (Left side) - rotated 270° */}
+        <motion.div
+          className="absolute left-0 top-1/2 -translate-y-1/2"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.45 }}
+        >
+          {renderPanel(270, "left")}
+        </motion.div>
+
+        {/* Center glow for hologram effect */}
+        <motion.div
+          animate={{ 
+            opacity: [0.3, 0.6, 0.3],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ 
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-cyan-500/30 blur-2xl"
+        />
       </div>
     </motion.div>
   );
