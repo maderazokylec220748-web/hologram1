@@ -54,14 +54,15 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative w-full max-w-4xl mx-auto"
+      className="relative w-full h-64 md:h-80 mx-auto"
       data-testid="hologram-avatar"
     >
       {/* Pepper's Ghost Hologram Cross Layout (✚) - 4 views for pyramid glass */}
-      <div className="relative w-full aspect-square flex items-center justify-center">
+      <div className="relative w-full h-full flex items-center justify-center">
         {/* Top view (Front) */}
         <motion.div
-          className="absolute top-0 left-1/2 -translate-x-1/2"
+          className="absolute left-1/2 -translate-x-1/2"
+          style={{ top: '0' }}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0 }}
@@ -71,7 +72,8 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
 
         {/* Right view (Right side) - rotated 90° */}
         <motion.div
-          className="absolute right-0 top-1/2 -translate-y-1/2"
+          className="absolute top-1/2 -translate-y-1/2"
+          style={{ right: '0' }}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.15 }}
@@ -81,7 +83,8 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
 
         {/* Bottom view (Back) - rotated 180° */}
         <motion.div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2"
+          className="absolute left-1/2 -translate-x-1/2"
+          style={{ bottom: '0' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -91,7 +94,8 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
 
         {/* Left view (Left side) - rotated 270° */}
         <motion.div
-          className="absolute left-0 top-1/2 -translate-y-1/2"
+          className="absolute top-1/2 -translate-y-1/2"
+          style={{ left: '0' }}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.45 }}

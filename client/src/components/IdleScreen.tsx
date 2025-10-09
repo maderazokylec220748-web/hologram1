@@ -41,7 +41,8 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
           <div className="absolute inset-0 flex items-center justify-center z-10">
             {/* Top view (Front) */}
             <motion.div
-              className="absolute top-0 left-1/2 -translate-x-1/2"
+              className="absolute left-1/2 -translate-x-1/2"
+              style={{ top: '5%' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: [0.7, 1, 0.7] }}
               transition={{
@@ -68,7 +69,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
+                className="rounded-full overflow-hidden w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 aspect-square flex items-center justify-center bg-white/90"
               >
                 <img 
                   src={logoPath} 
@@ -78,9 +79,10 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
               </motion.div>
             </motion.div>
 
-            {/* Right view (Right side) - rotated 90° */}
+            {/* Right view (Right side) */}
             <motion.div
-              className="absolute right-0 top-1/2 -translate-y-1/2"
+              className="absolute top-1/2 -translate-y-1/2"
+              style={{ right: '5%' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: [0.7, 1, 0.7] }}
               transition={{
@@ -107,21 +109,20 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
-                style={{ transform: 'rotateY(90deg)' }}
+                className="rounded-full overflow-hidden w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 aspect-square flex items-center justify-center bg-white/90"
               >
                 <img 
                   src={logoPath} 
                   alt="Westmead International School" 
                   className="w-[85%] h-[85%] object-contain"
-                  style={{ transform: 'rotateY(-90deg)' }}
                 />
               </motion.div>
             </motion.div>
 
-            {/* Bottom view (Back) - rotated 180° */}
+            {/* Bottom view (Back) */}
             <motion.div
-              className="absolute bottom-0 left-1/2 -translate-x-1/2"
+              className="absolute left-1/2 -translate-x-1/2"
+              style={{ bottom: '5%' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: [0.7, 1, 0.7] }}
               transition={{
@@ -148,21 +149,20 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
-                style={{ transform: 'rotate(180deg)' }}
+                className="rounded-full overflow-hidden w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 aspect-square flex items-center justify-center bg-white/90"
               >
                 <img 
                   src={logoPath} 
                   alt="Westmead International School" 
                   className="w-[85%] h-[85%] object-contain"
-                  style={{ transform: 'rotate(-180deg)' }}
                 />
               </motion.div>
             </motion.div>
 
-            {/* Left view (Left side) - rotated 270° */}
+            {/* Left view (Left side) */}
             <motion.div
-              className="absolute left-0 top-1/2 -translate-y-1/2"
+              className="absolute top-1/2 -translate-y-1/2"
+              style={{ left: '5%' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: [0.7, 1, 0.7] }}
               transition={{
@@ -189,15 +189,13 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     ease: "easeInOut"
                   }
                 }}
-                className="rounded-full overflow-hidden w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 aspect-square flex items-center justify-center bg-white/90"
-                style={{ transform: 'rotateY(-90deg)' }}
+                className="rounded-full overflow-hidden w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 aspect-square flex items-center justify-center bg-white/90"
               >
                 <img 
                   src={logoPath} 
                   alt="Westmead International School" 
                   className="w-[85%] h-[85%] object-contain"
                   data-testid="img-school-logo"
-                  style={{ transform: 'rotateY(90deg)' }}
                 />
               </motion.div>
             </motion.div>
