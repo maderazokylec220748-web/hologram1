@@ -37,7 +37,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
             className="absolute inset-0 bg-gradient-radial from-cyan-500/20 via-transparent to-transparent pointer-events-none"
           />
 
-          {/* Pepper's Ghost Hologram - 4-way pyramid layout */}
+          {/* Pepper's Ghost Hologram - 4-way pyramid layout (synced inverted) */}
           <div className="absolute inset-0 flex items-center justify-center z-10">
             {/* Top view - 0° rotation */}
             <motion.div
@@ -59,17 +59,22 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     "0 0 20px rgba(6, 182, 212, 0.3)",
                     "0 0 60px rgba(6, 182, 212, 0.5)",
                     "0 0 20px rgba(6, 182, 212, 0.3)"
-                  ]
+                  ],
+                  y: [0, -8, 0]
                 }}
                 transition={{ 
                   boxShadow: {
                     duration: 2,
                     repeat: Infinity,
                     ease: "easeInOut"
+                  },
+                  y: {
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
                   }
                 }}
                 className="overflow-hidden w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 aspect-square flex items-center justify-center"
-                style={{ transform: 'rotate(0deg)' }}
               >
                 <img 
                   src={logoPath} 
@@ -80,7 +85,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
               </motion.div>
             </motion.div>
 
-            {/* Right view - 270° rotation (90° clockwise) */}
+            {/* Right view - 270° rotation (90° clockwise) - inverted */}
             <motion.div
               className="absolute top-1/2 -translate-y-1/2 right-0"
               initial={{ opacity: 0 }}
@@ -90,7 +95,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                   duration: 3,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: 0.75
+                  delay: 0
                 }
               }}
             >
@@ -100,11 +105,17 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     "0 0 20px rgba(6, 182, 212, 0.3)",
                     "0 0 60px rgba(6, 182, 212, 0.5)",
                     "0 0 20px rgba(6, 182, 212, 0.3)"
-                  ]
+                  ],
+                  x: [0, -8, 0]
                 }}
                 transition={{ 
                   boxShadow: {
                     duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  },
+                  x: {
+                    duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }
@@ -120,7 +131,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
               </motion.div>
             </motion.div>
 
-            {/* Bottom view - 180° rotation */}
+            {/* Bottom view - 180° rotation - inverted */}
             <motion.div
               className="absolute left-1/2 -translate-x-1/2 bottom-0"
               initial={{ opacity: 0 }}
@@ -130,7 +141,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                   duration: 3,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: 1.5
+                  delay: 0
                 }
               }}
             >
@@ -140,11 +151,17 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     "0 0 20px rgba(6, 182, 212, 0.3)",
                     "0 0 60px rgba(6, 182, 212, 0.5)",
                     "0 0 20px rgba(6, 182, 212, 0.3)"
-                  ]
+                  ],
+                  y: [0, 8, 0]
                 }}
                 transition={{ 
                   boxShadow: {
                     duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  },
+                  y: {
+                    duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }
@@ -160,7 +177,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
               </motion.div>
             </motion.div>
 
-            {/* Left view - 90° rotation (90° counter-clockwise) */}
+            {/* Left view - 90° rotation (90° counter-clockwise) - inverted */}
             <motion.div
               className="absolute top-1/2 -translate-y-1/2 left-0"
               initial={{ opacity: 0 }}
@@ -170,7 +187,7 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                   duration: 3,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: 2.25
+                  delay: 0
                 }
               }}
             >
@@ -180,11 +197,17 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                     "0 0 20px rgba(6, 182, 212, 0.3)",
                     "0 0 60px rgba(6, 182, 212, 0.5)",
                     "0 0 20px rgba(6, 182, 212, 0.3)"
-                  ]
+                  ],
+                  x: [0, 8, 0]
                 }}
                 transition={{ 
                   boxShadow: {
                     duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  },
+                  x: {
+                    duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }

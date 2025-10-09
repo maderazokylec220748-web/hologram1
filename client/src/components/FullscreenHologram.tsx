@@ -31,10 +31,10 @@ export default function FullscreenHologram({ isVisible, duration, onComplete }: 
   }, [isVisible, duration, onComplete]);
 
   const positions = [
-    { className: "absolute left-1/2 -translate-x-1/2 top-0", rotation: 0, delay: 0 },
-    { className: "absolute top-1/2 -translate-y-1/2 right-0", rotation: 270, delay: 0.1 },
-    { className: "absolute left-1/2 -translate-x-1/2 bottom-0", rotation: 180, delay: 0.2 },
-    { className: "absolute top-1/2 -translate-y-1/2 left-0", rotation: 90, delay: 0.3 }
+    { className: "absolute left-1/2 -translate-x-1/2 top-0", rotation: 0, delay: 0, movement: { y: [0, -8, 0] } },
+    { className: "absolute top-1/2 -translate-y-1/2 right-0", rotation: 270, delay: 0, movement: { x: [0, -8, 0] } },
+    { className: "absolute left-1/2 -translate-x-1/2 bottom-0", rotation: 180, delay: 0, movement: { y: [0, 8, 0] } },
+    { className: "absolute top-1/2 -translate-y-1/2 left-0", rotation: 90, delay: 0, movement: { x: [0, 8, 0] } }
   ];
 
   return (
@@ -52,9 +52,27 @@ export default function FullscreenHologram({ isVisible, duration, onComplete }: 
             <motion.div
               key={index}
               initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
+              animate={{ 
+                opacity: 1, 
+                scale: 1,
+                ...pos.movement
+              }}
               exit={{ opacity: 0, scale: 0.5 }}
-              transition={{ duration: 0.6, delay: pos.delay, ease: "easeOut" }}
+              transition={{ 
+                duration: 0.6, 
+                delay: pos.delay, 
+                ease: "easeOut",
+                y: {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                },
+                x: {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }
+              }}
               className={pos.className}
               style={{ transform: `${pos.className.includes('translate') ? pos.className.split(' ').filter(c => c.includes('translate')).join(' ') : ''} rotate(${pos.rotation}deg)` }}
             >
