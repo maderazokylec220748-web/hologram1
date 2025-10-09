@@ -29,7 +29,7 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
   const [isSpeechEnabled, setIsSpeechEnabled] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const { speak, stop, isSpeaking } = useTextToSpeech();
+  const { speak, stop, isSpeaking } = useTextToSpeech(language);
   const { isListening, transcript, startListening, stopListening, isSupported } = useSpeechRecognition();
 
   const scrollToBottom = () => {
