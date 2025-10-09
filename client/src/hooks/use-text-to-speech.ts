@@ -59,16 +59,50 @@ export function useTextToSpeech() {
       utterance.pitch = 1.0;
       utterance.volume = 1.0;
       
-      // Try to use a male voice (Matthew-like)
+      // Try to use a male voice
       const voices = window.speechSynthesis.getVoices();
-      const preferredVoice = voices.find(voice => 
-        voice.name.includes('Male') || 
-        voice.name.includes('Matthew') ||
-        voice.name.includes('Google US English')
-      ) || voices[0];
+      
+      // Priority order for male voices
+      const maleVoicePatterns = [
+        'Male',
+        'Matthew',
+        'David',
+        'Daniel',
+        'Fred',
+        'Jorge',
+        'Diego',
+        'Google UK English Male',
+        'Google US English Male',
+        'Microsoft David',
+        'Microsoft Mark'
+      ];
+      
+      let preferredVoice = null;
+      
+      // Try to find a male voice in priority order
+      for (const pattern of maleVoicePatterns) {
+        preferredVoice = voices.find(voice => voice.name.includes(pattern));
+        if (preferredVoice) break;
+      }
+      
+      // Filter out female voices if no male voice found
+      if (!preferredVoice) {
+        preferredVoice = voices.find(voice => 
+          !voice.name.toLowerCase().includes('female') &&
+          !voice.name.toLowerCase().includes('samantha') &&
+          !voice.name.toLowerCase().includes('victoria') &&
+          !voice.name.toLowerCase().includes('karen')
+        );
+      }
+      
+      // Fallback to first voice
+      if (!preferredVoice && voices.length > 0) {
+        preferredVoice = voices[0];
+      }
       
       if (preferredVoice) {
         utterance.voice = preferredVoice;
+        console.log('Using voice:', preferredVoice.name);
       }
 
       utterance.onstart = () => {
