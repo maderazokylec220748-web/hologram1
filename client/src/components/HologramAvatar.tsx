@@ -49,68 +49,62 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
   );
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="relative w-full h-full flex items-center justify-center"
-      data-testid="hologram-avatar"
-    >
+    <div className="relative w-[700px] h-[700px]" data-testid="hologram-avatar">
       {/* Pepper's Ghost Hologram - 4-way diamond layout matching reference */}
-      <div className="relative w-[800px] h-[800px]">
-        {/* Top view */}
-        <motion.div
-          className="absolute left-1/2 -translate-x-1/2 top-[8%]"
-          initial={{ opacity: 0, y: -40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0, duration: 0.6 }}
-        >
-          {renderPanel()}
-        </motion.div>
+      
+      {/* Top view */}
+      <motion.div
+        className="absolute left-1/2 -translate-x-1/2 top-0"
+        initial={{ opacity: 0, y: -40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0, duration: 0.6 }}
+      >
+        {renderPanel()}
+      </motion.div>
 
-        {/* Right view */}
-        <motion.div
-          className="absolute top-1/2 -translate-y-1/2 right-[8%]"
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.15, duration: 0.6 }}
-        >
-          {renderPanel()}
-        </motion.div>
+      {/* Right view */}
+      <motion.div
+        className="absolute top-1/2 -translate-y-1/2 right-0"
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.15, duration: 0.6 }}
+      >
+        {renderPanel()}
+      </motion.div>
 
-        {/* Bottom view */}
-        <motion.div
-          className="absolute left-1/2 -translate-x-1/2 bottom-[8%]"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-        >
-          {renderPanel()}
-        </motion.div>
+      {/* Bottom view */}
+      <motion.div
+        className="absolute left-1/2 -translate-x-1/2 bottom-0"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+      >
+        {renderPanel()}
+      </motion.div>
 
-        {/* Left view */}
-        <motion.div
-          className="absolute top-1/2 -translate-y-1/2 left-[8%]"
-          initial={{ opacity: 0, x: -40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.45, duration: 0.6 }}
-        >
-          {renderPanel()}
-        </motion.div>
+      {/* Left view */}
+      <motion.div
+        className="absolute top-1/2 -translate-y-1/2 left-0"
+        initial={{ opacity: 0, x: -40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.45, duration: 0.6 }}
+      >
+        {renderPanel()}
+      </motion.div>
 
-        {/* Center glow for hologram effect */}
-        <motion.div
-          animate={{ 
-            opacity: [0.2, 0.5, 0.2],
-            scale: [1, 1.3, 1]
-          }}
-          transition={{ 
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-cyan-500/20 blur-3xl"
-        />
-      </div>
-    </motion.div>
+      {/* Center glow for hologram effect */}
+      <motion.div
+        animate={{ 
+          opacity: [0.2, 0.5, 0.2],
+          scale: [1, 1.3, 1]
+        }}
+        transition={{ 
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-cyan-500/20 blur-3xl"
+      />
+    </div>
   );
 }
