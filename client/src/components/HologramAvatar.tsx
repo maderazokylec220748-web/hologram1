@@ -20,7 +20,10 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
       />
       
       {/* Main hologram panel */}
-      <div className="relative w-full h-full rounded-lg border-2 border-cyan-400/50 bg-gradient-to-b from-cyan-500/10 to-blue-500/10 backdrop-blur-sm overflow-hidden">
+      <div 
+        className="relative w-full h-full rounded-lg border-2 border-cyan-400/50 bg-gradient-to-b from-cyan-500/10 to-blue-500/10 backdrop-blur-sm overflow-hidden"
+        style={{ transform: `rotate(${rotation}deg)` }}
+      >
         {/* Scan lines effect */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent animate-scan" />
         
@@ -31,8 +34,7 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
             alt="Hologram Assistant"
             className="w-full h-full object-cover object-top opacity-70 mix-blend-screen"
             style={{ 
-              transform: `perspective(300px) rotateY(${rotation}deg)`,
-              transformStyle: 'preserve-3d',
+              transform: `rotate(${-rotation}deg)`,
               filter: 'brightness(1.2) contrast(1.1) hue-rotate(180deg)'
             }}
           />
@@ -57,9 +59,9 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
       className="relative w-full max-w-md mx-auto aspect-square"
       data-testid="hologram-avatar"
     >
-      {/* Pepper's Ghost Hologram Cross Layout (✚) - 4 views for pyramid glass */}
+      {/* Pepper's Ghost Hologram - 4-way pyramid layout */}
       <div className="relative w-full h-full">
-        {/* Top view (Front) */}
+        {/* Top view - 0° rotation */}
         <motion.div
           className="absolute left-1/2 -translate-x-1/2 top-0"
           initial={{ opacity: 0, y: -20 }}
@@ -69,17 +71,17 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
           {renderPanel(0, "top")}
         </motion.div>
 
-        {/* Right view (Right side) - rotated 90° */}
+        {/* Right view - 270° rotation (90° clockwise) */}
         <motion.div
           className="absolute top-1/2 -translate-y-1/2 right-0"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.15 }}
         >
-          {renderPanel(90, "right")}
+          {renderPanel(270, "right")}
         </motion.div>
 
-        {/* Bottom view (Back) - rotated 180° */}
+        {/* Bottom view - 180° rotation */}
         <motion.div
           className="absolute left-1/2 -translate-x-1/2 bottom-0"
           initial={{ opacity: 0, y: 20 }}
@@ -89,14 +91,14 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
           {renderPanel(180, "bottom")}
         </motion.div>
 
-        {/* Left view (Left side) - rotated 270° */}
+        {/* Left view - 90° rotation (90° counter-clockwise) */}
         <motion.div
           className="absolute top-1/2 -translate-y-1/2 left-0"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.45 }}
         >
-          {renderPanel(270, "left")}
+          {renderPanel(90, "left")}
         </motion.div>
 
         {/* Center glow for hologram effect */}
