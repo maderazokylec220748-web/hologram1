@@ -37,23 +37,17 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
             className="absolute inset-0 bg-gradient-radial from-cyan-500/20 via-transparent to-transparent pointer-events-none"
           />
 
-          {/* Hologram container with 4-sided spinning logos */}
+          {/* Hologram container with 4-sided logos */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ 
               scale: 1, 
-              opacity: 1,
-              rotate: 360
+              opacity: 1
             }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ 
               scale: { duration: 0.8, ease: "easeOut" },
-              opacity: { duration: 0.8, ease: "easeOut" },
-              rotate: {
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear"
-              }
+              opacity: { duration: 0.8, ease: "easeOut" }
             }}
             className="relative z-10 flex flex-col items-center"
           >
@@ -83,19 +77,13 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                       "0 0 20px rgba(6, 182, 212, 0.3)",
                       "0 0 60px rgba(6, 182, 212, 0.5)",
                       "0 0 20px rgba(6, 182, 212, 0.3)"
-                    ],
-                    rotate: -360
+                    ]
                   }}
                   transition={{ 
                     boxShadow: {
                       duration: 2,
                       repeat: Infinity,
                       ease: "easeInOut"
-                    },
-                    rotate: {
-                      duration: 20,
-                      repeat: Infinity,
-                      ease: "linear"
                     }
                   }}
                   className="rounded-full overflow-hidden w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 aspect-square flex items-center justify-center bg-white/80"
@@ -132,19 +120,13 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                       "0 0 20px rgba(6, 182, 212, 0.3)",
                       "0 0 60px rgba(6, 182, 212, 0.5)",
                       "0 0 20px rgba(6, 182, 212, 0.3)"
-                    ],
-                    rotate: -360
+                    ]
                   }}
                   transition={{ 
                     boxShadow: {
                       duration: 2,
                       repeat: Infinity,
                       ease: "easeInOut"
-                    },
-                    rotate: {
-                      duration: 20,
-                      repeat: Infinity,
-                      ease: "linear"
                     }
                   }}
                   className="rounded-full overflow-hidden w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 aspect-square flex items-center justify-center bg-white/80"
@@ -181,19 +163,13 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                       "0 0 20px rgba(6, 182, 212, 0.3)",
                       "0 0 60px rgba(6, 182, 212, 0.5)",
                       "0 0 20px rgba(6, 182, 212, 0.3)"
-                    ],
-                    rotate: -360
+                    ]
                   }}
                   transition={{ 
                     boxShadow: {
                       duration: 2,
                       repeat: Infinity,
                       ease: "easeInOut"
-                    },
-                    rotate: {
-                      duration: 20,
-                      repeat: Infinity,
-                      ease: "linear"
                     }
                   }}
                   className="rounded-full overflow-hidden w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 aspect-square flex items-center justify-center bg-white/80"
@@ -230,19 +206,13 @@ export default function IdleScreen({ isVisible }: IdleScreenProps) {
                       "0 0 20px rgba(6, 182, 212, 0.3)",
                       "0 0 60px rgba(6, 182, 212, 0.5)",
                       "0 0 20px rgba(6, 182, 212, 0.3)"
-                    ],
-                    rotate: -360
+                    ]
                   }}
                   transition={{ 
                     boxShadow: {
                       duration: 2,
                       repeat: Infinity,
                       ease: "easeInOut"
-                    },
-                    rotate: {
-                      duration: 20,
-                      repeat: Infinity,
-                      ease: "linear"
                     }
                   }}
                   className="rounded-full overflow-hidden w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 aspect-square flex items-center justify-center bg-white/80"
