@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 
-export function useTextToSpeech() {
+export function useTextToSpeech(language: 'english' | 'tagalog' = 'english') {
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -59,9 +59,24 @@ export function useTextToSpeech() {
       utterance.pitch = 0.8; // Lower pitch for more masculine sound
       utterance.volume = 1.0;
       
-      // Try to use a male voice
+      // Try to use an appropriate voice based on language
       const voices = window.speechSynthesis.getVoices();
-      console.log('Available voices:', voices.map(v => v.name));
+      console.log('Available voices:', voices.map(v => `${v.name} (${v.lang})`));
+      
+      // Tagalog/Filipino voice patterns (prioritize when language is Tagalog)
+      const tagalogVoicePatterns = [
+        'fil-PH',
+        'Filipino',
+        'Tagalog',
+        'Rosa',
+        'Angelo',
+        'Google Filipino',
+        'Microsoft Rosa',
+        'Microsoft Angelo',
+        'fil-',
+        'tl-PH',
+        'tl-'
+      ];
       
       // Comprehensive list of male voice names across platforms
       const maleVoicePatterns = [
@@ -171,10 +186,25 @@ export function useTextToSpeech() {
       
       let preferredVoice = null;
       
-      // Try to find a male voice in priority order
-      for (const pattern of maleVoicePatterns) {
-        preferredVoice = voices.find(voice => voice.name.includes(pattern));
-        if (preferredVoice) break;
+      // If language is Tagalog, prioritize Tagalog/Filipino voices first
+      if (language === 'tagalog') {
+        for (const pattern of tagalogVoicePatterns) {
+          preferredVoice = voices.find(voice => 
+            voice.name.includes(pattern) || voice.lang.includes(pattern)
+          );
+          if (preferredVoice) {
+            console.log('Found Tagalog voice:', preferredVoice.name);
+            break;
+          }
+        }
+      }
+      
+      // If no Tagalog voice found (or language is English), try to find a male voice
+      if (!preferredVoice) {
+        for (const pattern of maleVoicePatterns) {
+          preferredVoice = voices.find(voice => voice.name.includes(pattern));
+          if (preferredVoice) break;
+        }
       }
       
       // If no male voice found, filter out known female voices
@@ -194,7 +224,7 @@ export function useTextToSpeech() {
       
       if (preferredVoice) {
         utterance.voice = preferredVoice;
-        console.log('Using voice:', preferredVoice.name);
+        console.log('Using voice:', preferredVoice.name, 'for language:', language);
       } else {
         console.warn('No suitable voice found, using browser default with lowered pitch');
       }
