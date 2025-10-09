@@ -79,13 +79,16 @@ The AI assistant has knowledge about:
 
 ## Text-to-Speech
 - Uses browser's built-in Web Speech API (no API key required)
-- Intelligent male voice selection across platforms (Windows, macOS, Linux)
-- Comprehensive voice pattern matching to prefer male voices
+- **Language-Aware Voice Selection**: Automatically selects appropriate voices based on selected language
+  - **Tagalog Mode**: Prioritizes Filipino/Tagalog voices when available (Rosa, Angelo, etc.)
+  - **English Mode**: Intelligent male voice selection across platforms (Windows, macOS, Linux)
+- Comprehensive voice pattern matching across 40+ voice names
 - Lowered pitch (0.8) for more masculine sound
 - 1.1x playback speed for faster responses
 - Automatically speaks AI responses
 - Toggle on/off with speaker icon in chat
 - Stop button appears while speaking to cancel speech midway
+- Dynamic voice switching when language is changed
 
 ## AI Knowledge Base
 The chatbot now includes comprehensive information from https://westmead-is.edu.ph including:
@@ -99,7 +102,14 @@ The chatbot now includes comprehensive information from https://westmead-is.edu.
 
 ## Recent Changes
 
-### Latest Update - October 9, 2025: Improved Male Voice Selection
+### Latest Update - October 9, 2025: Tagalog Voice Support
+- **Language-Aware TTS**: Voice selection now adapts to selected language (English or Tagalog)
+- **Tagalog Voice Priority**: When Tagalog is selected, system prioritizes Filipino/Tagalog voices (Rosa, Angelo, etc.)
+- **Dynamic Voice Switching**: Voice automatically updates when user changes language preference
+- **Graceful Fallback**: Falls back to male English voices when Tagalog voices are unavailable
+- **Enhanced Logging**: Console logs show selected voice and language for debugging
+
+### Earlier - October 9, 2025: Improved Male Voice Selection
 - **Enhanced Voice Selection**: Upgraded to intelligent male voice detection across all platforms
 - **Comprehensive Voice Database**: Added support for 40+ male voice patterns (Microsoft, Google, macOS)
 - **Female Voice Filtering**: Automatically excludes 30+ known female voices from selection
