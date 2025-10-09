@@ -264,7 +264,7 @@ export function useTextToSpeech(language: 'english' | 'tagalog' = 'english') {
       console.error('Text-to-speech error:', error);
       setIsSpeaking(false);
     }
-  }, [startChecking]);
+  }, [startChecking, language]);
 
   const stop = useCallback(() => {
     console.log('Stop button clicked');
