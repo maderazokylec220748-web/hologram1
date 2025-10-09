@@ -17,12 +17,46 @@ declare global {
 export function useTextToSpeech() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startChecking = useCallback(() => {
+    // Clear any existing interval
+    if (checkIntervalRef.current) {
+      clearInterval(checkIntervalRef.current);
+    }
+
+    // Check audio state periodically
+    checkIntervalRef.current = setInterval(() => {
+      if (audioRef.current) {
+        const isPlaying = !audioRef.current.paused && !audioRef.current.ended;
+        setIsSpeaking(isPlaying);
+        
+        // Stop checking if audio has ended
+        if (audioRef.current.ended) {
+          if (checkIntervalRef.current) {
+            clearInterval(checkIntervalRef.current);
+            checkIntervalRef.current = null;
+          }
+        }
+      } else {
+        setIsSpeaking(false);
+        if (checkIntervalRef.current) {
+          clearInterval(checkIntervalRef.current);
+          checkIntervalRef.current = null;
+        }
+      }
+    }, 100); // Check every 100ms
+  }, []);
 
   const speak = useCallback(async (text: string) => {
     // Clean up any existing audio first
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
+    }
+    if (checkIntervalRef.current) {
+      clearInterval(checkIntervalRef.current);
+      checkIntervalRef.current = null;
     }
     setIsSpeaking(false);
 
@@ -32,6 +66,7 @@ export function useTextToSpeech() {
         return;
       }
 
+      console.log('Creating audio for text-to-speech...');
       const audio = await window.puter.ai.txt2speech(text, {
         voice: "Matthew",
         engine: "neural",
@@ -39,27 +74,23 @@ export function useTextToSpeech() {
       });
       
       audio.playbackRate = 1.3;
-      
-      // Set up event listeners to track speaking state
-      const handlePlay = () => setIsSpeaking(true);
-      const handlePause = () => setIsSpeaking(false);
-      const handleEnded = () => setIsSpeaking(false);
-      const handleError = () => setIsSpeaking(false);
-
-      audio.addEventListener('play', handlePlay);
-      audio.addEventListener('pause', handlePause);
-      audio.addEventListener('ended', handleEnded);
-      audio.addEventListener('error', handleError);
-      
       audioRef.current = audio;
+      
+      console.log('Starting audio playback and state checking');
       await audio.play();
+      startChecking();
     } catch (error) {
       console.error('Text-to-speech error:', error);
       setIsSpeaking(false);
     }
-  }, []);
+  }, [startChecking]);
 
   const stop = useCallback(() => {
+    console.log('Stop button clicked');
+    if (checkIntervalRef.current) {
+      clearInterval(checkIntervalRef.current);
+      checkIntervalRef.current = null;
+    }
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
@@ -70,6 +101,9 @@ export function useTextToSpeech() {
   // Cleanup on unmount
   useEffect(() => {
     return () => {
+      if (checkIntervalRef.current) {
+        clearInterval(checkIntervalRef.current);
+      }
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
