@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 
 declare global {
   interface Window {
@@ -19,10 +19,12 @@ export function useTextToSpeech() {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   const speak = useCallback(async (text: string) => {
+    // Clean up any existing audio first
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
     }
+    setIsSpeaking(false);
 
     try {
       if (!window.puter) {
@@ -39,21 +41,15 @@ export function useTextToSpeech() {
       audio.playbackRate = 1.3;
       
       // Set up event listeners to track speaking state
-      audio.addEventListener('play', () => {
-        setIsSpeaking(true);
-      });
+      const handlePlay = () => setIsSpeaking(true);
+      const handlePause = () => setIsSpeaking(false);
+      const handleEnded = () => setIsSpeaking(false);
+      const handleError = () => setIsSpeaking(false);
 
-      audio.addEventListener('pause', () => {
-        setIsSpeaking(false);
-      });
-
-      audio.addEventListener('ended', () => {
-        setIsSpeaking(false);
-      });
-
-      audio.addEventListener('error', () => {
-        setIsSpeaking(false);
-      });
+      audio.addEventListener('play', handlePlay);
+      audio.addEventListener('pause', handlePause);
+      audio.addEventListener('ended', handleEnded);
+      audio.addEventListener('error', handleError);
       
       audioRef.current = audio;
       await audio.play();
@@ -67,8 +63,18 @@ export function useTextToSpeech() {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
-      setIsSpeaking(false);
     }
+    setIsSpeaking(false);
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
   }, []);
 
   return { speak, stop, isSpeaking };
