@@ -19,18 +19,12 @@ export default function HologramAvatar({ size = "small" }: HologramAvatarProps) 
       />
       
       {/* Main hologram panel */}
-      <div className="relative w-full h-full rounded-lg border-2 border-cyan-400/50 bg-gradient-to-b from-cyan-500/10 to-blue-500/10 backdrop-blur-sm overflow-hidden">
+      <div className="relative w-full h-full rounded-lg bg-gradient-to-b from-cyan-500/10 to-blue-500/10 backdrop-blur-sm overflow-hidden">
         {/* Scan lines effect */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent animate-scan" />
 
         {/* Cyan overlay for holographic effect */}
         <div className="absolute inset-0 bg-cyan-400/20 mix-blend-color" />
-
-        {/* Corner accents */}
-        <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-400" />
-        <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-cyan-400" />
-        <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-cyan-400" />
-        <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-cyan-400" />
       </div>
     </div>
   );
