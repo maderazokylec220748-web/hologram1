@@ -246,17 +246,18 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
             className="flex-1 border-0 bg-transparent text-lg focus-visible:ring-0 placeholder:text-muted-foreground"
             data-testid="input-message"
           />
-          {isSpeaking ? (
+          {(isSpeaking || isTyping) ? (
             <Button
               onClick={(e) => {
                 e.stopPropagation();
                 stop();
                 onStopHologram?.();
+                setIsTyping(false);
               }}
               size="lg"
-              className="flex-shrink-0 bg-red-500 hover:bg-red-600 text-white fixed bottom-8 right-8 z-[9999] shadow-2xl rounded-full h-16 w-16"
-              data-testid="button-stop-speech"
-              aria-label={language === 'tagalog' ? "Ihinto ang pagsasalita" : "Stop speaking"}
+              className="flex-shrink-0 bg-red-500 hover:bg-red-600 text-white fixed bottom-8 right-8 z-[9999] shadow-2xl rounded-full h-16 w-16 animate-pulse"
+              data-testid="button-stop-response"
+              aria-label={language === 'tagalog' ? "Ihinto ang tugon" : "Stop response"}
               type="button"
             >
               <Pause className="w-8 h-8" />
