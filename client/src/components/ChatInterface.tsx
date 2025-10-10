@@ -142,27 +142,16 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
     }
   };
 
+  const handleStop = () => {
+    stop();
+    onStopHologram?.();
+    setIsTyping(false);
+  };
+
+  const isAIResponding = isSpeaking || isTyping;
+
   return (
     <>
-      {/* Stop button - always visible when AI is responding */}
-      {(isSpeaking || isTyping) && (
-        <Button
-          onClick={(e) => {
-            e.stopPropagation();
-            stop();
-            onStopHologram?.();
-            setIsTyping(false);
-          }}
-          size="lg"
-          className="bg-red-500 hover:bg-red-600 text-white fixed bottom-8 right-8 z-[100] shadow-2xl rounded-full h-20 w-20 animate-pulse"
-          data-testid="button-stop-response"
-          aria-label={language === 'tagalog' ? "Ihinto ang tugon" : "Stop response"}
-          type="button"
-        >
-          <Pause className="w-10 h-10" />
-        </Button>
-      )}
-
       <div className="flex flex-col h-full">
         <div className="flex-1 overflow-y-auto p-6 space-y-4" data-testid="chat-messages">
         {messages.length === 0 && (
@@ -222,8 +211,8 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
         </div>
       )}
 
-        <div className="p-6 pt-0">
-          <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="glass-strong rounded-2xl p-2 flex gap-2">
+        <div className="p-6 pt-0 relative z-50">
+          <form onSubmit={(e) => { e.preventDefault(); isAIResponding ? handleStop() : handleSend(); }} className="glass-strong rounded-2xl p-2 flex gap-2">
             <Button
               onClick={() => {
                 setIsSpeechEnabled(!isSpeechEnabled);
@@ -258,7 +247,7 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+              onKeyDown={(e) => e.key === 'Enter' && (isAIResponding ? handleStop() : handleSend())}
               placeholder={isListening 
                 ? (language === 'tagalog' ? "Nakikinig..." : "Listening...")
                 : (language === 'tagalog' ? "Magtanong tungkol sa paaralan..." : "Ask about school topics only...")
@@ -267,15 +256,18 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
               data-testid="input-message"
             />
             <Button
-              onClick={handleSend}
+              onClick={isAIResponding ? handleStop : handleSend}
               size="icon"
-              disabled={!input.trim()}
-              className="flex-shrink-0"
-              data-testid="button-send"
-              aria-label={language === 'tagalog' ? "Ipadala ang mensahe" : "Send message"}
+              disabled={!isAIResponding && !input.trim()}
+              className={`flex-shrink-0 ${isAIResponding ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse' : ''}`}
+              data-testid={isAIResponding ? "button-stop" : "button-send"}
+              aria-label={isAIResponding 
+                ? (language === 'tagalog' ? "Ihinto ang tugon" : "Stop response")
+                : (language === 'tagalog' ? "Ipadala ang mensahe" : "Send message")
+              }
               type="button"
             >
-              <Send className="w-5 h-5" />
+              {isAIResponding ? <Pause className="w-5 h-5" /> : <Send className="w-5 h-5" />}
             </Button>
           </form>
         </div>
