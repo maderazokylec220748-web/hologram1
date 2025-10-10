@@ -255,7 +255,7 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
                 setIsTyping(false);
               }}
               size="lg"
-              className="flex-shrink-0 bg-red-500 hover:bg-red-600 text-white fixed bottom-8 right-8 z-[9999] shadow-2xl rounded-full h-16 w-16 animate-pulse"
+              className="flex-shrink-0 bg-red-500 hover:bg-red-600 text-white fixed bottom-8 right-8 z-[100] shadow-2xl rounded-full h-16 w-16 animate-pulse"
               data-testid="button-stop-response"
               aria-label={language === 'tagalog' ? "Ihinto ang tugon" : "Stop response"}
               type="button"
