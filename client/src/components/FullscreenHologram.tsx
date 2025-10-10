@@ -32,32 +32,28 @@ export default function FullscreenHologram({ isVisible, duration, onComplete }: 
 
   const positions = [
     { 
-      className: "absolute left-1/2 top-[10%]", 
+      className: "absolute left-1/2 -translate-x-1/2 top-0", 
       rotation: 0, 
       delay: 0, 
-      movement: { y: [0, -8, 0] },
-      transform: "-translate-x-1/2 -translate-y-1/2"
+      movement: { y: [0, -8, 0] }
     },
     { 
-      className: "absolute right-[10%] top-1/2", 
-      rotation: 90, 
+      className: "absolute top-1/2 -translate-y-1/2 right-0", 
+      rotation: 270, 
       delay: 0.1, 
-      movement: { x: [0, 8, 0] },
-      transform: "translate-x-1/2 -translate-y-1/2"
+      movement: { x: [0, -8, 0] }
     },
     { 
-      className: "absolute left-1/2 bottom-[10%]", 
+      className: "absolute left-1/2 -translate-x-1/2 bottom-0", 
       rotation: 180, 
       delay: 0.2, 
-      movement: { y: [0, 8, 0] },
-      transform: "-translate-x-1/2 translate-y-1/2"
+      movement: { y: [0, 8, 0] }
     },
     { 
-      className: "absolute left-[10%] top-1/2", 
-      rotation: 270, 
+      className: "absolute top-1/2 -translate-y-1/2 left-0", 
+      rotation: 90, 
       delay: 0.3, 
-      movement: { x: [0, -8, 0] },
-      transform: "-translate-x-1/2 -translate-y-1/2"
+      movement: { x: [0, 8, 0] }
     }
   ];
 
@@ -72,30 +68,7 @@ export default function FullscreenHologram({ isVisible, duration, onComplete }: 
           className="fixed inset-0 z-40 bg-black pointer-events-none"
           data-testid="fullscreen-hologram"
         >
-          {/* Center hologram */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1,
-              y: [0, -12, 0]
-            }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            transition={{ 
-              duration: 0.8, 
-              ease: "easeOut",
-              y: {
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }
-            }}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-          >
-            <HologramAvatar size="large" />
-          </motion.div>
-
-          {/* Corner holograms */}
+          {/* Edge holograms matching idle screen layout */}
           {positions.map((pos, index) => (
             <motion.div
               key={index}
@@ -122,11 +95,13 @@ export default function FullscreenHologram({ isVisible, duration, onComplete }: 
                 }
               }}
               className={pos.className}
-              style={{ 
-                transform: `${pos.transform} rotate(${pos.rotation}deg)`
-              }}
             >
-              <HologramAvatar size="large" />
+              <div 
+                className="w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72"
+                style={{ transform: `rotate(${pos.rotation}deg)` }}
+              >
+                <HologramAvatar size="large" />
+              </div>
             </motion.div>
           ))}
 
