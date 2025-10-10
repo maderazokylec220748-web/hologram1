@@ -276,13 +276,13 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
             <div className="flex justify-center">
               <Button
                 onClick={handleStop}
-                size="lg"
-                className="bg-red-500 hover:bg-red-600 text-white animate-pulse h-16 px-8"
+                size="default"
+                className="bg-red-500 hover:bg-red-600 text-white animate-pulse h-12 px-6"
                 data-testid="button-stop"
                 aria-label={language === 'tagalog' ? "Ihinto ang tugon" : "Stop response"}
                 type="button"
               >
-                <Pause className="w-8 h-8" />
+                <Pause className="w-6 h-6" />
               </Button>
             </div>
           )}
