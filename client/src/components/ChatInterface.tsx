@@ -143,8 +143,28 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto p-6 space-y-4" data-testid="chat-messages">
+    <>
+      {/* Stop button - always visible when AI is responding */}
+      {(isSpeaking || isTyping) && (
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            stop();
+            onStopHologram?.();
+            setIsTyping(false);
+          }}
+          size="lg"
+          className="bg-red-500 hover:bg-red-600 text-white fixed bottom-8 right-8 z-[100] shadow-2xl rounded-full h-20 w-20 animate-pulse"
+          data-testid="button-stop-response"
+          aria-label={language === 'tagalog' ? "Ihinto ang tugon" : "Stop response"}
+          type="button"
+        >
+          <Pause className="w-10 h-10" />
+        </Button>
+      )}
+
+      <div className="flex flex-col h-full">
+        <div className="flex-1 overflow-y-auto p-6 space-y-4" data-testid="chat-messages">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center space-y-4" data-testid="container-greeting">
             <div className="glass-strong rounded-2xl p-8 max-w-2xl">
@@ -202,67 +222,50 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
         </div>
       )}
 
-      <div className="p-6 pt-0">
-        <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="glass-strong rounded-2xl p-2 flex gap-2">
-          <Button
-            onClick={() => {
-              setIsSpeechEnabled(!isSpeechEnabled);
-              if (isSpeechEnabled) {
-                stop();
-              }
-            }}
-            size="icon"
-            variant="ghost"
-            className="flex-shrink-0"
-            data-testid="button-toggle-speech"
-            aria-label={language === 'tagalog' 
-              ? (isSpeechEnabled ? "I-off ang tunog" : "I-on ang tunog")
-              : (isSpeechEnabled ? "Turn off sound" : "Turn on sound")
-            }
-          >
-            {isSpeechEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-          </Button>
-          <Button
-            onClick={handleMicClick}
-            size="icon"
-            variant="ghost"
-            className={`flex-shrink-0 ${isListening ? 'text-red-500 animate-pulse' : ''}`}
-            data-testid="button-microphone"
-            aria-label={language === 'tagalog'
-              ? (isListening ? "Huminto sa pakikinig" : "Magsimulang makinig")
-              : (isListening ? "Stop listening" : "Start listening")
-            }
-          >
-            {isListening ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
-          </Button>
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder={isListening 
-              ? (language === 'tagalog' ? "Nakikinig..." : "Listening...")
-              : (language === 'tagalog' ? "Magtanong tungkol sa paaralan..." : "Ask about school topics only...")
-            }
-            className="flex-1 border-0 bg-transparent text-lg focus-visible:ring-0 placeholder:text-muted-foreground"
-            data-testid="input-message"
-          />
-          {(isSpeaking || isTyping) ? (
+        <div className="p-6 pt-0">
+          <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="glass-strong rounded-2xl p-2 flex gap-2">
             <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                stop();
-                onStopHologram?.();
-                setIsTyping(false);
+              onClick={() => {
+                setIsSpeechEnabled(!isSpeechEnabled);
+                if (isSpeechEnabled) {
+                  stop();
+                }
               }}
-              size="lg"
-              className="flex-shrink-0 bg-red-500 hover:bg-red-600 text-white fixed bottom-8 right-8 z-[100] shadow-2xl rounded-full h-16 w-16 animate-pulse"
-              data-testid="button-stop-response"
-              aria-label={language === 'tagalog' ? "Ihinto ang tugon" : "Stop response"}
-              type="button"
+              size="icon"
+              variant="ghost"
+              className="flex-shrink-0"
+              data-testid="button-toggle-speech"
+              aria-label={language === 'tagalog' 
+                ? (isSpeechEnabled ? "I-off ang tunog" : "I-on ang tunog")
+                : (isSpeechEnabled ? "Turn off sound" : "Turn on sound")
+              }
             >
-              <Pause className="w-8 h-8" />
+              {isSpeechEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
             </Button>
-          ) : (
+            <Button
+              onClick={handleMicClick}
+              size="icon"
+              variant="ghost"
+              className={`flex-shrink-0 ${isListening ? 'text-red-500 animate-pulse' : ''}`}
+              data-testid="button-microphone"
+              aria-label={language === 'tagalog'
+                ? (isListening ? "Huminto sa pakikinig" : "Magsimulang makinig")
+                : (isListening ? "Stop listening" : "Start listening")
+              }
+            >
+              {isListening ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
+            </Button>
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+              placeholder={isListening 
+                ? (language === 'tagalog' ? "Nakikinig..." : "Listening...")
+                : (language === 'tagalog' ? "Magtanong tungkol sa paaralan..." : "Ask about school topics only...")
+              }
+              className="flex-1 border-0 bg-transparent text-lg focus-visible:ring-0 placeholder:text-muted-foreground"
+              data-testid="input-message"
+            />
             <Button
               onClick={handleSend}
               size="icon"
@@ -274,9 +277,9 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
             >
               <Send className="w-5 h-5" />
             </Button>
-          )}
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
