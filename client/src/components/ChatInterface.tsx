@@ -211,65 +211,46 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
         </div>
       )}
 
-        <div className="p-6 pt-0 relative z-50">
-          <form onSubmit={(e) => { e.preventDefault(); isAIResponding ? handleStop() : handleSend(); }} className="glass-strong rounded-2xl p-2 flex gap-2">
-            <Button
-              onClick={() => {
-                setIsSpeechEnabled(!isSpeechEnabled);
-                if (isSpeechEnabled) {
-                  stop();
-                }
-              }}
-              size="icon"
-              variant="ghost"
-              className="flex-shrink-0"
-              data-testid="button-toggle-speech"
-              aria-label={language === 'tagalog' 
-                ? (isSpeechEnabled ? "I-off ang tunog" : "I-on ang tunog")
-                : (isSpeechEnabled ? "Turn off sound" : "Turn on sound")
-              }
-            >
-              {isSpeechEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-            </Button>
-            <Button
-              onClick={handleMicClick}
-              size="icon"
-              variant="ghost"
-              className={`flex-shrink-0 ${isListening ? 'text-red-500 animate-pulse' : ''}`}
-              data-testid="button-microphone"
-              aria-label={language === 'tagalog'
-                ? (isListening ? "Huminto sa pakikinig" : "Magsimulang makinig")
-                : (isListening ? "Stop listening" : "Start listening")
-              }
-            >
-              {isListening ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
-            </Button>
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && (isAIResponding ? handleStop() : handleSend())}
-              placeholder={isListening 
-                ? (language === 'tagalog' ? "Nakikinig..." : "Listening...")
-                : (language === 'tagalog' ? "Magtanong tungkol sa paaralan..." : "Ask about school topics only...")
-              }
-              className="flex-1 border-0 bg-transparent text-lg focus-visible:ring-0 placeholder:text-muted-foreground"
-              data-testid="input-message"
-            />
-            <Button
-              onClick={isAIResponding ? handleStop : handleSend}
-              size="icon"
-              disabled={!isAIResponding && !input.trim()}
-              className={`flex-shrink-0 ${isAIResponding ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse' : ''}`}
-              data-testid={isAIResponding ? "button-stop" : "button-send"}
-              aria-label={isAIResponding 
-                ? (language === 'tagalog' ? "Ihinto ang tugon" : "Stop response")
-                : (language === 'tagalog' ? "Ipadala ang mensahe" : "Send message")
-              }
-              type="button"
-            >
-              {isAIResponding ? <Pause className="w-5 h-5" /> : <Send className="w-5 h-5" />}
-            </Button>
-          </form>
+        <div className="p-6 pt-0 relative z-50 flex justify-center items-center gap-4">
+          <Button
+            onClick={handleMicClick}
+            size="lg"
+            variant={isListening ? "destructive" : "outline"}
+            className={`h-16 px-6 ${isListening ? 'animate-pulse' : ''}`}
+            data-testid="button-microphone"
+            aria-label={language === 'tagalog'
+              ? (isListening ? "Huminto sa pakikinig" : "Magsimulang makinig")
+              : (isListening ? "Stop listening" : "Start listening")
+            }
+          >
+            {isListening ? <Mic className="w-8 h-8" /> : <MicOff className="w-8 h-8" />}
+          </Button>
+          
+          <Button
+            onClick={isAIResponding ? handleStop : handleSend}
+            size="lg"
+            disabled={!isAIResponding && !input.trim()}
+            className={`${isAIResponding ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse' : ''} h-16 px-8`}
+            data-testid={isAIResponding ? "button-stop" : "button-send"}
+            aria-label={isAIResponding 
+              ? (language === 'tagalog' ? "Ihinto ang tugon" : "Stop response")
+              : (language === 'tagalog' ? "Ipadala ang mensahe" : "Send message")
+            }
+            type="button"
+          >
+            {isAIResponding ? <Pause className="w-8 h-8" /> : <Send className="w-8 h-8" />}
+          </Button>
+          
+          {/* Hidden input for speech recognition */}
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && (isAIResponding ? handleStop() : handleSend())}
+            className="sr-only"
+            data-testid="input-message"
+            aria-hidden="true"
+          />
         </div>
       </div>
     </>
