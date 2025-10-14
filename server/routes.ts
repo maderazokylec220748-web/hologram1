@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { chatWithAI } from "./openai";
-import { insertChatMessageSchema } from "@shared/schema";
+import { insertChatMessageSchema, insertAdminSettingsSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -64,6 +64,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error resetting chat:", error);
       res.status(500).json({ error: "Failed to reset chat" });
+    }
+  });
+
+  // Admin routes
+  app.get("/api/admin/settings", async (req, res) => {
+    try {
+      const settings = await storage.getAdminSettings();
+      res.json(settings);
+    } catch (error) {
+      console.error("Error fetching admin settings:", error);
+      res.status(500).json({ error: "Failed to fetch admin settings" });
+    }
+  });
+
+  app.put("/api/admin/settings", async (req, res) => {
+    try {
+      const validatedData = insertAdminSettingsSchema.parse(req.body);
+      const updatedSettings = await storage.updateAdminSettings(validatedData);
+      res.json(updatedSettings);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid data", details: error.errors });
+      }
+      console.error("Error updating admin settings:", error);
+      res.status(500).json({ error: "Failed to update admin settings" });
+    }
+  });
+
+  app.get("/api/admin/analytics", async (req, res) => {
+    try {
+      const analytics = await storage.getChatAnalytics();
+      const history = await storage.getChatHistory();
+      res.json({
+        ...analytics,
+        recentMessages: history.slice(-10)
+      });
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      res.status(500).json({ error: "Failed to fetch analytics" });
     }
   });
 
