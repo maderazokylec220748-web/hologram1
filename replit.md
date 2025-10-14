@@ -56,6 +56,7 @@ The AI assistant has knowledge about:
 ## Technology Stack
 - **Frontend**: React + TypeScript, Tailwind CSS, Framer Motion
 - **Backend**: Express.js, Node.js
+- **Database**: MySQL (using mysql2 driver with Drizzle ORM)
 - **AI**: Groq API (Llama 3.3 70B Versatile)
 - **Storage**: In-memory storage (MemStorage)
 
@@ -174,7 +175,16 @@ Tab-based interface for managing school information:
 
 ## Recent Changes
 
-### Latest Update - October 14, 2025: Comprehensive Dashboard Implementation
+### Latest Update - October 14, 2025: MySQL Database Migration
+- **Database Migration**: Converted entire database from PostgreSQL to MySQL for better VS Code compatibility
+- **MySQL Driver**: Installed and configured mysql2 driver with connection pooling
+- **Schema Conversion**: All 8 tables converted from PostgreSQL to MySQL syntax (pgTable → mysqlTable)
+- **UUID Handling**: Updated ID generation to use crypto.randomUUID() with varchar(36) columns
+- **Drizzle Config**: Updated to use MySQL dialect for proper schema management
+- **Documentation**: Complete VS Code setup guides for MySQL (VS_CODE_SETUP.md, QUICK_START.md, MYSQL_MIGRATION_COMPLETE.md)
+- **Cloud Support**: Added support for PlanetScale and Railway cloud MySQL providers
+
+### October 14, 2025: Comprehensive Dashboard Implementation
 - **Dashboard Overview**: Added activity logs with Q&A interactions and prohibited prompt detection
 - **Manage School Data**: Tab-based interface for managing Professors, Events, and FAQs with full CRUD operations
 - **Professor Management**: Add, edit, and delete professors with complete information (name, department, position, email, office, specialization)
