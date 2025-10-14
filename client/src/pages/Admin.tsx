@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -33,14 +33,20 @@ export default function Admin() {
 
   const form = useForm<FormData>({
     resolver: zodResolver(insertAdminSettingsSchema),
-    values: settings ? {
-      schoolName: settings.schoolName,
-      schoolMotto: settings.schoolMotto,
-      contactEmail: settings.contactEmail,
-      contactPhone: settings.contactPhone,
-      address: settings.address,
-    } : undefined,
+    defaultValues: {
+      schoolName: '',
+      schoolMotto: '',
+      contactEmail: '',
+      contactPhone: '',
+      address: '',
+    },
   });
+
+  useEffect(() => {
+    if (settings) {
+      form.reset(settings);
+    }
+  }, [settings]);
 
   const updateMutation = useMutation({
     mutationFn: async (data: FormData) => {
