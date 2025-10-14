@@ -99,9 +99,7 @@ export default function ChatInterface({ language, onMessageSend, onHologramTrigg
     setIsTyping(true);
 
     try {
-      const response = await apiRequest('POST', '/api/chat', { message: messageContent, language });
-
-      const data = await response.json();
+      const data = await apiRequest('POST', '/api/chat', { message: messageContent, language });
 
       if (!data.isSchoolRelated) {
         setShowWarning(true);
