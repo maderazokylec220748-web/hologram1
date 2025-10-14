@@ -4,17 +4,17 @@
 
 To run this application in Visual Studio Code using `npm start`, follow these steps:
 
-### 1. Install PostgreSQL
-Download and install PostgreSQL: https://www.postgresql.org/download/
+### 1. Install MySQL
+Download and install MySQL: https://dev.mysql.com/downloads/mysql/
 
 ### 2. Create Database
 ```bash
-# Open psql terminal
-psql -U postgres
+# Open MySQL terminal
+mysql -u root -p
 
 # Create database
 CREATE DATABASE school_chatbot;
-\q
+exit;
 ```
 
 ### 3. Set Up Environment File
@@ -25,7 +25,7 @@ cp .env.example .env
 
 Edit `.env` and update:
 ```env
-DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/school_chatbot
+DATABASE_URL=mysql://root:YOUR_PASSWORD@localhost:3306/school_chatbot
 OPENAI_API_KEY=sk-your-actual-openai-key
 SESSION_SECRET=any-random-secret-string
 ```
@@ -67,8 +67,8 @@ npm run dev
 - Create `.env` file from `.env.example`
 - Add your database connection string
 
-### "database does not exist"
-- Run: `psql -U postgres -c "CREATE DATABASE school_chatbot;"`
+### "Unknown database 'school_chatbot'"
+- Run: `mysql -u root -p -e "CREATE DATABASE school_chatbot;"`
 
 ### "OpenAIError: Missing credentials"
 - Add your OpenAI API key to `.env` file
@@ -86,14 +86,14 @@ npm run dev
 
 ## Database Options
 
-### Option 1: Local PostgreSQL (Recommended for development)
+### Option 1: Local MySQL (Recommended for development)
 ```env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/school_chatbot
+DATABASE_URL=mysql://root:password@localhost:3306/school_chatbot
 ```
 
-### Option 2: Neon Serverless (No local install needed)
-1. Sign up at https://neon.tech
-2. Create a project
+### Option 2: PlanetScale (No local install needed)
+1. Sign up at https://planetscale.com
+2. Create a database
 3. Copy connection string to `.env`
 
 ---

@@ -1,22 +1,12 @@
-import { drizzle } from "drizzle-orm/neon-serverless";
+import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2/promise";
 import * as schema from "@shared/schema";
-import ws from "ws";
 
 if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL is not set");
 }
 
-// Configure WebSocket with SSL bypass for development
-class CustomWebSocket extends ws {
-  constructor(address: string, protocols?: string | string[]) {
-    super(address, protocols, {
-      rejectUnauthorized: false
-    });
-  }
-}
+// Create MySQL connection pool
+const poolConnection = mysql.createPool(process.env.DATABASE_URL);
 
-export const db = drizzle({
-  connection: process.env.DATABASE_URL,
-  schema,
-  ws: CustomWebSocket as any,
-});
+export const db = drizzle(poolConnection, { schema, mode: "default" });

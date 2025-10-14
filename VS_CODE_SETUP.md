@@ -5,43 +5,43 @@ This guide will help you run this School Chatbot application on your local machi
 ## Prerequisites
 
 1. **Node.js** (v20 or higher) - [Download here](https://nodejs.org/)
-2. **PostgreSQL** (v14 or higher) - [Download here](https://www.postgresql.org/download/)
+2. **MySQL** (v8.0 or higher) - [Download here](https://dev.mysql.com/downloads/mysql/)
 3. **Visual Studio Code** - [Download here](https://code.visualstudio.com/)
 
-## Step 1: Install PostgreSQL
+## Step 1: Install MySQL
 
 ### Windows
-1. Download PostgreSQL installer from https://www.postgresql.org/download/windows/
-2. Run the installer and remember your password for the `postgres` user
-3. Default port is `5432` (keep this unless you have a conflict)
+1. Download MySQL installer from https://dev.mysql.com/downloads/mysql/
+2. Run the installer and set a root password (remember this!)
+3. Default port is `3306` (keep this unless you have a conflict)
 
 ### macOS
 ```bash
 # Using Homebrew
-brew install postgresql@14
-brew services start postgresql@14
+brew install mysql
+brew services start mysql
 ```
 
 ### Linux (Ubuntu/Debian)
 ```bash
 sudo apt update
-sudo apt install postgresql postgresql-contrib
-sudo systemctl start postgresql
+sudo apt install mysql-server
+sudo systemctl start mysql
 ```
 
 ## Step 2: Create the Database
 
-1. Open PostgreSQL command line (psql):
+1. Open MySQL command line:
    ```bash
-   # Windows: Use "SQL Shell (psql)" from Start menu
+   # Windows: Use "MySQL Command Line Client" from Start menu
    # macOS/Linux:
-   psql -U postgres
+   mysql -u root -p
    ```
 
 2. Create the database:
    ```sql
    CREATE DATABASE school_chatbot;
-   \q
+   exit;
    ```
 
 ## Step 3: Set Up Environment Variables
@@ -54,8 +54,8 @@ sudo systemctl start postgresql
 2. Edit `.env` file and update these values:
 
    ```env
-   # Update with your PostgreSQL credentials
-   DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/school_chatbot
+   # Update with your MySQL credentials
+   DATABASE_URL=mysql://root:YOUR_PASSWORD@localhost:3306/school_chatbot
    
    # Add your OpenAI API key from https://platform.openai.com/
    OPENAI_API_KEY=sk-your-actual-openai-key-here
@@ -72,7 +72,7 @@ npm install
 
 ## Step 5: Initialize Database Schema
 
-Push the database schema to your PostgreSQL database:
+Push the database schema to your MySQL database:
 
 ```bash
 npm run db:push
@@ -110,11 +110,11 @@ The application will be available at: **http://localhost:5000**
 - **Error**: "DATABASE_URL is not set"
   - **Solution**: Make sure you created the `.env` file and set DATABASE_URL
 
-- **Error**: "password authentication failed"
-  - **Solution**: Check your PostgreSQL password in the DATABASE_URL
+- **Error**: "Access denied for user"
+  - **Solution**: Check your MySQL username and password in the DATABASE_URL
 
-- **Error**: "database does not exist"
-  - **Solution**: Create the database using `CREATE DATABASE school_chatbot;` in psql
+- **Error**: "Unknown database 'school_chatbot'"
+  - **Solution**: Create the database using `CREATE DATABASE school_chatbot;` in MySQL
 
 ### OpenAI API Error
 - **Error**: "Missing credentials"
@@ -124,17 +124,23 @@ The application will be available at: **http://localhost:5000**
 - **Error**: "Port 5000 is already in use"
   - **Solution**: Change PORT in `.env` file to another port (e.g., 3000)
 
-## Alternative: Using Neon (Serverless PostgreSQL)
+## Alternative: Using PlanetScale or Railway (Cloud MySQL)
 
-If you don't want to install PostgreSQL locally, you can use Neon:
+If you don't want to install MySQL locally, you can use cloud MySQL:
 
-1. Sign up at https://neon.tech (free tier available)
-2. Create a new project
+### PlanetScale (Recommended)
+1. Sign up at https://planetscale.com (free tier available)
+2. Create a new database
 3. Copy the connection string
 4. Update your `.env` file:
    ```env
-   DATABASE_URL=your-neon-connection-string
+   DATABASE_URL=your-planetscale-connection-string
    ```
+
+### Railway
+1. Sign up at https://railway.app
+2. Create a MySQL database
+3. Copy the connection string from the dashboard
 
 ## Project Structure
 
@@ -157,7 +163,7 @@ If you don't want to install PostgreSQL locally, you can use Neon:
 ## Need Help?
 
 If you encounter any issues not covered here, please check:
-- Your PostgreSQL service is running
+- Your MySQL service is running
 - Your `.env` file has all required variables
 - You ran `npm install` to install dependencies
 - You ran `npm run build` before using `npm start`
