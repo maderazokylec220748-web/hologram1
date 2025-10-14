@@ -29,6 +29,14 @@ export class MemStorage implements IStorage {
       address: "Comet St., Golden Country Homes Subdivision, Alangilan, Batangas City, Philippines",
       updatedAt: new Date(),
     };
+    
+    const adminId = randomUUID();
+    const adminUser: User = {
+      id: adminId,
+      username: "KYLED1P",
+      password: "kyle",
+    };
+    this.users.set(adminId, adminUser);
   }
 
   async getUser(id: string): Promise<User | undefined> {
