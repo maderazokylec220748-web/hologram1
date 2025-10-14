@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { User, Lock, Eye, EyeOff } from "lucide-react";
-import graduationImage from "@assets/image_1760411989931.png";
+import graduationImage from "@assets/IMG_20220331_162741-scaled_1760412535985.jpg";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
