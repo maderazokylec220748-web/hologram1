@@ -2,11 +2,15 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { User, Lock, Eye, EyeOff } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import graduationImage from "@assets/IMG_20220331_162741-scaled_1760412535985.jpg";
 
 const loginSchema = z.object({
@@ -19,6 +23,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function Admin() {
   const [showPassword, setShowPassword] = useState(false);
+  const [, setLocation] = useLocation();
+  const { toast } = useToast();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -29,8 +35,31 @@ export default function Admin() {
     },
   });
 
+  const loginMutation = useMutation({
+    mutationFn: async (data: { username: string; password: string }) => {
+      return await apiRequest("POST", "/api/auth/login", data);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Login Successful",
+        description: "Welcome back!",
+      });
+      setLocation("/form");
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Login Failed",
+        description: error.message || "Invalid credentials",
+        variant: "destructive",
+      });
+    },
+  });
+
   const onSubmit = (data: LoginFormData) => {
-    console.log("Login attempt:", data);
+    loginMutation.mutate({
+      username: data.username,
+      password: data.password,
+    });
   };
 
   return (
@@ -141,9 +170,10 @@ export default function Admin() {
                 <Button
                   type="submit"
                   className="w-full bg-[#A0715E] hover:bg-[#8B4513] text-white rounded-full h-12 text-lg font-semibold"
+                  disabled={loginMutation.isPending}
                   data-testid="button-login"
                 >
-                  Log in
+                  {loginMutation.isPending ? "Logging in..." : "Log in"}
                 </Button>
               </form>
             </Form>
