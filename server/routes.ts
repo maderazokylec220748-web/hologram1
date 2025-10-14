@@ -155,6 +155,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.put("/api/professors/:id", async (req, res) => {
+    try {
+      const professor = await storage.updateProfessor(req.params.id, req.body);
+      res.json(professor);
+    } catch (error) {
+      console.error("Error updating professor:", error);
+      res.status(500).json({ error: "Failed to update professor" });
+    }
+  });
+
+  app.delete("/api/professors/:id", async (req, res) => {
+    try {
+      await storage.deleteProfessor(req.params.id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting professor:", error);
+      res.status(500).json({ error: "Failed to delete professor" });
+    }
+  });
+
   app.get("/api/events", async (req, res) => {
     try {
       const events = await storage.getAllEvents();
@@ -172,6 +192,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error creating event:", error);
       res.status(500).json({ error: "Failed to create event" });
+    }
+  });
+
+  app.put("/api/events/:id", async (req, res) => {
+    try {
+      const event = await storage.updateEvent(req.params.id, req.body);
+      res.json(event);
+    } catch (error) {
+      console.error("Error updating event:", error);
+      res.status(500).json({ error: "Failed to update event" });
+    }
+  });
+
+  app.delete("/api/events/:id", async (req, res) => {
+    try {
+      await storage.deleteEvent(req.params.id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      res.status(500).json({ error: "Failed to delete event" });
     }
   });
 
@@ -223,6 +263,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching FAQs:", error);
       res.status(500).json({ error: "Failed to fetch FAQs" });
+    }
+  });
+
+  app.delete("/api/faqs/:id", async (req, res) => {
+    try {
+      await storage.deleteFaq(req.params.id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting FAQ:", error);
+      res.status(500).json({ error: "Failed to delete FAQ" });
+    }
+  });
+
+  app.delete("/api/chat/history", async (req, res) => {
+    try {
+      await storage.clearChatHistory();
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error clearing chat history:", error);
+      res.status(500).json({ error: "Failed to clear chat history" });
     }
   });
 

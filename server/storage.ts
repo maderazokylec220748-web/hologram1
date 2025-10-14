@@ -24,10 +24,14 @@ export interface IStorage {
   
   getAllProfessors(): Promise<Professor[]>;
   createProfessor(professor: InsertProfessor): Promise<Professor>;
+  updateProfessor(id: string, professor: Partial<InsertProfessor>): Promise<Professor>;
+  deleteProfessor(id: string): Promise<void>;
   
   getAllEvents(): Promise<Event[]>;
   getUpcomingEvents(): Promise<Event[]>;
   createEvent(event: InsertEvent): Promise<Event>;
+  updateEvent(id: string, event: Partial<InsertEvent>): Promise<Event>;
+  deleteEvent(id: string): Promise<void>;
   
   getAllDepartments(): Promise<Department[]>;
   getDepartmentByCode(code: string): Promise<Department | undefined>;
@@ -38,6 +42,8 @@ export interface IStorage {
   
   trackFAQ(question: string, normalizedQuestion: string): Promise<Faq>;
   getTopFAQs(limit?: number): Promise<Faq[]>;
+  deleteFaq(id: string): Promise<void>;
+  clearChatHistory(): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -106,6 +112,19 @@ export class DatabaseStorage implements IStorage {
     return newProfessor;
   }
 
+  async updateProfessor(id: string, professor: Partial<InsertProfessor>): Promise<Professor> {
+    const [updated] = await db
+      .update(schema.professors)
+      .set(professor)
+      .where(eq(schema.professors.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteProfessor(id: string): Promise<void> {
+    await db.delete(schema.professors).where(eq(schema.professors.id, id));
+  }
+
   async getAllEvents(): Promise<Event[]> {
     return await db.select().from(schema.events).orderBy(desc(schema.events.eventDate));
   }
@@ -117,6 +136,19 @@ export class DatabaseStorage implements IStorage {
   async createEvent(event: InsertEvent): Promise<Event> {
     const [newEvent] = await db.insert(schema.events).values(event).returning();
     return newEvent;
+  }
+
+  async updateEvent(id: string, event: Partial<InsertEvent>): Promise<Event> {
+    const [updated] = await db
+      .update(schema.events)
+      .set(event)
+      .where(eq(schema.events.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteEvent(id: string): Promise<void> {
+    await db.delete(schema.events).where(eq(schema.events.id, id));
   }
 
   async getAllDepartments(): Promise<Department[]> {
@@ -168,6 +200,14 @@ export class DatabaseStorage implements IStorage {
 
   async getTopFAQs(limit: number = 10): Promise<Faq[]> {
     return await db.select().from(schema.faqs).orderBy(desc(schema.faqs.count)).limit(limit);
+  }
+
+  async deleteFaq(id: string): Promise<void> {
+    await db.delete(schema.faqs).where(eq(schema.faqs.id, id));
+  }
+
+  async clearChatHistory(): Promise<void> {
+    await db.delete(schema.chatMessages);
   }
 }
 
