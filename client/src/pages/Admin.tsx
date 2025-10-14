@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { User, Lock, Eye, EyeOff } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import graduationImage from "@assets/IMG_20220331_162741-scaled_1760412535985.jpg";
 
 const loginSchema = z.object({
@@ -25,6 +26,7 @@ export default function Admin() {
   const [showPassword, setShowPassword] = useState(false);
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { login } = useAuth();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -39,7 +41,8 @@ export default function Admin() {
     mutationFn: async (data: { username: string; password: string }) => {
       return await apiRequest("POST", "/api/auth/login", data);
     },
-    onSuccess: () => {
+    onSuccess: (data: any) => {
+      login(data.user.username);
       toast({
         title: "Login Successful",
         description: "Welcome back!",

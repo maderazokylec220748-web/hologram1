@@ -3,12 +3,15 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Gauge, FileText, Settings, LogOut, User, HelpCircle, ChevronLeft } from "lucide-react";
 import { SiGooglescholar } from "react-icons/si";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { logout } = useAuth();
 
   const handleLogout = () => {
+    logout();
     setLocation("/admin");
   };
 
