@@ -109,20 +109,59 @@ The chatbot now includes comprehensive information from https://westmead-is.edu.
 - Payment options and bank account details
 
 ## Admin Dashboard
-The application includes a comprehensive admin dashboard accessible at `/admin`:
+The application includes a comprehensive admin dashboard accessible at `/form` (protected route at `/admin` for login):
 
 ### Features:
-- **School Settings Management**: Update school information including name, motto, contact details, and address
-- **Chat Analytics**: View real-time statistics on chat interactions
-  - Total messages count
-  - User messages vs AI responses breakdown
-  - Recent message history viewer
-- **Futuristic Design**: Matches the holographic kiosk aesthetic with dark mode UI
-- **Form Validation**: Built-in validation using Zod schemas
-- **Real-time Updates**: Changes save immediately with success notifications
+
+#### 1. Dashboard Overview (Main Page)
+- **Recent Activity/Logs**: Displays Q&A interactions from the hologram kiosk
+- **Prohibited Prompts Detection**: Alerts when non-school-related questions are detected
+- **Formatted Conversation History**: Shows user questions and AI responses with timestamps
+- **Visual Indicators**: Badges for prohibited prompts and activity status
+
+#### 2. Manage School Data
+Tab-based interface for managing school information:
+
+**Professors Tab:**
+- View all professors in a table format
+- Add new professors with: Name, Department, Position, Email, Office, Specialization
+- Edit existing professor information (form pre-populates with current data)
+- Delete professors with confirmation
+- Full CRUD operations
+
+**Events Tab:**
+- View all events with dates and locations
+- Add new events with: Title, Description, Date/Time, Location, Category
+- Edit existing events (form pre-populates with current data)
+- Delete events with confirmation
+- Full CRUD operations
+
+**FAQs Tab:**
+- View frequently asked questions with count tracking
+- Shows how many times each question was asked
+- Last asked timestamp for each FAQ
+- Delete FAQs capability
+- Auto-tracks questions from kiosk interactions
+
+#### 3. System Settings
+- **Restart AI Model**: Control for restarting the hologram AI system
+- **Reload School Data**: Refresh all data from database
+- **Delete Logs**: Clear all chat history with confirmation dialog
+- **Danger Zone**: Admin-only access warnings for critical operations
+
+### Technical Implementation:
+- **Components**: `DashboardOverview`, `ManageData`, `SystemSettings`
+- **Dialogs**: `ProfessorDialog`, `EventDialog` with form validation
+- **Form Management**: React Hook Form with Zod validation
+- **Data Fetching**: TanStack Query for real-time data updates
+- **Responsive Design**: Works on tablets and laptops
 
 ### Database Schema:
 - `adminSettings` table stores school configuration
+- `professors` table for faculty data
+- `events` table for school events
+- `faqs` table for question tracking
+- `chatMessages` table for conversation logs
 - In-memory storage with default WIS data pre-populated
 - Analytics calculated from chat message history
 
@@ -135,13 +174,16 @@ The application includes a comprehensive admin dashboard accessible at `/admin`:
 
 ## Recent Changes
 
-### Latest Update - October 14, 2025: Admin Dashboard
-- **New Admin Interface**: Added comprehensive admin dashboard at `/admin` route
-- **School Settings Management**: Form to update school name, motto, contact email, phone, and address
-- **Chat Analytics Dashboard**: Real-time view of message statistics and recent conversations
-- **Database Schema Extension**: Added `adminSettings` table for configuration storage
-- **API Endpoints**: New admin routes for settings management and analytics
-- **Responsive Design**: Dark-themed UI matching the holographic kiosk aesthetic
+### Latest Update - October 14, 2025: Comprehensive Dashboard Implementation
+- **Dashboard Overview**: Added activity logs with Q&A interactions and prohibited prompt detection
+- **Manage School Data**: Tab-based interface for managing Professors, Events, and FAQs with full CRUD operations
+- **Professor Management**: Add, edit, and delete professors with complete information (name, department, position, email, office, specialization)
+- **Event Management**: Add, edit, and delete events with date/time, location, and category tracking
+- **FAQ Tracking**: View frequently asked questions with usage statistics and timestamps
+- **System Settings**: Controls for AI restart, data reload, and log management with confirmation dialogs
+- **Backend Enhancement**: Added PUT/DELETE routes for professors, events, FAQs, and chat history
+- **Form Dialogs**: Pre-populated edit dialogs with React Hook Form and Zod validation
+- **Real-time Updates**: TanStack Query for instant data refresh across all views
 
 ### Previous Update - October 9, 2025: Tagalog Voice Support
 - **Language-Aware TTS**: Voice selection now adapts to selected language (English or Tagalog)
