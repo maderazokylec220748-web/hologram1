@@ -37,6 +37,7 @@ The app will be available at http://localhost:5000
 - **School-Topic Filtering**: Automatically detects and redirects non-school questions
 - **Responsive Kiosk Design**: Optimized for touchscreen interaction
 - **Welcome Greeting**: Friendly welcome message displayed when chat is empty
+- **Admin Dashboard**: Full-featured admin interface at `/admin` for managing school settings and viewing analytics
 
 ## Environment Variables
 Create a `.env` file with:
@@ -61,17 +62,24 @@ The AI assistant has knowledge about:
 ## Project Structure
 - `/client` - React frontend application
   - `/src/components` - Reusable UI components (Scanner, Chat, Header)
-  - `/src/pages` - Main kiosk page
+  - `/src/pages` - Application pages (Kiosk, Admin)
 - `/server` - Express backend
   - `openai.ts` - Groq AI integration with comprehensive school context
-  - `routes.ts` - API endpoints for chat functionality
-  - `storage.ts` - In-memory message storage
+  - `routes.ts` - API endpoints for chat and admin functionality
+  - `storage.ts` - In-memory storage for messages and settings
 - `/shared` - Shared TypeScript schemas
 
 ## API Endpoints
+
+### Chat Endpoints
 - `POST /api/chat` - Send a message to the AI assistant
 - `GET /api/chat/history` - Retrieve chat history
 - `POST /api/chat/reset` - Reset chat session
+
+### Admin Endpoints
+- `GET /api/admin/settings` - Get school settings
+- `PUT /api/admin/settings` - Update school settings
+- `GET /api/admin/analytics` - Get chat analytics and recent messages
 
 ## Environment Variables
 - `GROQ_API_KEY` - Groq API key (required) - Free alternative to OpenAI for chat
@@ -100,9 +108,42 @@ The chatbot now includes comprehensive information from https://westmead-is.edu.
 - Entrance exam requirements (board vs. non-board programs)
 - Payment options and bank account details
 
+## Admin Dashboard
+The application includes a comprehensive admin dashboard accessible at `/admin`:
+
+### Features:
+- **School Settings Management**: Update school information including name, motto, contact details, and address
+- **Chat Analytics**: View real-time statistics on chat interactions
+  - Total messages count
+  - User messages vs AI responses breakdown
+  - Recent message history viewer
+- **Futuristic Design**: Matches the holographic kiosk aesthetic with dark mode UI
+- **Form Validation**: Built-in validation using Zod schemas
+- **Real-time Updates**: Changes save immediately with success notifications
+
+### Database Schema:
+- `adminSettings` table stores school configuration
+- In-memory storage with default WIS data pre-populated
+- Analytics calculated from chat message history
+
+### Usage:
+1. Navigate to `/admin` to access the dashboard
+2. Update school information in the form
+3. Click "Save Settings" to persist changes
+4. View analytics on chat interactions in real-time
+5. Click "Back to Kiosk" to return to the main interface
+
 ## Recent Changes
 
-### Latest Update - October 9, 2025: Tagalog Voice Support
+### Latest Update - October 14, 2025: Admin Dashboard
+- **New Admin Interface**: Added comprehensive admin dashboard at `/admin` route
+- **School Settings Management**: Form to update school name, motto, contact email, phone, and address
+- **Chat Analytics Dashboard**: Real-time view of message statistics and recent conversations
+- **Database Schema Extension**: Added `adminSettings` table for configuration storage
+- **API Endpoints**: New admin routes for settings management and analytics
+- **Responsive Design**: Dark-themed UI matching the holographic kiosk aesthetic
+
+### Previous Update - October 9, 2025: Tagalog Voice Support
 - **Language-Aware TTS**: Voice selection now adapts to selected language (English or Tagalog)
 - **Tagalog Voice Priority**: When Tagalog is selected, system prioritizes Filipino/Tagalog voices (Rosa, Angelo, etc.)
 - **Dynamic Voice Switching**: Voice automatically updates when user changes language preference
