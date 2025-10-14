@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -34,14 +35,36 @@ export default function ProfessorDialog({ open, onOpenChange, professor }: Profe
   const form = useForm<InsertProfessor>({
     resolver: zodResolver(insertProfessorSchema),
     defaultValues: {
-      name: professor?.name || "",
-      department: professor?.department || "",
-      position: professor?.position || "",
-      email: professor?.email || "",
-      office: professor?.office || "",
-      specialization: professor?.specialization || "",
+      name: "",
+      department: "",
+      position: "",
+      email: "",
+      office: "",
+      specialization: "",
     },
   });
+
+  useEffect(() => {
+    if (professor) {
+      form.reset({
+        name: professor.name || "",
+        department: professor.department || "",
+        position: professor.position || "",
+        email: professor.email || "",
+        office: professor.office || "",
+        specialization: professor.specialization || "",
+      });
+    } else {
+      form.reset({
+        name: "",
+        department: "",
+        position: "",
+        email: "",
+        office: "",
+        specialization: "",
+      });
+    }
+  }, [professor, form]);
 
   const mutation = useMutation({
     mutationFn: async (data: InsertProfessor) => {

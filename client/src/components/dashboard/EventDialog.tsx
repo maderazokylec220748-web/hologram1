@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -42,13 +43,33 @@ export default function EventDialog({ open, onOpenChange, event }: EventDialogPr
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      title: event?.title || "",
-      description: event?.description || "",
-      eventDate: event?.eventDate ? new Date(event.eventDate).toISOString().slice(0, 16) : "",
-      location: event?.location || "",
-      category: event?.category || "",
+      title: "",
+      description: "",
+      eventDate: "",
+      location: "",
+      category: "",
     },
   });
+
+  useEffect(() => {
+    if (event) {
+      form.reset({
+        title: event.title || "",
+        description: event.description || "",
+        eventDate: event.eventDate ? new Date(event.eventDate).toISOString().slice(0, 16) : "",
+        location: event.location || "",
+        category: event.category || "",
+      });
+    } else {
+      form.reset({
+        title: "",
+        description: "",
+        eventDate: "",
+        location: "",
+        category: "",
+      });
+    }
+  }, [event, form]);
 
   const mutation = useMutation({
     mutationFn: async (data: EventFormData) => {
