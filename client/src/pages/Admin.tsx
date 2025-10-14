@@ -42,14 +42,26 @@ export default function Admin() {
       return await apiRequest("POST", "/api/auth/login", data);
     },
     onSuccess: (data: any) => {
-      login(data.user.username);
-      toast({
-        title: "Login Successful",
-        description: "Welcome back!",
-      });
-      setLocation("/form");
+      console.log("Login response:", data);
+      if (data && data.user && data.user.username) {
+        login(data.user.username);
+        toast({
+          title: "Login Successful",
+          description: "Welcome back!",
+        });
+        setTimeout(() => {
+          setLocation("/form");
+        }, 100);
+      } else {
+        toast({
+          title: "Login Error",
+          description: "Invalid response from server",
+          variant: "destructive",
+        });
+      }
     },
     onError: (error: any) => {
+      console.error("Login error:", error);
       toast({
         title: "Login Failed",
         description: error.message || "Invalid credentials",
