@@ -4,10 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Gauge, FileText, Settings, LogOut, User, HelpCircle, ChevronLeft } from "lucide-react";
 import { SiGooglescholar } from "react-icons/si";
 import { useAuth } from "@/contexts/AuthContext";
+import DashboardOverview from "@/components/dashboard/DashboardOverview";
+import ManageData from "@/components/dashboard/ManageData";
+import SystemSettings from "@/components/dashboard/SystemSettings";
+
+type ActiveView = "dashboard" | "manage-data" | "settings";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [activeView, setActiveView] = useState<ActiveView>("dashboard");
   const { logout } = useAuth();
 
   const handleLogout = () => {
@@ -16,10 +22,30 @@ export default function Dashboard() {
   };
 
   const navItems = [
-    { icon: Gauge, label: "Dashboard", active: true },
-    { icon: FileText, label: "Manage Data", active: false },
-    { icon: Settings, label: "Settings", active: false },
-    { icon: LogOut, label: "Logout", active: false, onClick: handleLogout },
+    { 
+      icon: Gauge, 
+      label: "Dashboard", 
+      active: activeView === "dashboard", 
+      onClick: () => setActiveView("dashboard") 
+    },
+    { 
+      icon: FileText, 
+      label: "Manage Data", 
+      active: activeView === "manage-data", 
+      onClick: () => setActiveView("manage-data") 
+    },
+    { 
+      icon: Settings, 
+      label: "Settings", 
+      active: activeView === "settings", 
+      onClick: () => setActiveView("settings") 
+    },
+    { 
+      icon: LogOut, 
+      label: "Logout", 
+      active: false, 
+      onClick: handleLogout 
+    },
   ];
 
   const bottomItems = [
@@ -100,14 +126,10 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <h1
-          className="text-8xl font-bold text-white/90 tracking-wider"
-          style={{ fontFamily: 'Georgia, serif' }}
-          data-testid="text-dashboard-title"
-        >
-          DASHBOARD
-        </h1>
+      <div className="flex-1 overflow-auto">
+        {activeView === "dashboard" && <DashboardOverview />}
+        {activeView === "manage-data" && <ManageData />}
+        {activeView === "settings" && <SystemSettings />}
       </div>
 
       {/* Sidebar Toggle Button (when closed) */}
