@@ -67,6 +67,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Auth routes
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      
+      if (!username || !password) {
+        return res.status(400).json({ error: "Username and password are required" });
+      }
+
+      const user = await storage.getUserByUsername(username);
+      
+      if (!user || user.password !== password) {
+        return res.status(401).json({ error: "Invalid credentials" });
+      }
+
+      res.json({
+        success: true,
+        user: {
+          id: user.id,
+          username: user.username,
+        },
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ error: "Failed to login" });
+    }
+  });
+
   // Admin routes
   app.get("/api/admin/settings", async (req, res) => {
     try {
