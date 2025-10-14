@@ -125,10 +125,19 @@ INSTRUCTIONS:
 - If you don't have specific information, suggest the user contact the school directly at +63 908 655 5521 or visit westmead-is.edu.ph
 `;
 
+function normalizeQuestion(question: string): string {
+  return question
+    .toLowerCase()
+    .replace(/[^\w\s]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 export async function chatWithAI(
   userMessage: string,
   conversationHistory: Array<{ role: string; content: string }>,
-  language: 'english' | 'tagalog' = 'english'
+  language: 'english' | 'tagalog' = 'english',
+  storage?: any
 ): Promise<{ content: string; isSchoolRelated: boolean }> {
   try {
     // First, check if the question is school-related
@@ -168,6 +177,45 @@ export async function chatWithAI(
       };
     }
 
+    if (storage) {
+      const normalizedQ = normalizeQuestion(userMessage);
+      await storage.trackFAQ(userMessage, normalizedQ);
+    }
+
+    let additionalContext = "";
+    if (storage) {
+      const [professors, events, departments, facilities] = await Promise.all([
+        storage.getAllProfessors(),
+        storage.getUpcomingEvents(),
+        storage.getAllDepartments(),
+        storage.getAllFacilities(),
+      ]);
+
+      if (professors.length > 0) {
+        additionalContext += `\n\nFACULTY & STAFF:\n${professors.map((p: any) => 
+          `- ${p.name} (${p.position}, ${p.department})${p.office ? ` - Office: ${p.office}` : ''}${p.email ? ` - Email: ${p.email}` : ''}`
+        ).join('\n')}`;
+      }
+
+      if (events.length > 0) {
+        additionalContext += `\n\nUPCOMING EVENTS:\n${events.map((e: any) => 
+          `- ${e.title} on ${new Date(e.eventDate).toLocaleDateString()} at ${e.location || 'TBA'}: ${e.description}`
+        ).join('\n')}`;
+      }
+
+      if (departments.length > 0) {
+        additionalContext += `\n\nDEPARTMENTS:\n${departments.map((d: any) => 
+          `- ${d.name} (${d.code})${d.building ? ` - ${d.building}` : ''}${d.contactPerson ? ` - Contact: ${d.contactPerson}` : ''}`
+        ).join('\n')}`;
+      }
+
+      if (facilities.length > 0) {
+        additionalContext += `\n\nFACILITIES:\n${facilities.map((f: any) => 
+          `- ${f.name} (${f.type}) at ${f.location}${f.capacity ? ` - Capacity: ${f.capacity}` : ''}${f.availability ? ` - ${f.availability}` : ''}`
+        ).join('\n')}`;
+      }
+    }
+
     // If school-related, generate a helpful response
     const languageInstruction = language === 'tagalog' 
       ? '\n\nIMPORTANT: Respond in Tagalog/Filipino language. All responses must be in Tagalog.' 
@@ -176,7 +224,7 @@ export async function chatWithAI(
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
       {
         role: "system",
-        content: SCHOOL_CONTEXT + languageInstruction
+        content: SCHOOL_CONTEXT + additionalContext + languageInstruction
       },
       ...conversationHistory.slice(-6).map(msg => ({
         role: msg.role as "user" | "assistant",

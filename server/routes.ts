@@ -28,7 +28,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       // Get AI response
-      const { content, isSchoolRelated } = await chatWithAI(message, conversationHistory, language);
+      const { content, isSchoolRelated } = await chatWithAI(message, conversationHistory, language, storage);
 
       // Store assistant message
       const assistantMessage = await storage.createChatMessage({
@@ -131,6 +131,98 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching analytics:", error);
       res.status(500).json({ error: "Failed to fetch analytics" });
+    }
+  });
+
+  // School Data Routes
+  app.get("/api/professors", async (req, res) => {
+    try {
+      const professors = await storage.getAllProfessors();
+      res.json(professors);
+    } catch (error) {
+      console.error("Error fetching professors:", error);
+      res.status(500).json({ error: "Failed to fetch professors" });
+    }
+  });
+
+  app.post("/api/professors", async (req, res) => {
+    try {
+      const professor = await storage.createProfessor(req.body);
+      res.json(professor);
+    } catch (error) {
+      console.error("Error creating professor:", error);
+      res.status(500).json({ error: "Failed to create professor" });
+    }
+  });
+
+  app.get("/api/events", async (req, res) => {
+    try {
+      const events = await storage.getAllEvents();
+      res.json(events);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      res.status(500).json({ error: "Failed to fetch events" });
+    }
+  });
+
+  app.post("/api/events", async (req, res) => {
+    try {
+      const event = await storage.createEvent(req.body);
+      res.json(event);
+    } catch (error) {
+      console.error("Error creating event:", error);
+      res.status(500).json({ error: "Failed to create event" });
+    }
+  });
+
+  app.get("/api/departments", async (req, res) => {
+    try {
+      const departments = await storage.getAllDepartments();
+      res.json(departments);
+    } catch (error) {
+      console.error("Error fetching departments:", error);
+      res.status(500).json({ error: "Failed to fetch departments" });
+    }
+  });
+
+  app.post("/api/departments", async (req, res) => {
+    try {
+      const department = await storage.createDepartment(req.body);
+      res.json(department);
+    } catch (error) {
+      console.error("Error creating department:", error);
+      res.status(500).json({ error: "Failed to create department" });
+    }
+  });
+
+  app.get("/api/facilities", async (req, res) => {
+    try {
+      const facilities = await storage.getAllFacilities();
+      res.json(facilities);
+    } catch (error) {
+      console.error("Error fetching facilities:", error);
+      res.status(500).json({ error: "Failed to fetch facilities" });
+    }
+  });
+
+  app.post("/api/facilities", async (req, res) => {
+    try {
+      const facility = await storage.createFacility(req.body);
+      res.json(facility);
+    } catch (error) {
+      console.error("Error creating facility:", error);
+      res.status(500).json({ error: "Failed to create facility" });
+    }
+  });
+
+  app.get("/api/faqs", async (req, res) => {
+    try {
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+      const faqs = await storage.getTopFAQs(limit);
+      res.json(faqs);
+    } catch (error) {
+      console.error("Error fetching FAQs:", error);
+      res.status(500).json({ error: "Failed to fetch FAQs" });
     }
   });
 
