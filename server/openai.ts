@@ -1,8 +1,9 @@
 import OpenAI from "openai";
 
-// the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+// Using Groq API for Llama models - fast and free alternative
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: "https://api.groq.com/openai/v1",
+  apiKey: process.env.GROQ_API_KEY,
 });
 
 const SCHOOL_CONTEXT = `
@@ -141,7 +142,7 @@ export async function chatWithAI(
   try {
     // First, check if the question is school-related
     const validationResponse = await openai.chat.completions.create({
-      model: "gpt-5",
+      model: "llama-3.3-70b-versatile",
       messages: [
         {
           role: "system",
@@ -160,7 +161,6 @@ export async function chatWithAI(
         }
       ],
       response_format: { type: "json_object" },
-      max_completion_tokens: 200,
     });
 
     const validation = JSON.parse(validationResponse.choices[0].message.content || '{"isSchoolRelated": false}');
@@ -237,7 +237,7 @@ export async function chatWithAI(
     ];
 
     const response = await openai.chat.completions.create({
-      model: "gpt-5",
+      model: "llama-3.3-70b-versatile",
       messages,
       max_completion_tokens: 500,
     });
@@ -247,7 +247,7 @@ export async function chatWithAI(
       isSchoolRelated: true
     };
   } catch (error) {
-    console.error("OpenAI API error:", error);
+    console.error("Groq API error:", error);
     throw new Error("Failed to process your request. Please try again.");
   }
 }
