@@ -1,290 +1,163 @@
-import { useState, useEffect } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertAdminSettingsSchema, type AdminSettings } from "@shared/schema";
-import { apiRequest, queryClient } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
-import { Settings, BarChart3, Save, Home } from "lucide-react";
-import { Link } from "wouter";
 import { z } from "zod";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { User, Lock, Eye, EyeOff } from "lucide-react";
+import graduationImage from "@assets/image_1760411989931.png";
 
-type FormData = z.infer<typeof insertAdminSettingsSchema>;
+const loginSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+  rememberMe: z.boolean().default(false),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function Admin() {
-  const { toast } = useToast();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const { data: settings, isLoading: settingsLoading } = useQuery<AdminSettings>({
-    queryKey: ['/api/admin/settings'],
-  });
-
-  const { data: analytics, isLoading: analyticsLoading } = useQuery<{
-    totalMessages: number;
-    userMessages: number;
-    assistantMessages: number;
-    recentMessages: Array<{ role: string; content: string; timestamp: string }>;
-  }>({
-    queryKey: ['/api/admin/analytics'],
-  });
-
-  const form = useForm<FormData>({
-    resolver: zodResolver(insertAdminSettingsSchema),
+  const form = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      schoolName: '',
-      schoolMotto: '',
-      contactEmail: '',
-      contactPhone: '',
-      address: '',
+      username: "",
+      password: "",
+      rememberMe: false,
     },
   });
 
-  useEffect(() => {
-    if (settings) {
-      form.reset(settings);
-    }
-  }, [settings]);
-
-  const updateMutation = useMutation({
-    mutationFn: async (data: FormData) => {
-      return await apiRequest('PUT', '/api/admin/settings', data);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/settings'] });
-      toast({
-        title: "Settings Updated",
-        description: "School information has been successfully updated.",
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to update settings. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const onSubmit = (data: FormData) => {
-    updateMutation.mutate(data);
+  const onSubmit = (data: LoginFormData) => {
+    console.log("Login attempt:", data);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <div className="relative w-12 h-12">
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 glow-cyan animate-pulse" />
-              <div className="absolute inset-0.5 rounded-lg bg-background flex items-center justify-center">
-                <Settings className="w-6 h-6 text-cyan-400" />
-              </div>
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-white" data-testid="text-admin-title">
-                Admin Dashboard
-              </h1>
-              <p className="text-sm text-gray-400">Manage school information and view analytics</p>
-            </div>
-          </div>
-          <Link href="/" data-testid="link-home">
-            <Button variant="outline" className="gap-2">
-              <Home className="w-4 h-4" />
-              Back to Kiosk
-            </Button>
-          </Link>
-        </div>
+    <div className="min-h-screen bg-[#E5C100] flex items-center justify-center p-4">
+      <div className="w-full max-w-5xl bg-[#D4C5A0] rounded-3xl shadow-2xl overflow-hidden">
+        <div className="grid md:grid-cols-2">
+          {/* Left side - Login Form */}
+          <div className="p-12 flex flex-col justify-center">
+            <h1 
+              className="text-6xl font-bold mb-8 text-[#8B4513]"
+              style={{ fontFamily: 'Georgia, serif' }}
+              data-testid="text-hologram-title"
+            >
+              Hologram
+            </h1>
+            
+            <h2 
+              className="text-3xl font-semibold mb-8 text-[#8B4513]"
+              data-testid="text-login-subtitle"
+            >
+              Log in
+            </h2>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card className="bg-gray-800/50 border-gray-700" data-testid="card-analytics">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
-                <BarChart3 className="w-5 h-5" />
-                Chat Analytics
-              </CardTitle>
-              <CardDescription className="text-gray-400">
-                Overview of chat interactions
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {analyticsLoading ? (
-                <div className="text-gray-400">Loading analytics...</div>
-              ) : analytics ? (
-                <>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="bg-gray-700/50 p-4 rounded-lg">
-                      <div className="text-2xl font-bold text-cyan-400" data-testid="text-total-messages">
-                        {analytics.totalMessages}
-                      </div>
-                      <div className="text-sm text-gray-400">Total Messages</div>
-                    </div>
-                    <div className="bg-gray-700/50 p-4 rounded-lg">
-                      <div className="text-2xl font-bold text-blue-400" data-testid="text-user-messages">
-                        {analytics.userMessages}
-                      </div>
-                      <div className="text-sm text-gray-400">User Messages</div>
-                    </div>
-                    <div className="bg-gray-700/50 p-4 rounded-lg">
-                      <div className="text-2xl font-bold text-purple-400" data-testid="text-assistant-messages">
-                        {analytics.assistantMessages}
-                      </div>
-                      <div className="text-sm text-gray-400">AI Responses</div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-300 mb-2">Recent Messages</h4>
-                    <div className="space-y-2 max-h-96 overflow-y-auto">
-                      {analytics.recentMessages.map((msg, index) => (
-                        <div
-                          key={index}
-                          className="bg-gray-700/30 p-3 rounded text-sm"
-                          data-testid={`message-${index}`}
-                        >
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className={`font-medium ${msg.role === 'user' ? 'text-blue-400' : 'text-purple-400'}`}>
-                              {msg.role === 'user' ? 'User' : 'AI Assistant'}
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              {new Date(msg.timestamp).toLocaleString()}
-                            </span>
-                          </div>
-                          <div className="text-gray-300 line-clamp-2">{msg.content}</div>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                {/* Username Field */}
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="relative">
+                          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8B4513]" />
+                          <Input
+                            {...field}
+                            placeholder="Username"
+                            className="pl-12 bg-[#E5C100] border-2 border-[#8B4513] rounded-full h-12 text-[#8B4513] placeholder:text-[#8B4513]/60"
+                            data-testid="input-username"
+                          />
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="text-gray-400">No analytics available</div>
-              )}
-            </CardContent>
-          </Card>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
 
-          <Card className="bg-gray-800/50 border-gray-700" data-testid="card-settings">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
-                <Settings className="w-5 h-5" />
-                School Settings
-              </CardTitle>
-              <CardDescription className="text-gray-400">
-                Update school information
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {settingsLoading ? (
-                <div className="text-gray-400">Loading settings...</div>
-              ) : (
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="schoolName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-300">School Name</FormLabel>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              className="bg-gray-700 border-gray-600 text-white"
-                              data-testid="input-school-name"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                {/* Password Field */}
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="relative">
+                          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8B4513]" />
+                          <Input
+                            {...field}
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            className="pl-12 pr-12 bg-[#C19A6B] border-2 border-[#8B4513] rounded-full h-12 text-[#8B4513] placeholder:text-[#8B4513]/60"
+                            data-testid="input-password"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8B4513]"
+                            data-testid="button-toggle-password"
+                          >
+                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                          </button>
+                        </div>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
 
-                    <FormField
-                      control={form.control}
-                      name="schoolMotto"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-300">School Motto</FormLabel>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              className="bg-gray-700 border-gray-600 text-white"
-                              data-testid="input-school-motto"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                {/* Remember Me & Forgot Password */}
+                <div className="flex items-center justify-between">
+                  <FormField
+                    control={form.control}
+                    name="rememberMe"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            className="border-[#8B4513] data-[state=checked]:bg-[#8B4513]"
+                            data-testid="checkbox-remember-me"
+                          />
+                        </FormControl>
+                        <label className="text-sm text-[#8B4513] cursor-pointer" onClick={() => field.onChange(!field.value)}>
+                          Remember Me
+                        </label>
+                      </FormItem>
+                    )}
+                  />
+                  <button
+                    type="button"
+                    className="text-sm text-[#8B4513] hover:underline"
+                    data-testid="link-forgot-password"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
 
-                    <FormField
-                      control={form.control}
-                      name="contactEmail"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-300">Contact Email</FormLabel>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              type="email"
-                              className="bg-gray-700 border-gray-600 text-white"
-                              data-testid="input-contact-email"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                {/* Login Button */}
+                <Button
+                  type="submit"
+                  className="w-full bg-[#A0715E] hover:bg-[#8B4513] text-white rounded-full h-12 text-lg font-semibold"
+                  data-testid="button-login"
+                >
+                  Log in
+                </Button>
+              </form>
+            </Form>
+          </div>
 
-                    <FormField
-                      control={form.control}
-                      name="contactPhone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-300">Contact Phone</FormLabel>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              className="bg-gray-700 border-gray-600 text-white"
-                              data-testid="input-contact-phone"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="address"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-300">Address</FormLabel>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              className="bg-gray-700 border-gray-600 text-white"
-                              data-testid="input-address"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <Button
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600"
-                      disabled={updateMutation.isPending}
-                      data-testid="button-save-settings"
-                    >
-                      <Save className="w-4 h-4 mr-2" />
-                      {updateMutation.isPending ? 'Saving...' : 'Save Settings'}
-                    </Button>
-                  </form>
-                </Form>
-              )}
-            </CardContent>
-          </Card>
+          {/* Right side - Image */}
+          <div className="hidden md:block relative">
+            <img
+              src={graduationImage}
+              alt="Westmead International School Graduation"
+              className="w-full h-full object-cover"
+              data-testid="img-graduation"
+            />
+          </div>
         </div>
       </div>
     </div>
